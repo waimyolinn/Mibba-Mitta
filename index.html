@@ -22,15 +22,12 @@
         .btn:hover{opacity:0.9;transform:translateY(-2px);}
         .contact{text-align:center;padding-top:15px;border-top:1px solid #eee;font-size:14px;color:#7a5a4e;}
         .contact p{margin:5px 0;}
-        .status{text-align:center;margin-top:10px;font-size:13px;color:#8b5a2b;}
-        .loading{display:inline-block;width:16px;height:16px;border:2px solid #ddd;border-top-color:#8b5a2b;border-radius:50%;animation:spin 0.6s linear infinite;}
-        @keyframes spin{to{transform:rotate(360deg);}}
-
-        /* Modal (ပုံအကျယ်ချဲ့ကြည့်ရန်) */
+        .counter{text-align:center;margin-top:10px;font-size:14px;color:#b8863f;}
         .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:1000;cursor:pointer;}
         .modal img{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);max-width:90%;max-height:90%;object-fit:contain;}
         .modal-close{position:absolute;top:20px;right:35px;color:white;font-size:40px;font-weight:bold;cursor:pointer;}
-        .counter{text-align:center;margin-top:10px;font-size:14px;color:#b8863f;}
+        .loading{display:inline-block;width:16px;height:16px;border:2px solid #ddd;border-top-color:#8b5a2b;border-radius:50%;animation:spin 0.6s linear infinite;}
+        @keyframes spin{to{transform:rotate(360deg);}}
     </style>
 </head>
 <body>
@@ -38,74 +35,101 @@
         <h1>မိဘမေတ္တာ <span style="font-size:18px;">အထည်ဆိုင်</span></h1>
         <div class="welcome">✨ မှ လှိုက်လှဲစွာ ကြိုဆိုပါ၏ ✨</div>
 
-        <!-- Gallery -->
         <div id="gallery" class="gallery"></div>
         <div id="counter" class="counter"></div>
 
-        <!-- Channel Links -->
+        <!-- Link များ - သင်ပေးထားသည့်အတိုင်း အသစ်ပြင်ဆင်ပီး -->
         <div class="links">
             <a href="https://t.me/mibamittaa" class="btn telegram">📱 Telegram Channel</a>
-            <a href="https://chats.viber.com/mibametta" class="btn viber">📞 Viber Channel</a>
-            <a href="https://m.me/mibametta" class="btn messenger">💬 Messenger Page</a>
+            <a href="https://invite.viber.com/?g2=AQAkFUQwoiv461Yx1zedjxN%2BKlucfZcNOzM%2Bfh28iDVlEEcNa%2BXPXnBI1QCpLX2" class="btn viber">📞 Viber အုပ်စု</a>
+            <a href="https://m.me/cm/AbYUTQe3XUOvh8yF/" class="btn messenger">💬 Messenger စာမျက်နှာ</a>
         </div>
 
+        <!-- သင်ပေးထားသော လိပ်စာနှင့် ဖုန်းနံပါတ် -->
         <div class="contact">
             <p>📞 ဆက်သွယ်ရန် - 09676827963</p>
-            <p>📍 လိပ်စာ - အိုးထိန်း၊ စလင်းမြို့နယ်</p>
+            <p>📍 လိပ်စာ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
         </div>
     </div>
 
-    <!-- Modal for image preview -->
     <div id="imageModal" class="modal" onclick="closeModal()">
         <span class="modal-close">&times;</span>
         <img id="modalImage" src="">
     </div>
 
     <script>
+        // သင့် Bot Token နှင့် Channel ID (မှန်ကန်ပီးဖြစ်ပါသည်)
         const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
         const CHAT_ID = "-1003486800536";
 
-        let currentImages = [];
+        let allImages = [];
+
+        async function getAllChannelMessages() {
+            let messages = [];
+            let offset = 0;
+            let hasMore = true;
+            
+            while(hasMore) {
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${offset}&limit=100`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if(!data.ok || !data.result || data.result.length === 0) {
+                    hasMore = false;
+                    break;
+                }
+                
+                for(const update of data.result) {
+                    const msg = update.channel_post || update.message;
+                    if(msg && msg.chat && msg.chat.id.toString() === CHAT_ID) {
+                        messages.push(msg);
+                    }
+                    offset = update.update_id + 1;
+                }
+                
+                if(data.result.length < 100) hasMore = false;
+            }
+            
+            return messages;
+        }
 
         async function loadImages() {
             const gallery = document.getElementById('gallery');
             const counter = document.getElementById('counter');
             gallery.innerHTML = '<div style="text-align:center; padding:20px;">ပုံများ ယူနေပါသည်... <span class="loading"></span></div>';
+            
             try {
-                const url = `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=-1&limit=100`;
-                const response = await fetch(url);
-                const data = await response.json();
-                if(data.ok && data.result){
-                    const images = [];
-                    for(const update of data.result){
-                        const msg = update.channel_post || update.message;
-                        if(msg && msg.chat && msg.chat.id.toString() === CHAT_ID && msg.photo){
-                            const photo = msg.photo[msg.photo.length-1];
-                            const fileId = photo.file_id;
-                            const fileResponse = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`);
-                            const fileData = await fileResponse.json();
-                            if(fileData.ok){
-                                const imageUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.result.file_path}`;
-                                images.push({url: imageUrl, msgId: msg.message_id});
-                            }
+                const allMessages = await getAllChannelMessages();
+                const images = [];
+                
+                for(const msg of allMessages) {
+                    if(msg.photo && msg.photo.length > 0) {
+                        const photo = msg.photo[msg.photo.length - 1];
+                        const fileId = photo.file_id;
+                        const fileResponse = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`);
+                        const fileData = await fileResponse.json();
+                        if(fileData.ok) {
+                            const imageUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.result.file_path}`;
+                            images.push({url: imageUrl, msgId: msg.message_id});
                         }
                     }
-                    currentImages = images;
-                    if(images.length === 0){
-                        gallery.innerHTML = '<div style="text-align:center; padding:20px; color:#b8863f;">📭 ပုံများ မရှိသေးပါ။</div>';
-                        counter.innerHTML = '';
-                    } else {
-                        gallery.innerHTML = images.map((img, index) => `
-                            <div class="gallery-item" onclick="openModal(${index})">
-                                <img src="${img.url}" alt="အထည်ပုံ">
-                            </div>
-                        `).join('');
-                        counter.innerHTML = `📸 စုစုပေါင်း ပုံအရေအတွက် - ${images.length}`;
-                    }
-                } else {
-                    gallery.innerHTML = '<div style="text-align:center; padding:20px;">📭 ပုံများ မရှိသေးပါ။</div>';
                 }
-            } catch(err){
+                
+                allImages = images.reverse();
+                
+                if(allImages.length === 0) {
+                    gallery.innerHTML = '<div style="text-align:center; padding:20px; color:#b8863f;">📭 ပုံများ မရှိသေးပါ။</div>';
+                    counter.innerHTML = '';
+                } else {
+                    gallery.innerHTML = allImages.map((img, index) => `
+                        <div class="gallery-item" onclick="openModal(${index})">
+                            <img src="${img.url}" alt="အထည်ပုံ" loading="lazy">
+                        </div>
+                    `).join('');
+                    counter.innerHTML = `📸 စုစုပေါင်း ပုံအရေအတွက် - ${allImages.length}`;
+                }
+            } catch(err) {
+                console.error(err);
                 gallery.innerHTML = '<div style="text-align:center; padding:20px;">❌ အမှားရှိပါသည်။ Telegram Bot အား Channel Admin ခန့်ထားကြောင်း စစ်ဆေးပါ။</div>';
             }
         }
@@ -113,9 +137,9 @@
         function openModal(index) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
-            if(currentImages[index] && currentImages[index].url){
+            if(allImages[index] && allImages[index].url){
                 modal.style.display = "block";
-                modalImg.src = currentImages[index].url;
+                modalImg.src = allImages[index].url;
             }
         }
 
