@@ -8,16 +8,12 @@
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:system-ui,'Myanmar Text',sans-serif;background:linear-gradient(135deg,#fdf8f0 0%,#f5e6d3 100%);min-height:100vh;padding:20px;}
         .container{max-width:700px;margin:auto;background:white;border-radius:32px;padding:25px;box-shadow:0 10px 40px rgba(0,0,0,0.1);}
-        .logo{font-size:50px;text-align:center;}
         h1{text-align:center;color:#8b5a2b;font-size:28px;margin:10px 0 5px;}
-        .subtitle{text-align:center;color:#b8863f;font-style:italic;margin-bottom:25px;}
-        .upload-area{background:#f9f3ec;border-radius:24px;padding:20px;margin-bottom:25px;text-align:center;border:2px dashed #d4b48c;}
-        .upload-label{background:#8b5a2b;color:white;padding:12px 24px;border-radius:40px;cursor:pointer;display:inline-block;font-weight:bold;}
-        #imageInput{display:none;}
+        .welcome{text-align:center;color:#b8863f;font-size:20px;font-weight:bold;margin-bottom:25px;padding:10px;background:#fef5e8;border-radius:50px;}
         .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-bottom:30px;}
-        .gallery-item{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+        .gallery-item{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);cursor:pointer;transition:transform 0.2s;}
+        .gallery-item:hover{transform:scale(1.02);}
         .gallery-item img{width:100%;height:150px;object-fit:cover;display:block;}
-        .delete-btn{position:absolute;top:5px;right:5px;background:rgba(255,0,0,0.7);color:white;border:none;border-radius:20px;padding:4px 10px;cursor:pointer;font-size:12px;}
         .links{display:flex;flex-direction:column;gap:12px;margin-bottom:25px;}
         .btn{display:block;text-align:center;padding:14px;border-radius:50px;text-decoration:none;font-weight:bold;transition:0.2s;color:white;}
         .telegram{background:linear-gradient(135deg,#0088cc,#005f8c);}
@@ -29,22 +25,24 @@
         .status{text-align:center;margin-top:10px;font-size:13px;color:#8b5a2b;}
         .loading{display:inline-block;width:16px;height:16px;border:2px solid #ddd;border-top-color:#8b5a2b;border-radius:50%;animation:spin 0.6s linear infinite;}
         @keyframes spin{to{transform:rotate(360deg);}}
+
+        /* Modal (ပုံအကျယ်ချဲ့ကြည့်ရန်) */
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:1000;cursor:pointer;}
+        .modal img{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);max-width:90%;max-height:90%;object-fit:contain;}
+        .modal-close{position:absolute;top:20px;right:35px;color:white;font-size:40px;font-weight:bold;cursor:pointer;}
+        .counter{text-align:center;margin-top:10px;font-size:14px;color:#b8863f;}
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">💝</div>
         <h1>မိဘမေတ္တာ <span style="font-size:18px;">အထည်ဆိုင်</span></h1>
-        <p class="subtitle">"အရည်အသွေးမြင့် ၊ ဈေးနှုန်းချိုသာ"</p>
+        <div class="welcome">✨ မင်္ဂလာပါ ✨</div>
 
-        <div class="upload-area">
-            <label class="upload-label" id="uploadBtn">📸 ပုံအသစ်တင်ရန်</label>
-            <input type="file" id="imageInput" accept="image/*" multiple>
-            <div id="uploadStatus" class="status"></div>
-        </div>
-
+        <!-- Gallery -->
         <div id="gallery" class="gallery"></div>
+        <div id="counter" class="counter"></div>
 
+        <!-- Channel Links -->
         <div class="links">
             <a href="https://t.me/mibamittaa" class="btn telegram">📱 Telegram Channel</a>
             <a href="https://chats.viber.com/mibametta" class="btn viber">📞 Viber Channel</a>
@@ -52,20 +50,29 @@
         </div>
 
         <div class="contact">
-            <p>📞 ဆက်သွယ်ရန် - 09 123 456 789</p>
-            <p>📍 လိပ်စာ - ရန်ကုန်မြို့၊ ဗဟန်းမြို့နယ်</p>
+            <p>📞 ဆက်သွယ်ရန် - 09676827963</p>
+            <p>📍 လိပ်စာ - အိုးထိန်း၊ စလင်းမြို့နယ်</p>
         </div>
+    </div>
+
+    <!-- Modal for image preview -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="modal-close">&times;</span>
+        <img id="modalImage" src="">
     </div>
 
     <script>
         const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
         const CHAT_ID = "-1003486800536";
 
+        let currentImages = [];
+
         async function loadImages() {
             const gallery = document.getElementById('gallery');
+            const counter = document.getElementById('counter');
             gallery.innerHTML = '<div style="text-align:center; padding:20px;">ပုံများ ယူနေပါသည်... <span class="loading"></span></div>';
             try {
-                const url = `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=-1&limit=50`;
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=-1&limit=100`;
                 const response = await fetch(url);
                 const data = await response.json();
                 if(data.ok && data.result){
@@ -83,15 +90,17 @@
                             }
                         }
                     }
+                    currentImages = images;
                     if(images.length === 0){
-                        gallery.innerHTML = '<div style="text-align:center; padding:20px; color:#b8863f;">📭 ပုံများ မရှိသေးပါ။ အပေါ်က တင်နိုင်ပါတယ်။</div>';
+                        gallery.innerHTML = '<div style="text-align:center; padding:20px; color:#b8863f;">📭 ပုံများ မရှိသေးပါ။</div>';
+                        counter.innerHTML = '';
                     } else {
-                        gallery.innerHTML = images.map(img => `
-                            <div class="gallery-item">
+                        gallery.innerHTML = images.map((img, index) => `
+                            <div class="gallery-item" onclick="openModal(${index})">
                                 <img src="${img.url}" alt="အထည်ပုံ">
-                                <button class="delete-btn" onclick="deleteImage(${img.msgId})">✕</button>
                             </div>
                         `).join('');
+                        counter.innerHTML = `📸 စုစုပေါင်း ပုံအရေအတွက် - ${images.length}`;
                     }
                 } else {
                     gallery.innerHTML = '<div style="text-align:center; padding:20px;">📭 ပုံများ မရှိသေးပါ။</div>';
@@ -101,51 +110,18 @@
             }
         }
 
-        async function uploadImage(file){
-            const formData = new FormData();
-            formData.append('chat_id', CHAT_ID);
-            formData.append('photo', file);
-            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {method: 'POST', body: formData});
-            return response.json();
-        }
-
-        async function deleteImage(msgId){
-            if(!confirm('ဒီပုံကို ဖျက်မှာလား?')) return;
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/deleteMessage`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({chat_id: CHAT_ID, message_id: msgId})
-                });
-                const result = await response.json();
-                if(result.ok) loadImages();
-                else alert('ပုံဖျက်ရန် မအောင်မြင်ပါ။ Bot အား Admin ခန့်ထားကြောင်း သေချာပါစေ။');
-            } catch(err){ alert('အမှားရှိပါသည်။'); }
-        }
-
-        document.getElementById('imageInput').addEventListener('change', async (e) => {
-            const files = e.target.files;
-            const status = document.getElementById('uploadStatus');
-            for(const file of files){
-                if(!file.type.startsWith('image/')) { status.innerHTML = '❌ ပုံဖိုင်သာ တင်နိုင်ပါသည်။'; continue; }
-                status.innerHTML = `⏫ ${file.name} တင်နေပါသည်... <span class="loading"></span>`;
-                try {
-                    const result = await uploadImage(file);
-                    if(result.ok){
-                        status.innerHTML = `✅ ${file.name} အောင်မြင်ပါသည်။`;
-                        setTimeout(() => { status.innerHTML = ''; }, 3000);
-                    } else {
-                        status.innerHTML = `❌ ${file.name} မအောင်မြင်ပါ။ ${result.description || ''}`;
-                    }
-                } catch(err){ status.innerHTML = `❌ ${file.name} အမှားရှိပါသည်။`; }
+        function openModal(index) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            if(currentImages[index] && currentImages[index].url){
+                modal.style.display = "block";
+                modalImg.src = currentImages[index].url;
             }
-            document.getElementById('imageInput').value = '';
-            loadImages();
-        });
+        }
 
-        document.getElementById('uploadBtn').addEventListener('click', () => {
-            document.getElementById('imageInput').click();
-        });
+        function closeModal() {
+            document.getElementById('imageModal').style.display = "none";
+        }
 
         loadImages();
     </script>
