@@ -1,140 +1,166 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
+
+<style>
+body {
+    font-family: system-ui, 'Myanmar Text';
+    background: linear-gradient(135deg,#fdf8f0,#f5e6d3);
+    padding:20px;
+}
+
+.container {
+    max-width:600px;
+    margin:auto;
+    background:#fff;
+    padding:20px;
+    border-radius:25px;
+}
+
+h1 {
+    text-align:center;
+    color:#8b5a2b;
+}
+
+.welcome {
+    text-align:center;
+    margin:10px 0;
+    background:#fef5e8;
+    padding:10px;
+    border-radius:50px;
+}
+
+.image-card {
+    margin-bottom:20px;
+    border-radius:15px;
+    overflow:hidden;
+    background:#f9f3ec;
+}
+
+.image-card img {
+    width:100%;
+}
+
+.caption {
+    padding:10px;
+}
+
+.btn {
+    display:block;
+    text-align:center;
+    padding:12px;
+    border-radius:50px;
+    margin-top:10px;
+    color:white;
+    text-decoration:none;
+}
+
+.telegram {background:#0088cc;}
+.viber {background:#7360f2;}
+
+.counter {
+    text-align:center;
+    margin:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>မိဘမေတ္တာ အထည်ဆိုင်</h1>
+<div class="welcome">✨ လှိုက်လဲစွာ ကြိုဆိုပါ၏ ✨</div>
+
+<div id="gridView"></div>
+<div id="counter" class="counter"></div>
+
+<a href="https://t.me/mibamittaa" class="btn telegram">Telegram</a>
+<a href="#" class="btn viber">Viber</a>
+
+</div>
+
 <script>
-const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
-const CHAT_ID = "-1003486800536";
+const BOT_TOKEN = "YOUR_BOT_TOKEN";
+const CHAT_ID = "YOUR_CHAT_ID";
 
-let allItems = [];
 let deletedIds = new Set();
+let allItems = [];
 
-// Fetch messages
-async function getAllMessages() {
-    const url = `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`;
-    const res = await fetch(url);
+async function getAllMessages(){
+    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
     const data = await res.json();
-
     if(!data.ok) return [];
 
     return data.result
-        .map(u => u.channel_post || u.message)
-        .filter(msg => msg && msg.chat && msg.chat.id.toString() === CHAT_ID);
+        .map(u=>u.channel_post||u.message)
+        .filter(m=>m && m.chat && m.chat.id.toString()===CHAT_ID);
 }
 
-// Load images
-async function loadImages() {
-    const gridView = document.getElementById('gridView');
-    const counterDiv = document.getElementById('counter');
+async function loadImages(){
+    const grid = document.getElementById("gridView");
+    const counter = document.getElementById("counter");
 
-    gridView.innerHTML = '<div class="status">ပုံများ ယူနေပါသည်... ⏳</div>';
+    grid.innerHTML="Loading...";
 
-    try {
-        const messages = await getAllMessages();
-        let items = [];
+    const messages = await getAllMessages();
+    let items=[];
 
-        for(const msg of messages) {
-            let caption = msg.caption || "";
+    for(const msg of messages){
+        let caption = msg.caption || "";
 
-            // 🔴 DELETE COMMAND (#delete + reply)
-            if(caption.includes("#delete")) {
-                if(msg.reply_to_message) {
-                    deletedIds.add(msg.reply_to_message.message_id);
-                }
-                continue;
+        // delete command
+        if(caption.includes("#delete")){
+            if(msg.reply_to_message){
+                deletedIds.add(msg.reply_to_message.message_id);
             }
-
-            // skip deleted
-            if(deletedIds.has(msg.message_id)) continue;
-
-            if(msg.photo && msg.photo.length > 0) {
-                const photo = msg.photo[msg.photo.length - 1];
-
-                const fileRes = await fetch(
-                    `https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${photo.file_id}`
-                );
-                const fileData = await fileRes.json();
-
-                if(fileData.ok) {
-                    // ✅ CACHE FIX
-                    const imageUrl =
-                        `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.result.file_path}?t=${Date.now()}`;
-
-                    items.push({
-                        id: msg.message_id,
-                        url: imageUrl,
-                        caption: caption
-                    });
-                }
-            }
+            continue;
         }
 
-        // ✅ REMOVE DUPLICATES
-        const unique = {};
-        items.forEach(i => unique[i.id] = i);
-        allItems = Object.values(unique).reverse();
+        if(deletedIds.has(msg.message_id)) continue;
 
-        if(allItems.length === 0) {
-            gridView.innerHTML = '<div class="status">📭 ပုံများ မရှိသေးပါ။</div>';
-            counterDiv.innerHTML = '';
-            return;
+        if(msg.photo){
+            const photo = msg.photo[msg.photo.length-1];
+
+            const fileRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${photo.file_id}`);
+            const fileData = await fileRes.json();
+
+            if(fileData.ok){
+                const url = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.result.file_path}?t=${Date.now()}`;
+
+                items.push({
+                    id: msg.message_id,
+                    url,
+                    caption
+                });
+            }
         }
-
-        // Grid render
-        gridView.innerHTML = allItems.map((item, index) => {
-            let captionHtml = item.caption ? `<div class="caption">${escapeHtml(item.caption)}</div>` : '';
-            return `
-                <div class="image-card" onclick="openSlider(${index})">
-                    <img src="${item.url}" 
-                         alt="အထည်ပုံ" 
-                         loading="lazy"
-                         onerror="this.parentElement.remove()" />
-                    ${captionHtml}
-                </div>
-            `;
-        }).join('');
-
-        counterDiv.innerHTML = `📸 စုစုပေါင်း - ${allItems.length}`;
-
-    } catch(err) {
-        console.error(err);
-        gridView.innerHTML = '<div class="status">❌ Error loading images</div>';
     }
+
+    // remove duplicate
+    const unique = {};
+    items.forEach(i=>unique[i.id]=i);
+    allItems = Object.values(unique).reverse();
+
+    if(allItems.length===0){
+        grid.innerHTML="ပုံမရှိပါ";
+        return;
+    }
+
+    grid.innerHTML = allItems.map(item=>`
+        <div class="image-card">
+            <img src="${item.url}" onerror="this.parentElement.remove()">
+            ${item.caption ? `<div class="caption">${item.caption}</div>`:""}
+        </div>
+    `).join("");
+
+    counter.innerHTML = `စုစုပေါင်း - ${allItems.length}`;
 }
 
-// Slider
-function openSlider(clickedIndex) {
-    const modal = document.getElementById('sliderModal');
-    const sliderContainer = document.getElementById('sliderContainer');
-
-    sliderContainer.innerHTML = allItems.map((item, idx) => {
-        let captionHtml = item.caption ? `<div class="slider-caption">${escapeHtml(item.caption)}</div>` : '';
-        return `
-            <div class="slider-item" id="slider-item-${idx}">
-                <img src="${item.url}" onerror="this.remove()">
-                ${captionHtml}
-            </div>
-        `;
-    }).join('');
-
-    modal.style.display = "block";
-    document.body.style.overflow = "hidden";
-
-    setTimeout(() => {
-        const target = document.getElementById(`slider-item-${clickedIndex}`);
-        if(target) target.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-}
-
-function closeSlider() {
-    document.getElementById('sliderModal').style.display = "none";
-    document.body.style.overflow = "auto";
-}
-
-// Escape HTML
-function escapeHtml(text) {
-    if(!text) return '';
-    return text.replace(/[&<>]/g, function(m) {
-        return m === '&' ? '&' : m === '<' ? '<' : '>';
-    });
-}
-
-// Init
 loadImages();
 </script>
+
+</body>
+</html>
