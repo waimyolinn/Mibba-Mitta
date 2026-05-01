@@ -1,135 +1,140 @@
-<!DOCTYPE html>
-<html lang="my">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
-    <style>
-        :root { --main-brown: #8b5a2b; --gold: #b8863f; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif, 'Myanmar Text'; }
-        body { background: #fdf8f0; padding: 15px; }
-        .container { max-width: 800px; margin: auto; background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        h1 { text-align: center; color: var(--main-brown); font-size: 22px; }
-        .welcome { text-align: center; color: var(--gold); background: #fff9f0; padding: 10px; border-radius: 50px; margin: 15px 0; font-size: 14px; font-weight: bold; }
-        
-        /* Album View (Grid) */
-        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
-        .grid-item { aspect-ratio: 1/1; border-radius: 8px; overflow: hidden; background: #eee; cursor: pointer; position: relative; }
-        .grid-item img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* Modal - ပုံနှိပ်မှ ဒေါင်လိုက်ပြမည့်နေရာ */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; overflow-y: auto; }
-        .modal-content { display: flex; flex-direction: column; align-items: center; padding: 60px 15px; }
-        .card { background: white; border-radius: 12px; margin-bottom: 20px; width: 100%; max-width: 400px; overflow: hidden; }
-        .card img { width: 100%; display: block; }
-        .card-text { padding: 15px; font-size: 14px; color: #333; line-height: 1.5; white-space: pre-wrap; }
-        .close-btn { position: fixed; top: 15px; right: 15px; background: var(--main-brown); color: white; border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer; z-index: 2100; }
-
-        .links { display: flex; flex-direction: column; gap: 10px; }
-        .btn { text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; font-size: 14px; }
-        .telegram { background: #0088cc; }
-        .viber { background: #7360f2; }
-        .status { text-align: center; padding: 20px; color: var(--main-brown); font-size: 14px; }
-        
-        @media (max-width: 500px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>မိဘမေတ္တာ အထည်ဆိုင်</h1>
-    <div class="welcome">✨ ပစ္စည်းသစ်များကို အကွက်လိုက်ကြည့်ပါ ✨</div>
-
-    <div id="status" class="status">ပုံများ စစ်ဆေးနေပါသည်...</div>
-    <div id="galleryGrid" class="gallery-grid"></div>
-
-    <div class="links">
-        <a href="https://t.me/mibamittaa" class="btn telegram">Telegram Channel</a>
-        <a href="viber://chat?lang=en&g2=AQAkFUQwoiv461Yx1zedjxN%2BKlucfZcNOzM%2Bfh28iDVlEEcNa%2BXPXnBI1QCpLX2" class="btn viber">Viber Group</a>
-    </div>
-</div>
-
-<div id="modal" class="modal">
-    <button class="close-btn" onclick="closeModal()">✕ ပိတ်ရန်</button>
-    <div id="modalContent" class="modal-content"></div>
-</div>
-
 <script>
-    const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
-    const CHAT_ID = "-1003486800536";
-    let activeImages = [];
+const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
+const CHAT_ID = "-1003486800536";
 
-    async function loadData() {
-        const status = document.getElementById('status');
-        try {
-            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
-            const data = await res.json();
-            if (!data.ok) return;
+let allItems = [];
+let deletedIds = new Set();
 
-            const updates = data.result.reverse();
-            const grid = document.getElementById('galleryGrid');
-            
-            for (let item of updates) {
-                const msg = item.channel_post || item.message;
-                if (msg && msg.chat.id.toString() === CHAT_ID && msg.photo) {
-                    const fileId = msg.photo[msg.photo.length - 1].file_id;
-                    
-                    // အရေးကြီးဆုံးအပိုင်း: ပုံရှိမရှိ အရင် စစ်ဆေးသည်
-                    const checkFile = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`);
-                    const fileData = await checkFile.json();
+// Fetch messages
+async function getAllMessages() {
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`;
+    const res = await fetch(url);
+    const data = await res.json();
 
-                    // ပုံရှိမှသာ Website ထဲထည့်မည်
-                    if (fileData.ok) {
-                        const imgUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.result.file_path}`;
-                        const caption = msg.caption || "";
-                        activeImages.push({ url: imgUrl, caption: caption });
+    if(!data.ok) return [];
 
-                        // Grid ထဲသို့ ပုံထည့်ခြင်း
-                        const div = document.createElement('div');
-                        div.className = 'grid-item';
-                        const currentIndex = activeImages.length - 1;
-                        div.onclick = () => openModal(currentIndex);
-                        div.innerHTML = `<img src="${imgUrl}" loading="lazy">`;
-                        grid.appendChild(div);
-                        status.style.display = "none";
-                    }
+    return data.result
+        .map(u => u.channel_post || u.message)
+        .filter(msg => msg && msg.chat && msg.chat.id.toString() === CHAT_ID);
+}
+
+// Load images
+async function loadImages() {
+    const gridView = document.getElementById('gridView');
+    const counterDiv = document.getElementById('counter');
+
+    gridView.innerHTML = '<div class="status">ပုံများ ယူနေပါသည်... ⏳</div>';
+
+    try {
+        const messages = await getAllMessages();
+        let items = [];
+
+        for(const msg of messages) {
+            let caption = msg.caption || "";
+
+            // 🔴 DELETE COMMAND (#delete + reply)
+            if(caption.includes("#delete")) {
+                if(msg.reply_to_message) {
+                    deletedIds.add(msg.reply_to_message.message_id);
+                }
+                continue;
+            }
+
+            // skip deleted
+            if(deletedIds.has(msg.message_id)) continue;
+
+            if(msg.photo && msg.photo.length > 0) {
+                const photo = msg.photo[msg.photo.length - 1];
+
+                const fileRes = await fetch(
+                    `https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${photo.file_id}`
+                );
+                const fileData = await fileRes.json();
+
+                if(fileData.ok) {
+                    // ✅ CACHE FIX
+                    const imageUrl =
+                        `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.result.file_path}?t=${Date.now()}`;
+
+                    items.push({
+                        id: msg.message_id,
+                        url: imageUrl,
+                        caption: caption
+                    });
                 }
             }
-            if(activeImages.length === 0) status.innerText = "တင်ထားသောပုံများ မရှိသေးပါ။";
-        } catch (e) {
-            status.innerText = "Error: ခဏနေမှ ပြန်ကြိုးစားပါ။";
         }
-    }
 
-    function openModal(index) {
-        const modal = document.getElementById('modal');
-        const content = document.getElementById('modalContent');
-        content.innerHTML = "";
+        // ✅ REMOVE DUPLICATES
+        const unique = {};
+        items.forEach(i => unique[i.id] = i);
+        allItems = Object.values(unique).reverse();
 
-        activeImages.forEach((img, i) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.id = `img-${i}`;
-            card.innerHTML = `
-                <img src="${img.url}">
-                ${img.caption ? `<div class="card-text">${img.caption}</div>` : ''}
+        if(allItems.length === 0) {
+            gridView.innerHTML = '<div class="status">📭 ပုံများ မရှိသေးပါ။</div>';
+            counterDiv.innerHTML = '';
+            return;
+        }
+
+        // Grid render
+        gridView.innerHTML = allItems.map((item, index) => {
+            let captionHtml = item.caption ? `<div class="caption">${escapeHtml(item.caption)}</div>` : '';
+            return `
+                <div class="image-card" onclick="openSlider(${index})">
+                    <img src="${item.url}" 
+                         alt="အထည်ပုံ" 
+                         loading="lazy"
+                         onerror="this.parentElement.remove()" />
+                    ${captionHtml}
+                </div>
             `;
-            content.appendChild(card);
-        });
+        }).join('');
 
-        modal.style.display = "block";
-        document.body.style.overflow = "hidden";
-        setTimeout(() => {
-            document.getElementById(`img-${index}`).scrollIntoView();
-        }, 50);
+        counterDiv.innerHTML = `📸 စုစုပေါင်း - ${allItems.length}`;
+
+    } catch(err) {
+        console.error(err);
+        gridView.innerHTML = '<div class="status">❌ Error loading images</div>';
     }
+}
 
-    function closeModal() {
-        document.getElementById('modal').style.display = "none";
-        document.body.style.overflow = "auto";
-    }
+// Slider
+function openSlider(clickedIndex) {
+    const modal = document.getElementById('sliderModal');
+    const sliderContainer = document.getElementById('sliderContainer');
 
-    loadData();
+    sliderContainer.innerHTML = allItems.map((item, idx) => {
+        let captionHtml = item.caption ? `<div class="slider-caption">${escapeHtml(item.caption)}</div>` : '';
+        return `
+            <div class="slider-item" id="slider-item-${idx}">
+                <img src="${item.url}" onerror="this.remove()">
+                ${captionHtml}
+            </div>
+        `;
+    }).join('');
+
+    modal.style.display = "block";
+    document.body.style.overflow = "hidden";
+
+    setTimeout(() => {
+        const target = document.getElementById(`slider-item-${clickedIndex}`);
+        if(target) target.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+}
+
+function closeSlider() {
+    document.getElementById('sliderModal').style.display = "none";
+    document.body.style.overflow = "auto";
+}
+
+// Escape HTML
+function escapeHtml(text) {
+    if(!text) return '';
+    return text.replace(/[&<>]/g, function(m) {
+        return m === '&' ? '&' : m === '<' ? '<' : '>';
+    });
+}
+
+// Init
+loadImages();
 </script>
-</body>
-</html>
