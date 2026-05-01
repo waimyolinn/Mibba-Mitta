@@ -1,69 +1,35 @@
 <!DOCTYPE html>
-<html lang="my">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
+<title>မိဘမေတ္တာ အထည်ဆိုင်</title>
 
 <style>
 body {
-    font-family: system-ui, 'Myanmar Text';
-    background: linear-gradient(135deg,#fdf8f0,#f5e6d3);
+    font-family: system-ui;
+    background:#f5e6d3;
     padding:20px;
 }
-
 .container {
     max-width:600px;
     margin:auto;
-    background:#fff;
+    background:white;
     padding:20px;
-    border-radius:25px;
+    border-radius:20px;
 }
-
-h1 {
-    text-align:center;
-    color:#8b5a2b;
-}
-
-.welcome {
-    text-align:center;
-    margin:10px 0;
-    background:#fef5e8;
-    padding:10px;
-    border-radius:50px;
-}
-
 .image-card {
     margin-bottom:20px;
+    background:#fff;
     border-radius:15px;
     overflow:hidden;
-    background:#f9f3ec;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
 }
-
 .image-card img {
     width:100%;
 }
-
 .caption {
     padding:10px;
-}
-
-.btn {
-    display:block;
-    text-align:center;
-    padding:12px;
-    border-radius:50px;
-    margin-top:10px;
-    color:white;
-    text-decoration:none;
-}
-
-.telegram {background:#0088cc;}
-.viber {background:#7360f2;}
-
-.counter {
-    text-align:center;
-    margin:10px;
 }
 </style>
 </head>
@@ -71,95 +37,74 @@ h1 {
 <body>
 
 <div class="container">
-<h1>မိဘမေတ္တာ အထည်ဆိုင်</h1>
-<div class="welcome">✨ လှိုက်လဲစွာ ကြိုဆိုပါ၏ ✨</div>
-
-<div id="gridView"></div>
-<div id="counter" class="counter"></div>
-
-<a href="https://t.me/mibamittaa" class="btn telegram">Telegram</a>
-<a href="#" class="btn viber">Viber</a>
-
+<h2 style="text-align:center;">မိဘမေတ္တာ အထည်ဆိုင်</h2>
+<div id="grid"></div>
 </div>
 
 <script>
-const BOT_TOKEN = "YOUR_BOT_TOKEN";
-const CHAT_ID = "YOUR_CHAT_ID";
+const BOT_TOKEN = 8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE
+const CHAT_ID = "-1003808025728"; //  group id
 
-let deletedIds = new Set();
-let allItems = [];
+let items = [];
 
-async function getAllMessages(){
-    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
+// get messages
+async function load() {
+    const res = await fetch(`https://api.telegram.org/bot${8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE}/getUpdates`);
     const data = await res.json();
-    if(!data.ok) return [];
 
-    return data.result
-        .map(u=>u.channel_post||u.message)
-        .filter(m=>m && m.chat && m.chat.id.toString()===CHAT_ID);
-}
+    const list = [];
 
-async function loadImages(){
-    const grid = document.getElementById("gridView");
-    const counter = document.getElementById("counter");
+    data.result.forEach(update => {
+        const msg = update.channel_post || update.message;
 
-    grid.innerHTML="Loading...";
+        if(!msg) return;
 
-    const messages = await getAllMessages();
-    let items=[];
+        if(msg.chat.id.toString() === CHAT_ID) {
 
-    for(const msg of messages){
-        let caption = msg.caption || "";
+            //  deleted message filter
+            if(msg.delete_chat_photo || msg.left_chat_member) return;
 
-        // delete command
-        if(caption.includes("#delete")){
-            if(msg.reply_to_message){
-                deletedIds.add(msg.reply_to_message.message_id);
-            }
-            continue;
-        }
+            if(msg.photo) {
+                const photo = msg.photo[msg.photo.length-1];
 
-        if(deletedIds.has(msg.message_id)) continue;
-
-        if(msg.photo){
-            const photo = msg.photo[msg.photo.length-1];
-
-            const fileRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${photo.file_id}`);
-            const fileData = await fileRes.json();
-
-            if(fileData.ok){
-                const url = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.result.file_path}?t=${Date.now()}`;
-
-                items.push({
-                    id: msg.message_id,
-                    url,
-                    caption
+                list.push({
+                    file_id: photo.file_id,
+                    caption: msg.caption || ""
                 });
             }
         }
-    }
+    });
 
-    // remove duplicate
-    const unique = {};
-    items.forEach(i=>unique[i.id]=i);
-    allItems = Object.values(unique).reverse();
-
-    if(allItems.length===0){
-        grid.innerHTML="ပုံမရှိပါ";
-        return;
-    }
-
-    grid.innerHTML = allItems.map(item=>`
-        <div class="image-card">
-            <img src="${item.url}" onerror="this.parentElement.remove()">
-            ${item.caption ? `<div class="caption">${item.caption}</div>`:""}
-        </div>
-    `).join("");
-
-    counter.innerHTML = `စုစုပေါင်း - ${allItems.length}`;
+    items = list.reverse();
+    render();
 }
 
-loadImages();
+// render
+async function render() {
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+
+    for(const item of items) {
+        const fileRes = await fetch(`https://api.telegram.org/bot${8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE}/getFile?file_id=${item.file_id}`);
+        const fileData = await fileRes.json();
+
+        if(!fileData.ok) continue;
+
+        const url = `https://api.telegram.org/file/bot${8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE}/${fileData.result.file_path}`;
+
+        grid.innerHTML += `
+            <div class="image-card">
+                <img src="${url}">
+                <div class="caption">${item.caption}</div>
+            </div>
+        `;
+    }
+}
+
+// auto refresh (5 sec)
+setInterval(load, 5000);
+
+load();
 </script>
 
 </body>
