@@ -2,135 +2,400 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>မိဘမေတ္တာ အထည်ဆိုင်</title>
 
 <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: sans-serif;
-    background: #f5e6d3;
-    padding: 15px;
+    font-family: 'Segoe UI', 'Myanmar Text', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #fef9f0 0%, #f5e6d3 100%);
+    min-height: 100vh;
 }
-.container {
-    max-width: 500px;
-    margin: auto;
+
+/* Header */
+.top-banner {
+    background: linear-gradient(135deg, #8B4513, #D2691E);
+    padding: 25px 20px 20px;
+    text-align: center;
+    border-radius: 0 0 30px 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
 }
-.image-card {
-    background: white;
-    margin-bottom: 15px;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+.shop-name {
+    font-size: 1.8rem;
+    color: #FFD700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
 }
-.image-card img {
+
+.shop-name small {
+    font-size: 1rem;
+    color: #FFECB3;
+    display: block;
+    margin-top: 5px;
+}
+
+.welcome-msg {
+    text-align: center;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+    color: #5a3a22;
+    background: rgba(255,255,255,0.7);
+    margin: 15px 20px;
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
+    font-weight: 500;
+}
+
+/* Slider */
+.slider-section {
+    margin: 20px 0 30px;
+    position: relative;
+}
+
+.slider-title {
+    padding: 0 20px 15px;
+    font-size: 1.2rem;
+    color: #8B4513;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.slider-title span {
+    background: #8B4513;
+    color: white;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.slider-container {
+    position: relative;
     width: 100%;
+    overflow: hidden;
 }
-.caption {
-    padding: 10px;
+
+.slider-wrapper {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding: 10px 0 20px;
+}
+
+.slider-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.slider-wrapper::-webkit-scrollbar-track {
+    background: #e8d5c0;
+    border-radius: 10px;
+}
+
+.slider-wrapper::-webkit-scrollbar-thumb {
+    background: #8B4513;
+    border-radius: 10px;
+}
+
+.slider {
+    display: inline-flex;
+    gap: 18px;
+    padding: 0 20px;
+}
+
+/* Product Card */
+.product-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 280px;
+    flex-shrink: 0;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 35px rgba(0,0,0,0.15);
+}
+
+.product-image {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    background: #f0e0cd;
+}
+
+.product-info {
+    padding: 12px 15px;
+    background: white;
+    border-top: 1px solid #f0dcc5;
+}
+
+.product-caption {
+    font-size: 0.85rem;
+    color: #6b4c2c;
+    line-height: 1.4;
+    white-space: normal;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Navigation Buttons */
+.nav-controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 10px 0 25px;
+}
+
+.nav-btn {
+    background: #8B4513;
+    border: none;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 40px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+.nav-btn:hover {
+    background: #D2691E;
+    transform: scale(1.03);
+}
+
+.nav-btn:active {
+    transform: scale(0.98);
+}
+
+/* Status Messages */
+.loading-box, .error-box, .empty-box {
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 1.1rem;
+    background: white;
+    margin: 20px;
+    border-radius: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.loading-box {
+    color: #8B4513;
+}
+
+.error-box {
+    color: #c0392b;
+}
+
+.empty-box {
+    color: #a08060;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.75rem;
+    color: #b8956e;
+    border-top: 1px solid #e8d5c0;
+    margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    .product-card {
+        width: 240px;
+    }
+    .product-image {
+        height: 240px;
+    }
+    .shop-name {
+        font-size: 1.4rem;
+    }
+    .nav-btn {
+        padding: 10px 22px;
+        font-size: 0.9rem;
+    }
 }
 </style>
 </head>
-
 <body>
 
-<div class="container">
-    <h2>မိဘမေတ္တာ အထည်ဆိုင်</h2>
-    <div id="images">Loading...</div>
+<div class="top-banner">
+    <div class="shop-name">
+        🧵 မိဘမေတ္တာ အထည်ဆိုင်
+        <small>အရည်အသွေးမြင့် ထုတ်ကုန်များ</small>
+    </div>
+</div>
+
+<div class="welcome-msg">
+    🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏
+</div>
+
+<div class="slider-section">
+    <div class="slider-title">
+        📸 နောက်ဆုံးထည့်သွင်းမှုများ
+        <span>ဘယ်/ညာ ရွှေ့ကြည့်ပါ</span>
+    </div>
+    
+    <div class="slider-container">
+        <div class="slider-wrapper" id="sliderWrapper">
+            <div class="slider" id="slider">
+                <div class="loading-box">📸 ပုံများ Loading လုပ်နေပါသည်...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="nav-controls">
+    <button class="nav-btn" id="prevBtn">◀ နောက်သို့</button>
+    <button class="nav-btn" id="nextBtn">ရှေ့သို့ ▶</button>
+</div>
+
+<div class="footer">
+    📍 Channel မှာ ပုံကို ဖျက်လိုက်ရင် ဒီမှာလည်း အလိုအလျောက် ပျောက်သွားမှာပါ
 </div>
 
 <script>
-
-/* ===========================
-   🔥 ဒီ 2 ခုကို မင်းအစားထိုးရမယ်
-=========================== */
-
-// 👉 Bot Token ထည့်ရန် (အပြည့်အစုံ)
+// ==================== အသုံးပြုသူ ထည့်ရမည့် အချက်များ ====================
 const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
+const CHAT_ID = "-1003808025728";  // Discussion Group ID
+// ============================================================================
 
-// 👉 Group Chat ID ထည့်ရန်
-const CHAT_ID = "-1003808025728";
+// DOM Elements
+const slider = document.getElementById("slider");
+const wrapper = document.getElementById("sliderWrapper");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
 
+// Scroll function
+function scrollLeft() {
+    wrapper.scrollBy({ left: -300, behavior: "smooth" });
+}
 
-/* ===========================
-   🔧 file_path ယူမယ့် function
-=========================== */
+function scrollRight() {
+    wrapper.scrollBy({ left: 300, behavior: "smooth" });
+}
 
-async function getFilePath(file_id) {
-    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${file_id}`);
-    const data = await res.json();
+prevBtn.addEventListener("click", scrollLeft);
+nextBtn.addEventListener("click", scrollRight);
 
-    if(data.ok) {
-        return data.result.file_path;
-    } else {
+// Helper: get file path from Telegram
+async function getFilePath(fileId) {
+    try {
+        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`);
+        const data = await res.json();
+        if (data.ok && data.result) {
+            return data.result.file_path;
+        }
+        return null;
+    } catch (e) {
+        console.error("getFilePath error:", e);
         return null;
     }
 }
 
+// Helper: escape HTML
+function escapeHtml(text) {
+    if (!text) return "";
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
 
-/* ===========================
-   🚀 ပုံတွေ load လုပ်မယ်
-=========================== */
-
+// Main function: load images from Discussion Group
 async function loadImages() {
-    const container = document.getElementById("images");
-    container.innerHTML = "Loading...";
-
+    slider.innerHTML = '<div class="loading-box">📸 ပုံများ Loading လုပ်နေပါသည်...</div>';
+    
     try {
-        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
-        const data = await res.json();
-
-        let html = "";
-
-        for(const update of data.result) {
-
-            // 👉 Channel forward + group message နှစ်မျိုးလုံး handle
+        // Fetch latest updates from Telegram
+        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
+        const data = await response.json();
+        
+        if (!data.ok) {
+            throw new Error("Telegram API error");
+        }
+        
+        const images = [];
+        
+        // Loop through updates
+        for (const update of data.result) {
+            // Support both channel_post and message
             const msg = update.channel_post || update.message;
-            if(!msg) continue;
-
-            // 👉 မင်း group id ကိုစစ်
-            if(msg.chat.id.toString() === CHAT_ID && msg.photo) {
-
-                const file_id = msg.photo[msg.photo.length - 1].file_id;
-
-                // 👉 file_path ယူ
-                const file_path = await getFilePath(file_id);
-
-                if(!file_path) continue;
-
-                // 👉 image URL တည်ဆောက်
-                const imageUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${file_path}`;
-
-                html += `
-                    <div class="image-card">
-                        <img src="${imageUrl}" loading="lazy">
-                        <div class="caption">${msg.caption || ""}</div>
-                    </div>
-                `;
+            if (!msg) continue;
+            
+            // Check if message is from our Discussion Group
+            if (msg.chat && msg.chat.id.toString() === CHAT_ID) {
+                // Check if message contains photo
+                if (msg.photo && msg.photo.length > 0) {
+                    const fileId = msg.photo[msg.photo.length - 1].file_id;
+                    const filePath = await getFilePath(fileId);
+                    
+                    if (filePath) {
+                        const imageUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`;
+                        images.push({
+                            url: imageUrl,
+                            caption: msg.caption || "",
+                            messageId: msg.message_id,
+                            date: msg.date
+                        });
+                    }
+                }
             }
         }
-
-        if(html === "") {
-            container.innerHTML = "📭 ပုံမရှိသေးပါ";
-        } else {
-            container.innerHTML = html;
+        
+        // Sort by date (newest first)
+        images.sort((a, b) => b.date - a.date);
+        
+        // Render images
+        if (images.length === 0) {
+            slider.innerHTML = '<div class="empty-box">📭 လက်ရှိပုံများ မရှိသေးပါ</div>';
+            return;
         }
-
-    } catch(err) {
-        console.log(err);
-        container.innerHTML = "❌ Error ဖြစ်နေပါတယ်";
+        
+        let html = "";
+        for (const img of images) {
+            html += `
+                <div class="product-card">
+                    <img class="product-image" src="${img.url}" alt="Product" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23f0dcc5%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%23996b3f%22%3E📷%3C/text%3E%3C/svg%3E'">
+                    <div class="product-info">
+                        <div class="product-caption">${escapeHtml(img.caption)}</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        slider.innerHTML = html;
+        
+    } catch (error) {
+        console.error("Load error:", error);
+        slider.innerHTML = '<div class="error-box">❌ နည်းပညာချို့ယွင်းနေပါသည်။ နောက်မှ ထပ်ကြည့်ပါ။</div>';
     }
 }
 
-
-/* ===========================
-   🔄 Auto refresh (10 sec)
-=========================== */
-
+// Auto refresh every 10 seconds
 setInterval(loadImages, 10000);
 
-// 👉 page load အချိန်တစ်ခါခေါ်
+// Initial load
 loadImages();
-
 </script>
 
 </body>
