@@ -18,7 +18,6 @@ body {
     min-height: 100vh;
 }
 
-/* Header */
 .top-banner {
     background: linear-gradient(135deg, #8B4513, #D2691E);
     padding: 25px 20px 20px;
@@ -31,7 +30,6 @@ body {
     font-size: 1.8rem;
     color: #FFD700;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    letter-spacing: 2px;
 }
 
 .shop-name small {
@@ -49,14 +47,11 @@ body {
     background: rgba(255,255,255,0.7);
     margin: 15px 20px;
     border-radius: 50px;
-    backdrop-filter: blur(5px);
     font-weight: 500;
 }
 
-/* Slider */
 .slider-section {
     margin: 20px 0 30px;
-    position: relative;
 }
 
 .slider-title {
@@ -66,15 +61,17 @@ body {
     font-weight: bold;
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
 }
 
-.slider-title span {
+.refresh-btn {
     background: #8B4513;
     color: white;
-    padding: 3px 12px;
-    border-radius: 20px;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 30px;
     font-size: 0.8rem;
+    cursor: pointer;
 }
 
 .slider-container {
@@ -112,7 +109,6 @@ body {
     padding: 0 20px;
 }
 
-/* Product Card */
 .product-card {
     background: white;
     border-radius: 20px;
@@ -121,11 +117,10 @@ body {
     flex-shrink: 0;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
-    cursor: pointer;
 }
 
 .product-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-5px);
     box-shadow: 0 20px 35px rgba(0,0,0,0.15);
 }
 
@@ -148,13 +143,8 @@ body {
     line-height: 1.4;
     white-space: normal;
     word-break: break-word;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
 }
 
-/* Navigation Buttons */
 .nav-controls {
     display: flex;
     justify-content: center;
@@ -172,7 +162,6 @@ body {
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
 }
 
 .nav-btn:hover {
@@ -180,11 +169,6 @@ body {
     transform: scale(1.03);
 }
 
-.nav-btn:active {
-    transform: scale(0.98);
-}
-
-/* Status Messages */
 .loading-box, .error-box, .empty-box {
     text-align: center;
     padding: 60px 20px;
@@ -192,22 +176,12 @@ body {
     background: white;
     margin: 20px;
     border-radius: 25px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
-.loading-box {
-    color: #8B4513;
-}
+.loading-box { color: #8B4513; }
+.error-box { color: #c0392b; }
+.empty-box { color: #a08060; }
 
-.error-box {
-    color: #c0392b;
-}
-
-.empty-box {
-    color: #a08060;
-}
-
-/* Footer */
 .footer {
     text-align: center;
     padding: 20px;
@@ -217,21 +191,10 @@ body {
     margin-top: 20px;
 }
 
-/* Responsive */
 @media (max-width: 500px) {
-    .product-card {
-        width: 240px;
-    }
-    .product-image {
-        height: 240px;
-    }
-    .shop-name {
-        font-size: 1.4rem;
-    }
-    .nav-btn {
-        padding: 10px 22px;
-        font-size: 0.9rem;
-    }
+    .product-card { width: 240px; }
+    .product-image { height: 240px; }
+    .shop-name { font-size: 1.4rem; }
 }
 </style>
 </head>
@@ -250,8 +213,8 @@ body {
 
 <div class="slider-section">
     <div class="slider-title">
-        📸 နောက်ဆုံးထည့်သွင်းမှုများ
-        <span>ဘယ်/ညာ ရွှေ့ကြည့်ပါ</span>
+        <span>📸 နောက်ဆုံးထည့်သွင်းမှုများ</span>
+        <button class="refresh-btn" id="manualRefresh">🔄 ပြန်လည်စတင်ရန်</button>
     </div>
     
     <div class="slider-container">
@@ -269,133 +232,148 @@ body {
 </div>
 
 <div class="footer">
-    📍 Channel မှာ ပုံကို ဖျက်လိုက်ရင် ဒီမှာလည်း အလိုအလျောက် ပျောက်သွားမှာပါ
+    💡 တစ်ခါဖွင့်ပြီးရင် ပုံတွေ သိမ်းထားပေးမှာမို့ နောက်တစ်ခါ loading မခံရပါဘူး<br>
+    📍 Channel မှာ ပုံဖျက်ရင် Refresh နှိပ်လိုက်ရုံပါ
 </div>
 
 <script>
-// ==================== အသုံးပြုသူ ထည့်ရမည့် အချက်များ ====================
 const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
-const CHAT_ID = "-1003808025728";  // Discussion Group ID
-// ============================================================================
+const CHAT_ID = "-1003808025728";
 
 // DOM Elements
 const slider = document.getElementById("slider");
 const wrapper = document.getElementById("sliderWrapper");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
+const refreshBtn = document.getElementById("manualRefresh");
 
-// Scroll function
-function scrollLeft() {
-    wrapper.scrollBy({ left: -300, behavior: "smooth" });
-}
-
-function scrollRight() {
-    wrapper.scrollBy({ left: 300, behavior: "smooth" });
-}
-
+// Scroll
+function scrollLeft() { wrapper.scrollBy({ left: -300, behavior: "smooth" }); }
+function scrollRight() { wrapper.scrollBy({ left: 300, behavior: "smooth" }); }
 prevBtn.addEventListener("click", scrollLeft);
 nextBtn.addEventListener("click", scrollRight);
 
-// Helper: get file path from Telegram
-async function getFilePath(fileId) {
-    try {
-        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`);
-        const data = await res.json();
-        if (data.ok && data.result) {
-            return data.result.file_path;
-        }
-        return null;
-    } catch (e) {
-        console.error("getFilePath error:", e);
-        return null;
-    }
+// ============= CACHE SYSTEM (ပုံတွေ သိမ်းထားမယ်) =============
+let cachedImages = [];      // ပုံဒေတာ သိမ်းမယ်
+let loadedOnce = false;     // တစ်ခါ load ပြီးရင် နောက်တစ်ခါ loading မပြအောင်
+let isRefreshing = false;   // refresh လုပ်နေတယ်ဆိုတဲ့ အခြေအနေ
+
+function getFilePath(fileId) {
+    return fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`)
+        .then(r => r.json())
+        .then(d => d.ok ? d.result.file_path : null)
+        .catch(() => null);
 }
 
-// Helper: escape HTML
+function renderImages(images, showLoading = false) {
+    if (images.length === 0) {
+        slider.innerHTML = '<div class="empty-box">📭 လက်ရှိပုံများ မရှိသေးပါ</div>';
+        return;
+    }
+    
+    let html = "";
+    for (const img of images) {
+        // Cache-busting မလိုတော့ဘူး - Fresh data ပဲသုံးမယ်
+        html += `
+            <div class="product-card">
+                <img class="product-image" src="${img.url}" alt="Product" loading="lazy" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23f0dcc5%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%23996b3f%22%3E📷%3C/text%3E%3C/svg%3E'">
+                <div class="product-info">
+                    <div class="product-caption">${escapeHtml(img.caption)}</div>
+                </div>
+            </div>
+        `;
+    }
+    slider.innerHTML = html;
+}
+
 function escapeHtml(text) {
     if (!text) return "";
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+    return text.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        return '&gt;';
+    });
 }
 
-// Main function: load images from Discussion Group
-async function loadImages() {
-    slider.innerHTML = '<div class="loading-box">📸 ပုံများ Loading လုပ်နေပါသည်...</div>';
+async function loadImages(forceRefresh = false) {
+    // if သိမ်းထားပြီးသား ပုံတွေရှိပြီး forceRefresh မဟုတ်ရင် ပြန်မခေါ်တော့ဘူး
+    if (!forceRefresh && loadedOnce && cachedImages.length > 0) {
+        // သိမ်းထားတဲ့ပုံတွေနဲ့ပဲ ပြမယ်
+        return;
+    }
+    
+    // Refresh လုပ်နေတယ်ဆိုရင် loading ပြမယ်
+    if (forceRefresh) {
+        slider.innerHTML = '<div class="loading-box">🔄 ပုံများ ပြန်လည် Load လုပ်နေပါသည်...</div>';
+        isRefreshing = true;
+    } else if (!loadedOnce) {
+        slider.innerHTML = '<div class="loading-box">📸 ပုံများ Loading လုပ်နေပါသည်...</div>';
+    }
     
     try {
-        // Fetch latest updates from Telegram
-        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
-        const data = await response.json();
+        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
+        const data = await res.json();
         
-        if (!data.ok) {
-            throw new Error("Telegram API error");
-        }
+        if (!data.ok) throw new Error("API error");
         
         const images = [];
         
-        // Loop through updates
         for (const update of data.result) {
-            // Support both channel_post and message
             const msg = update.channel_post || update.message;
             if (!msg) continue;
-            
-            // Check if message is from our Discussion Group
-            if (msg.chat && msg.chat.id.toString() === CHAT_ID) {
-                // Check if message contains photo
-                if (msg.photo && msg.photo.length > 0) {
-                    const fileId = msg.photo[msg.photo.length - 1].file_id;
-                    const filePath = await getFilePath(fileId);
-                    
-                    if (filePath) {
-                        const imageUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`;
-                        images.push({
-                            url: imageUrl,
-                            caption: msg.caption || "",
-                            messageId: msg.message_id,
-                            date: msg.date
-                        });
-                    }
+            if (msg.chat && msg.chat.id.toString() === CHAT_ID && msg.photo) {
+                const fileId = msg.photo[msg.photo.length - 1].file_id;
+                const filePath = await getFilePath(fileId);
+                if (filePath) {
+                    images.push({
+                        url: `https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`,
+                        caption: msg.caption || "",
+                        date: msg.date,
+                        messageId: msg.message_id
+                    });
                 }
             }
         }
         
-        // Sort by date (newest first)
+        // အသစ်ဆုံးပုံ အရင်ပြမယ်
         images.sort((a, b) => b.date - a.date);
         
-        // Render images
-        if (images.length === 0) {
-            slider.innerHTML = '<div class="empty-box">📭 လက်ရှိပုံများ မရှိသေးပါ</div>';
-            return;
+        // Cache ထဲသိမ်းမယ်
+        cachedImages = images;
+        loadedOnce = true;
+        
+        renderImages(cachedImages);
+        
+        if (forceRefresh) {
+            // Refresh ပြီးသွားပြီဆိုတဲ့ အချက်ပြမယ်
+            setTimeout(() => {
+                isRefreshing = false;
+            }, 500);
         }
         
-        let html = "";
-        for (const img of images) {
-            html += `
-                <div class="product-card">
-                    <img class="product-image" src="${img.url}" alt="Product" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23f0dcc5%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%23996b3f%22%3E📷%3C/text%3E%3C/svg%3E'">
-                    <div class="product-info">
-                        <div class="product-caption">${escapeHtml(img.caption)}</div>
-                    </div>
-                </div>
-            `;
+    } catch (err) {
+        console.error(err);
+        if (!loadedOnce) {
+            slider.innerHTML = '<div class="error-box">❌ နည်းပညာချို့ယွင်းနေပါသည်။ နောက်မှထပ်ကြည့်ပါ။</div>';
         }
-        
-        slider.innerHTML = html;
-        
-    } catch (error) {
-        console.error("Load error:", error);
-        slider.innerHTML = '<div class="error-box">❌ နည်းပညာချို့ယွင်းနေပါသည်။ နောက်မှ ထပ်ကြည့်ပါ။</div>';
     }
 }
 
-// Auto refresh every 10 seconds
-setInterval(loadImages, 10000);
+// Manual Refresh Button
+refreshBtn.addEventListener("click", () => {
+    loadImages(true);
+});
 
-// Initial load
-loadImages();
+// TIP: Page ဖွင့်ပြီးတာနဲ့ load လုပ်မယ်
+loadImages(false);
+
+// TIP: ပုံအသစ်တွေအတွက် 30 စက္ကန့်မှ တစ်ခါ စစ်မယ် (မကြာခဏ loading မပြအောင်)
+setInterval(() => {
+    if (!isRefreshing) {
+        loadImages(false);
+    }
+}, 30000);
 </script>
 
 </body>
