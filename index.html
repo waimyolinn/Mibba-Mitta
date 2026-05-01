@@ -7,29 +7,26 @@
 
 <style>
 body {
-    font-family: system-ui;
-    background:#f5e6d3;
-    padding:20px;
+    font-family: sans-serif;
+    background: #f5e6d3;
+    padding: 15px;
 }
 .container {
-    max-width:600px;
-    margin:auto;
-    background:white;
-    padding:20px;
-    border-radius:20px;
+    max-width: 500px;
+    margin: auto;
 }
 .image-card {
-    margin-bottom:20px;
-    background:#fff;
-    border-radius:15px;
-    overflow:hidden;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    background: white;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 .image-card img {
-    width:100%;
+    width: 100%;
 }
 .caption {
-    padding:10px;
+    padding: 10px;
 }
 </style>
 </head>
@@ -37,74 +34,103 @@ body {
 <body>
 
 <div class="container">
-<h2 style="text-align:center;">မိဘမေတ္တာ အထည်ဆိုင်</h2>
-<div id="grid"></div>
+    <h2>မိဘမေတ္တာ အထည်ဆိုင်</h2>
+    <div id="images">Loading...</div>
 </div>
 
 <script>
-const BOT_TOKEN = 8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE
-const CHAT_ID = "-1003808025728"; //  group id
 
-let items = [];
+/* ===========================
+   🔥 ဒီ 2 ခုကို မင်းအစားထိုးရမယ်
+=========================== */
 
-// get messages
-async function load() {
-    const res = await fetch(`https://api.telegram.org/bot${8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE}/getUpdates`);
+// 👉 Bot Token ထည့်ရန် (အပြည့်အစုံ)
+const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
+
+// 👉 Group Chat ID ထည့်ရန်
+const CHAT_ID = "-1003808025728";
+
+
+/* ===========================
+   🔧 file_path ယူမယ့် function
+=========================== */
+
+async function getFilePath(file_id) {
+    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${file_id}`);
     const data = await res.json();
 
-    const list = [];
-
-    data.result.forEach(update => {
-        const msg = update.channel_post || update.message;
-
-        if(!msg) return;
-
-        if(msg.chat.id.toString() === CHAT_ID) {
-
-            //  deleted message filter
-            if(msg.delete_chat_photo || msg.left_chat_member) return;
-
-            if(msg.photo) {
-                const photo = msg.photo[msg.photo.length-1];
-
-                list.push({
-                    file_id: photo.file_id,
-                    caption: msg.caption || ""
-                });
-            }
-        }
-    });
-
-    items = list.reverse();
-    render();
-}
-
-// render
-async function render() {
-    const grid = document.getElementById("grid");
-    grid.innerHTML = "";
-
-    for(const item of items) {
-        const fileRes = await fetch(`https://api.telegram.org/bot${8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE}/getFile?file_id=${item.file_id}`);
-        const fileData = await fileRes.json();
-
-        if(!fileData.ok) continue;
-
-        const url = `https://api.telegram.org/file/bot${8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE}/${fileData.result.file_path}`;
-
-        grid.innerHTML += `
-            <div class="image-card">
-                <img src="${url}">
-                <div class="caption">${item.caption}</div>
-            </div>
-        `;
+    if(data.ok) {
+        return data.result.file_path;
+    } else {
+        return null;
     }
 }
 
-// auto refresh (5 sec)
-setInterval(load, 5000);
 
-load();
+/* ===========================
+   🚀 ပုံတွေ load လုပ်မယ်
+=========================== */
+
+async function loadImages() {
+    const container = document.getElementById("images");
+    container.innerHTML = "Loading...";
+
+    try {
+        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
+        const data = await res.json();
+
+        let html = "";
+
+        for(const update of data.result) {
+
+            // 👉 Channel forward + group message နှစ်မျိုးလုံး handle
+            const msg = update.channel_post || update.message;
+            if(!msg) continue;
+
+            // 👉 မင်း group id ကိုစစ်
+            if(msg.chat.id.toString() === CHAT_ID && msg.photo) {
+
+                const file_id = msg.photo[msg.photo.length - 1].file_id;
+
+                // 👉 file_path ယူ
+                const file_path = await getFilePath(file_id);
+
+                if(!file_path) continue;
+
+                // 👉 image URL တည်ဆောက်
+                const imageUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${file_path}`;
+
+                html += `
+                    <div class="image-card">
+                        <img src="${imageUrl}" loading="lazy">
+                        <div class="caption">${msg.caption || ""}</div>
+                    </div>
+                `;
+            }
+        }
+
+        if(html === "") {
+            container.innerHTML = "📭 ပုံမရှိသေးပါ";
+        } else {
+            container.innerHTML = html;
+        }
+
+    } catch(err) {
+        console.log(err);
+        container.innerHTML = "❌ Error ဖြစ်နေပါတယ်";
+    }
+}
+
+
+/* ===========================
+   🔄 Auto refresh (10 sec)
+=========================== */
+
+setInterval(loadImages, 10000);
+
+// 👉 page load အချိန်တစ်ခါခေါ်
+loadImages();
+
 </script>
 
 </body>
