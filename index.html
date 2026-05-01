@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, 'Myanmar Text', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #fdf8f0 0%, #f5e6d3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            border-radius: 32px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #8b5a2b;
+            font-size: 28px;
+        }
+        .welcome {
+            text-align: center;
+            color: #b8863f;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0 20px;
+            padding: 10px;
+            background: #fef5e8;
+            border-radius: 50px;
+        }
+        /* Grid Layout - တစ်ပုံချင်းစီ အလှဆင် */
+        .image-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .image-card {
+            background: #f9f3ec;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .image-card:hover {
+            transform: scale(1.02);
+        }
+        .image-card img {
+            width: 100%;
+            display: block;
+        }
+        .caption {
+            padding: 12px;
+            font-size: 15px;
+            color: #5a3e2e;
+            background: white;
+            border-top: 1px solid #eee;
+            word-break: break-word;
+        }
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        .btn {
+            display: block;
+            text-align: center;
+            padding: 14px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+        }
+        .telegram { background: linear-gradient(135deg, #0088cc, #005f8c); }
+        .viber { background: linear-gradient(135deg, #7360f2, #5a4ac7); }
+        .contact {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #7a5a4e;
+        }
+        .contact p { margin: 5px 0; }
+        .counter {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 14px;
+            color: #b8863f;
+        }
+        /* Slider Modal (ပုံအကုန်ပြမယ့် နေရာ) */
+        .slider-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px 40px;
+        }
+        .slider-item {
+            max-width: 500px;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .slider-item img {
+            width: 100%;
+            display: block;
+        }
+        .slider-caption {
+            padding: 12px;
+            font-size: 15px;
+            color: #333;
+            background: white;
+        }
+        .close-slider {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            background: #8b5a2b;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ddd;
+            border-top-color: #8b5a2b;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .status {
+            text-align: center;
+            padding: 20px;
+            color: #8b5a2b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>မိဘမေတ္တာ <span style="font-size:18px;">အထည်ဆိုင်</span></h1>
+        <div class="welcome"> မှ လှိုက်လဲစွာ ကြိုဆိုပါ၏</div>
+
+        <!-- Grid View -->
+        <div id="gridView" class="image-grid"></div>
+        <div id="counter" class="counter"></div>
+
+        <div class="links">
+            <a href="https://t.me/mibamittaa" class="btn telegram"> Telegram Channel</a>
+            <a href="https://invite.viber.com/?g2=AQAkFUQwoiv461Yx1zedjxN%2BKlucfZcNOzM%2Bfh28iDVlEEcNa%2BXPXnBI1QCpLX2" class="btn viber"> Viber Channel</a>
+        </div>
+
+        <div class="contact">
+            <p> ဆက်သွယ်ရန် - 09676827963</p>
+            <p> လိပ်စာ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
+        </div>
+    </div>
+
+    <!-- Slider Modal -->
+    <div id="sliderModal" class="slider-modal">
+        <button class="close-slider" onclick="closeSlider()"> ပိတ်ရန်</button>
+        <div id="sliderContainer" class="slider-container"></div>
+    </div>
+
+    <script>
+        const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
+        const CHAT_ID = "-1003486800536";
+
+        let allItems = []; // Store {url, caption}
+
+        // Fetch all messages from Telegram channel
+        async function getAllMessages() {
+            let messages = [];
+            let offset = 0;
+            let hasMore = true;
+            while(hasMore) {
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${offset}&limit=100`;
+                const response = await fetch(url);
+                const data = await response.json();
+                if(!data.ok || !data.result || data.result.length === 0) break;
+                for(const update of data.result) {
+                    const msg = update.channel_post || update.message;
+                    if(msg && msg.chat && msg.chat.id.toString() === CHAT_ID) {
+                        messages.push(msg);
+                    }
+                    offset = update.update_id + 1;
+                }
+                if(data.result.length < 100) hasMore = false;
+            }
+            // Reverse so newest appears first
+            return messages.reverse();
+        }
+
+        // Load images from Telegram (real-time, shows only currently available photos)
+        async function loadImages() {
+            const gridView = document.getElementById('gridView');
+            const counterDiv = document.getElementById('counter');
+            gridView.innerHTML = '<div class="status">ပုံများ ယူနေပါသည်... <span class="loading"></span></div>';
+            
+            try {
+                const allMessages = await getAllMessages();
+                const items = [];
+                
+                for(const msg of allMessages) {
+                    let caption = msg.caption || "";
+                    if(msg.photo && msg.photo.length > 0) {
+                        const photo = msg.photo[msg.photo.length - 1];
+                        const fileResponse = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${photo.file_id}`);
+                        const fileData = await fileResponse.json();
+                        if(fileData.ok) {
+                            const imageUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.result.file_path}`;
+                            items.push({ url: imageUrl, caption: caption });
+                        }
+                    }
+                }
+                
+                allItems = items; // Save for slider
+                
+                if(allItems.length === 0) {
+                    gridView.innerHTML = '<div class="status"> ပုံများ မရှိသေးပါ။</div>';
+                    counterDiv.innerHTML = '';
+                } else {
+                    // Display as single column grid (ဒေါင်လိုက်ကြီးမဟုတ်ဘဲ တစ်ပုံချင်းစီ)
+                    gridView.innerHTML = allItems.map((item, index) => {
+                        let captionHtml = item.caption ? `<div class="caption">${escapeHtml(item.caption)}</div>` : '';
+                        return `
+                            <div class="image-card" onclick="openSlider(${index})">
+                                <img src="${item.url}" alt="အထည်ပုံ" loading="lazy">
+                                ${captionHtml}
+                            </div>
+                        `;
+                    }).join('');
+                    counterDiv.innerHTML = ` စုစုပေါင်း ပုံအရေအတွက် - ${allItems.length}`;
+                }
+            } catch(err) {
+                console.error(err);
+                gridView.innerHTML = '<div class="status"> အမှားရှိပါသည်။ Bot အား Channel Admin ခန့်ထားကြောင်း စစ်ဆေးပါ။</div>';
+            }
+        }
+
+        // Open slider to show all images (ပုံအကုန်ပြမယ်)
+        function openSlider(clickedIndex) {
+            const modal = document.getElementById('sliderModal');
+            const sliderContainer = document.getElementById('sliderContainer');
+            
+            // Build slider HTML for all images
+            sliderContainer.innerHTML = allItems.map((item, idx) => {
+                let captionHtml = item.caption ? `<div class="slider-caption">${escapeHtml(item.caption)}</div>` : '';
+                return `
+                    <div class="slider-item" id="slider-item-${idx}">
+                        <img src="${item.url}" alt="အထည်ပုံ">
+                        ${captionHtml}
+                    </div>
+                `;
+            }).join('');
+            
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+            
+            // Scroll to clicked image
+            setTimeout(() => {
+                const targetElement = document.getElementById(`slider-item-${clickedIndex}`);
+                if(targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
+
+        function closeSlider() {
+            document.getElementById('sliderModal').style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+
+        function escapeHtml(text) {
+            if(!text) return '';
+            return text.replace(/[&<>]/g, function(m) {
+                if(m === '&') return '&';
+                if(m === '<') return '<';
+                if(m === '>') return '>';
+                return m;
+            });
+        }
+
+        // Load images on page open
+        loadImages();
+    </script>
+</body>
+  </html>
