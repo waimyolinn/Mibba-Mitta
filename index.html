@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: system-ui, 'Myanmar Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: system-ui, 'Myanmar Text', -apple-system, sans-serif;
             background: linear-gradient(135deg, #fdf8f0 0%, #f5e6d3 100%);
             min-height: 100vh;
             padding: 20px;
@@ -27,12 +23,8 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
-        .shop-header {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
         .shop-name {
+            text-align: center;
             font-size: 28px;
             font-weight: bold;
             color: #8b5a2b;
@@ -67,18 +59,16 @@
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s;
         }
 
         .image-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
         .image-card img {
             width: 100%;
             display: block;
-            background: #f0e0cd;
         }
 
         .caption {
@@ -87,8 +77,6 @@
             color: #5a3e2e;
             background: white;
             border-top: 1px solid #eee;
-            word-break: break-word;
-            line-height: 1.4;
         }
 
         .social-links {
@@ -106,21 +94,10 @@
             text-decoration: none;
             font-weight: bold;
             color: white;
-            transition: transform 0.2s;
         }
 
-        .btn:hover {
-            transform: scale(1.02);
-            opacity: 0.95;
-        }
-
-        .telegram { 
-            background: linear-gradient(135deg, #0088cc, #005f8c); 
-        }
-
-        .viber { 
-            background: linear-gradient(135deg, #7360f2, #5a4ac7); 
-        }
+        .telegram { background: linear-gradient(135deg, #0088cc, #005f8c); }
+        .viber { background: linear-gradient(135deg, #7360f2, #5a4ac7); }
 
         .contact-info {
             text-align: center;
@@ -130,16 +107,11 @@
             color: #7a5a4e;
         }
 
-        .contact-info p {
-            margin: 5px 0;
-        }
-
         .photo-counter {
             text-align: center;
             margin: 15px 0;
             font-size: 14px;
             color: #b8863f;
-            font-weight: 500;
         }
 
         /* Slider Modal */
@@ -169,7 +141,6 @@
             background: white;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
         .slider-item img {
@@ -194,14 +165,8 @@
             padding: 10px 25px;
             border-radius: 40px;
             font-size: 16px;
-            font-weight: bold;
             cursor: pointer;
             z-index: 1001;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-
-        .close-slider:hover {
-            background: #6b3e1a;
         }
 
         .loading-spinner {
@@ -220,36 +185,43 @@
 
         .status-message {
             text-align: center;
-            padding: 30px 20px;
+            padding: 30px;
             color: #8b5a2b;
             background: #fef5e8;
             border-radius: 20px;
         }
 
+        .refresh-btn {
+            background: #8b5a2b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
         @media (max-width: 500px) {
-            .container {
-                padding: 20px;
-            }
-            .shop-name {
-                font-size: 24px;
-            }
-            .welcome-message {
-                font-size: 16px;
-            }
+            .container { padding: 20px; }
+            .shop-name { font-size: 24px; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="shop-header">
-        <div class="shop-name">
-            🧵 မိဘမေတ္တာ <small>အထည်ဆိုင်</small>
-        </div>
+    <div class="shop-name">
+        🧵 မိဘမေတ္တာ <small>အထည်ဆိုင်</small>
     </div>
 
     <div class="welcome-message">
         🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏
+    </div>
+
+    <div style="display: flex; justify-content: center;">
+        <button class="refresh-btn" id="refreshBtn">🔄 ပုံများ ပြန်လည်စတင်ရန်</button>
     </div>
 
     <div id="imageGrid" class="image-grid">
@@ -261,11 +233,11 @@
     <div id="photoCounter" class="photo-counter"></div>
 
     <div class="social-links">
-        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank" rel="noopener noreferrer">
+        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank">
             📱 Telegram Channel သို့ ဝင်ရန်
         </a>
-        <a href="https://invite.viber.com/?g2=AQAkFUQwoiv461Yx1zedjxN%2BKlucfZcNOzM%2Bfh28iDVlEEcNa%2BXPXnBI1QCpLX2" class="btn viber" target="_blank" rel="noopener noreferrer">
-            💬 Viber အုပ်စုသို့ ဝင်ရန်
+        <a href="viber://add?number=09676827963" class="btn viber">
+            💬 Viber ဖုန်းနံပါတ်ဖြင့် ဆက်သွယ်ရန်
         </a>
     </div>
 
@@ -281,70 +253,59 @@
 </div>
 
 <script>
-    // ==================== အသုံးပြုသူ ထည့်ရမည့် အချက်များ ====================
     const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
-    const CHANNEL_ID = "@mibamittaa";  // 👈 သင့် Channel Username ထည့်ပါ (ဥပမာ - @my_channel)
-    // ========================================================================
+    const CHANNEL_ID = "@mibamittaa";  // 👈 သင့် Channel Username ထည့်ပါ
 
     let allImages = [];
-    let isLoading = false;
 
     function escapeHtml(text) {
         if (!text) return "";
-        return text
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
+        return text.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            return '&gt;';
+        });
     }
 
-    async function getFilePath(fileId) {
+    // Cache-busting နဲ့ ပုံ URL ရယူခြင်း (ဖျက်ပြီးသားပုံမပေါ်အောင်)
+    async function getImageUrl(fileId) {
         try {
             const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`);
             const data = await res.json();
-            return data.ok ? data.result.file_path : null;
+            if (data.ok && data.result) {
+                // Cache မသိမ်းအောင် timestamp ထည့်ပေးတယ်
+                const timestamp = Date.now();
+                return `https://api.telegram.org/file/bot${BOT_TOKEN}/${data.result.file_path}?nocache=${timestamp}`;
+            }
+            return null;
         } catch (e) {
             return null;
         }
     }
 
     async function loadImages() {
-        if (isLoading) return;
-        isLoading = true;
-
         const gridView = document.getElementById('imageGrid');
         const counterDiv = document.getElementById('photoCounter');
         
         gridView.innerHTML = '<div class="status-message"><span class="loading-spinner"></span> ပုံများ ယူနေပါသည်...</div>';
         
         try {
-            // Get channel posts
             const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
             const data = await res.json();
             
             if (!data.ok) throw new Error("API error");
             
             const images = [];
+            const channelUsername = CHANNEL_ID.startsWith('@') ? CHANNEL_ID.substring(1) : CHANNEL_ID;
             
             for (const update of data.result) {
                 const msg = update.channel_post;
-                if (!msg) continue;
-                
-                // Check if message is from target channel
-                let isTargetChannel = false;
-                if (CHANNEL_ID.startsWith('@')) {
-                    isTargetChannel = msg.chat.username === CHANNEL_ID.substring(1);
-                } else {
-                    isTargetChannel = msg.chat.id.toString() === CHANNEL_ID;
-                }
-                
-                if (isTargetChannel && msg.photo && msg.photo.length > 0) {
+                if (msg && msg.chat && msg.chat.username === channelUsername && msg.photo) {
                     const fileId = msg.photo[msg.photo.length - 1].file_id;
-                    const filePath = await getFilePath(fileId);
-                    
-                    if (filePath) {
+                    const imageUrl = await getImageUrl(fileId);
+                    if (imageUrl) {
                         images.push({
-                            url: `https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`,
+                            url: imageUrl,
                             caption: msg.caption || "",
                             date: msg.date || 0
                         });
@@ -376,9 +337,7 @@
             
         } catch (error) {
             console.error(error);
-            gridView.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။<br>Bot အား Channel Admin ခန့်ထားကြောင်း စစ်ဆေးပါ။</div>';
-        } finally {
-            isLoading = false;
+            gridView.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။ Bot အား Channel Admin ခန့်ထားကြောင်း စစ်ဆေးပါ။</div>';
         }
     }
 
@@ -417,6 +376,10 @@
 
     document.getElementById('sliderModal').addEventListener('click', function(e) {
         if (e.target === this) closeSlider();
+    });
+
+    document.getElementById('refreshBtn').addEventListener('click', function() {
+        loadImages();
     });
 
     loadImages();
