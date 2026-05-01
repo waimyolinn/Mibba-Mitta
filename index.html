@@ -17,7 +17,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 600px;
+            max-width: 700px;
             margin: auto;
             background: white;
             border-radius: 32px;
@@ -39,31 +39,32 @@
             background: #fef5e8;
             border-radius: 50px;
         }
-        /* Grid Layout - တစ်ပုံချင်းစီ အလှဆင် */
-        .image-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        /* Album View - အထပ်လိုက် */
+        .gallery {
+            column-count: 2;
+            column-gap: 16px;
             margin-bottom: 30px;
         }
-        .image-card {
-            background: #f9f3ec;
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 16px;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             cursor: pointer;
             transition: transform 0.2s;
+            background: #f9f3ec;
         }
-        .image-card:hover {
+        .gallery-item:hover {
             transform: scale(1.02);
         }
-        .image-card img {
+        .gallery-item img {
             width: 100%;
             display: block;
         }
         .caption {
-            padding: 12px;
-            font-size: 15px;
+            padding: 10px;
+            font-size: 14px;
             color: #5a3e2e;
             background: white;
             border-top: 1px solid #eee;
@@ -84,8 +85,12 @@
             font-weight: bold;
             color: white;
         }
-        .telegram { background: linear-gradient(135deg, #0088cc, #005f8c); }
-        .viber { background: linear-gradient(135deg, #7360f2, #5a4ac7); }
+        .telegram {
+            background: linear-gradient(135deg, #0088cc, #005f8c);
+        }
+        .viber {
+            background: linear-gradient(135deg, #7360f2, #5a4ac7);
+        }
         .contact {
             text-align: center;
             padding-top: 15px;
@@ -93,14 +98,16 @@
             font-size: 14px;
             color: #7a5a4e;
         }
-        .contact p { margin: 5px 0; }
+        .contact p {
+            margin: 5px 0;
+        }
         .counter {
             text-align: center;
             margin: 15px 0;
             font-size: 14px;
             color: #b8863f;
         }
-        /* Slider Modal (ပုံအကုန်ပြမယ့် နေရာ) */
+        /* Slider Modal - နှိပ်ရင် ဒေါင်လိုက် */
         .slider-modal {
             display: none;
             position: fixed;
@@ -159,124 +166,134 @@
             border-radius: 50%;
             animation: spin 0.6s linear infinite;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
         .status {
             text-align: center;
             padding: 20px;
             color: #8b5a2b;
+        }
+        @media (max-width: 500px) {
+            .gallery {
+                column-count: 1;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>မိဘမေတ္တာ <span style="font-size:18px;">အထည်ဆိုင်</span></h1>
-        <div class="welcome"> မှ လှိုက်လဲစွာ ကြိုဆိုပါ၏</div>
+        <div class="welcome">✨ မင်္ဂလာပါ ✨</div>
 
-        <!-- Grid View -->
-        <div id="gridView" class="image-grid"></div>
+        <div id="gallery" class="gallery"></div>
         <div id="counter" class="counter"></div>
 
         <div class="links">
-            <a href="https://t.me/mibamittaa" class="btn telegram"> Telegram Channel</a>
-            <a href="https://invite.viber.com/?g2=AQAkFUQwoiv461Yx1zedjxN%2BKlucfZcNOzM%2Bfh28iDVlEEcNa%2BXPXnBI1QCpLX2" class="btn viber"> Viber Channel</a>
+            <a href="https://t.me/mibamittaa" class="btn telegram">📱 Telegram Channel</a>
+            <a href="viber://chat?lang=en&g2=AQAkFUQwoiv461Yx1zedjxN%2BKlucfZcNOzM%2Bfh28iDVlEEcNa%2BXPXnBI1QCpLX2" class="btn viber">📞 Viber အုပ်စု</a>
         </div>
 
         <div class="contact">
-            <p> ဆက်သွယ်ရန် - 09676827963</p>
-            <p> လိပ်စာ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
+            <p>📞 ဆက်သွယ်ရန် - 09676827963</p>
+            <p>📍 လိပ်စာ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
         </div>
     </div>
 
     <!-- Slider Modal -->
     <div id="sliderModal" class="slider-modal">
-        <button class="close-slider" onclick="closeSlider()"> ပိတ်ရန်</button>
+        <button class="close-slider" onclick="closeSlider()">✕ ပိတ်ရန်</button>
         <div id="sliderContainer" class="slider-container"></div>
     </div>
 
     <script>
+        // ======================== SETTINGS ========================
         const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
         const CHAT_ID = "-1003486800536";
+        // ==========================================================
 
         let allItems = []; // Store {url, caption}
 
-        // Fetch all messages from Telegram channel
+        // Fetch all messages from Telegram (real‑time)
         async function getAllMessages() {
             let messages = [];
             let offset = 0;
             let hasMore = true;
-            while(hasMore) {
+            while (hasMore) {
                 const url = `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${offset}&limit=100`;
                 const response = await fetch(url);
                 const data = await response.json();
-                if(!data.ok || !data.result || data.result.length === 0) break;
-                for(const update of data.result) {
+                if (!data.ok || !data.result || data.result.length === 0) break;
+                for (const update of data.result) {
                     const msg = update.channel_post || update.message;
-                    if(msg && msg.chat && msg.chat.id.toString() === CHAT_ID) {
+                    if (msg && msg.chat && msg.chat.id.toString() === CHAT_ID) {
                         messages.push(msg);
                     }
                     offset = update.update_id + 1;
                 }
-                if(data.result.length < 100) hasMore = false;
+                if (data.result.length < 100) hasMore = false;
             }
-            // Reverse so newest appears first
+            // Show newest first
             return messages.reverse();
         }
 
-        // Load images from Telegram (real-time, shows only currently available photos)
+        // Load images and captions from Telegram (nothing cached)
         async function loadImages() {
-            const gridView = document.getElementById('gridView');
+            const galleryDiv = document.getElementById('gallery');
             const counterDiv = document.getElementById('counter');
-            gridView.innerHTML = '<div class="status">ပုံများ ယူနေပါသည်... <span class="loading"></span></div>';
+            galleryDiv.innerHTML = '<div class="status">ပုံများ ယူနေပါသည်... <span class="loading"></span></div>';
             
             try {
                 const allMessages = await getAllMessages();
                 const items = [];
                 
-                for(const msg of allMessages) {
+                for (const msg of allMessages) {
                     let caption = msg.caption || "";
-                    if(msg.photo && msg.photo.length > 0) {
+                    if (msg.photo && msg.photo.length > 0) {
                         const photo = msg.photo[msg.photo.length - 1];
                         const fileResponse = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${photo.file_id}`);
                         const fileData = await fileResponse.json();
-                        if(fileData.ok) {
+                        if (fileData.ok) {
                             const imageUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.result.file_path}`;
                             items.push({ url: imageUrl, caption: caption });
                         }
                     }
                 }
                 
-                allItems = items; // Save for slider
+                allItems = items; // save for slider
                 
-                if(allItems.length === 0) {
-                    gridView.innerHTML = '<div class="status"> ပုံများ မရှိသေးပါ။</div>';
+                if (allItems.length === 0) {
+                    galleryDiv.innerHTML = '<div class="status">📭 ပုံများ မရှိသေးပါ။</div>';
                     counterDiv.innerHTML = '';
-                } else {
-                    // Display as single column grid (ဒေါင်လိုက်ကြီးမဟုတ်ဘဲ တစ်ပုံချင်းစီ)
-                    gridView.innerHTML = allItems.map((item, index) => {
-                        let captionHtml = item.caption ? `<div class="caption">${escapeHtml(item.caption)}</div>` : '';
-                        return `
-                            <div class="image-card" onclick="openSlider(${index})">
-                                <img src="${item.url}" alt="အထည်ပုံ" loading="lazy">
-                                ${captionHtml}
-                            </div>
-                        `;
-                    }).join('');
-                    counterDiv.innerHTML = ` စုစုပေါင်း ပုံအရေအတွက် - ${allItems.length}`;
+                    return;
                 }
-            } catch(err) {
+                
+                // render Album (masonry) view
+                galleryDiv.innerHTML = allItems.map((item, idx) => {
+                    const captionHtml = item.caption ? `<div class="caption">${escapeHtml(item.caption)}</div>` : '';
+                    return `
+                        <div class="gallery-item" onclick="openSlider(${idx})">
+                            <img src="${item.url}" alt="အထည်ပုံ" loading="lazy">
+                            ${captionHtml}
+                        </div>
+                    `;
+                }).join('');
+                
+                counterDiv.innerHTML = `📸 စုစုပေါင်း ပုံအရေအတွက် - ${allItems.length}`;
+                
+            } catch (err) {
                 console.error(err);
-                gridView.innerHTML = '<div class="status"> အမှားရှိပါသည်။ Bot အား Channel Admin ခန့်ထားကြောင်း စစ်ဆေးပါ။</div>';
+                galleryDiv.innerHTML = '<div class="status">❌ ခဏစောင့်ပါ... Telegram မှာ Bot Admin ဖြစ်မှ ပုံတွေပေါ်ပါမည်။</div>';
             }
         }
 
-        // Open slider to show all images (ပုံအကုန်ပြမယ်)
+        // Open slider to show all images vertically
         function openSlider(clickedIndex) {
             const modal = document.getElementById('sliderModal');
             const sliderContainer = document.getElementById('sliderContainer');
             
-            // Build slider HTML for all images
             sliderContainer.innerHTML = allItems.map((item, idx) => {
-                let captionHtml = item.caption ? `<div class="slider-caption">${escapeHtml(item.caption)}</div>` : '';
+                const captionHtml = item.caption ? `<div class="slider-caption">${escapeHtml(item.caption)}</div>` : '';
                 return `
                     <div class="slider-item" id="slider-item-${idx}">
                         <img src="${item.url}" alt="အထည်ပုံ">
@@ -288,12 +305,10 @@
             modal.style.display = "block";
             document.body.style.overflow = "hidden";
             
-            // Scroll to clicked image
+            // auto‑scroll to the clicked image
             setTimeout(() => {
-                const targetElement = document.getElementById(`slider-item-${clickedIndex}`);
-                if(targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                const target = document.getElementById(`slider-item-${clickedIndex}`);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 100);
         }
 
@@ -303,17 +318,17 @@
         }
 
         function escapeHtml(text) {
-            if(!text) return '';
+            if (!text) return '';
             return text.replace(/[&<>]/g, function(m) {
-                if(m === '&') return '&';
-                if(m === '<') return '<';
-                if(m === '>') return '>';
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
                 return m;
             });
         }
 
-        // Load images on page open
+        // load everything when page opens
         loadImages();
     </script>
 </body>
-  </html>
+</html>
