@@ -23,11 +23,18 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
-        .shop-name {
+        .shop-info {
             text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0dcc5;
+        }
+
+        .shop-name {
             font-size: 28px;
             font-weight: bold;
             color: #8b5a2b;
+            margin-bottom: 8px;
         }
 
         .shop-name small {
@@ -36,22 +43,41 @@
         }
 
         .welcome-message {
-            text-align: center;
             color: #b8863f;
             font-size: 18px;
             font-weight: bold;
-            margin: 15px 0 20px;
-            padding: 12px;
+            margin: 10px 0;
+            padding: 8px;
             background: #fef5e8;
             border-radius: 50px;
+        }
+
+        .shop-address {
+            font-size: 13px;
+            color: #7a5a4e;
+            background: #fef5e8;
+            padding: 10px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        .shop-address p {
+            margin: 3px 0;
+        }
+
+        .image-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 20px 0;
         }
 
         .image-card {
             background: #f9f3ec;
             border-radius: 20px;
             overflow: hidden;
-            margin-bottom: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            cursor: pointer;
             transition: transform 0.2s;
         }
 
@@ -70,7 +96,50 @@
             color: #5a3e2e;
             background: white;
             border-top: 1px solid #eee;
-            word-break: break-word;
+        }
+
+        /* Modal for zoom */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 95%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .modal-caption {
+            text-align: center;
+            color: white;
+            padding: 15px;
+            font-size: 14px;
+            background: rgba(0,0,0,0.7);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .close-modal {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
         }
 
         .btn {
@@ -100,10 +169,6 @@
             color: #7a5a4e;
         }
 
-        .contact-info p {
-            margin: 5px 0;
-        }
-
         .refresh-btn {
             background: #8b5a2b;
             color: white;
@@ -114,11 +179,6 @@
             cursor: pointer;
             display: block;
             margin: 15px auto;
-            transition: background 0.2s;
-        }
-
-        .refresh-btn:hover {
-            background: #6b3e1a;
         }
 
         .counter {
@@ -126,7 +186,6 @@
             margin: 15px 0;
             font-size: 14px;
             color: #b8863f;
-            font-weight: 500;
         }
 
         .status-message {
@@ -155,12 +214,17 @@
 <body>
 
 <div class="container">
-    <div class="shop-name">
-        🧵 မိဘမေတ္တာ <small>အထည်ဆိုင်</small>
-    </div>
-
-    <div class="welcome-message">
-        🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏
+    <div class="shop-info">
+        <div class="shop-name">
+            🧵 မိဘမေတ္တာ <small>အထည်ဆိုင်</small>
+        </div>
+        <div class="welcome-message">
+            🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏
+        </div>
+        <div class="shop-address">
+            <p>📞 ဆက်သွယ်ရန် - 09676827963</p>
+            <p>📍 လိပ်စာ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
+        </div>
     </div>
 
     <button class="refresh-btn" id="refreshBtn">🔄 ပုံများ ပြန်လည်စတင်ရန်</button>
@@ -176,21 +240,39 @@
     <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank" rel="noopener noreferrer">
         📱 Telegram Channel သို့ ဝင်ရန်
     </a>
-    <a href="viber://chat?number=%2B959676827963" class="btn viber">
-        💬 Viber ဖြင့် ဆက်သွယ်ရန်
+    <a href="https://invite.viber.com/?g2=AQAkFUQwoiv461Yx1zedjxN%2BKlucfZcNOzM%2Bfh28iDVlEEcNa%2BXPXnBI1QCpLX2" class="btn viber" target="_blank" rel="noopener noreferrer">
+        💬 Viber Community သို့ ဝင်ရန်
     </a>
 
     <div class="contact-info">
-        <p>📞 ဆက်သွယ်ရန် - 09676827963</p>
-        <p>📍 လိပ်စာ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
+        <p>📞 09676827963</p>
+        <p>📍 အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
     </div>
 </div>
 
+<!-- Modal for image zoom -->
+<div id="imageModal" class="modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modalImage">
+    <div id="modalCaption" class="modal-caption"></div>
+</div>
+
 <script>
-    // ==================== အသုံးပြုသူ ထည့်ရမည့် အချက်များ ====================
     const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
-    const CHANNEL_USERNAME = "mibamittaa";  // @ မပါဘဲ ထည့်ပါ
-    // ========================================================================
+    const CHANNEL_USERNAME = "mibamittaa";
+
+    function openModal(imageSrc, caption) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+        modal.style.display = "flex";
+        modalImg.src = imageSrc;
+        modalCaption.textContent = caption || "";
+    }
+
+    function closeModal() {
+        document.getElementById('imageModal').style.display = "none";
+    }
 
     async function loadImages() {
         const gridView = document.getElementById('imageGrid');
@@ -199,23 +281,17 @@
         gridView.innerHTML = '<div class="status-message"><span class="loading-spinner"></span> ပုံများ ယူနေပါသည်...</div>';
         
         try {
-            // Telegram API ကို တိုက်ရိုက်ခေါ်မယ်
             const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?t=${Date.now()}`);
             const data = await res.json();
             
-            if (!data.ok) {
-                throw new Error("Telegram API error");
-            }
+            if (!data.ok) throw new Error("API error");
             
             const images = [];
             
             for (const update of data.result) {
                 const msg = update.channel_post;
                 if (msg && msg.chat && msg.chat.username === CHANNEL_USERNAME && msg.photo) {
-                    // Get the largest photo
                     const fileId = msg.photo[msg.photo.length - 1].file_id;
-                    
-                    // Get file path
                     const fileRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`);
                     const fileData = await fileRes.json();
                     
@@ -230,7 +306,6 @@
                 }
             }
             
-            // Sort by date (newest first)
             images.sort((a, b) => b.date - a.date);
             
             if (images.length === 0) {
@@ -238,10 +313,11 @@
                 counterDiv.innerHTML = '';
             } else {
                 let html = '';
-                for (const img of images) {
+                for (let i = 0; i < images.length; i++) {
+                    const img = images[i];
                     const captionHtml = img.caption ? `<div class="caption">${escapeHtml(img.caption)}</div>` : '';
                     html += `
-                        <div class="image-card">
+                        <div class="image-card" onclick="openModal('${img.url}', '${escapeHtml(img.caption)}')">
                             <img src="${img.url}" alt="အထည်ပုံ" loading="lazy">
                             ${captionHtml}
                         </div>
@@ -252,29 +328,24 @@
             }
             
         } catch (error) {
-            console.error("Load error:", error);
-            gridView.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။ နောက်မှ ထပ်ကြည့်ပါ။</div>';
+            console.error(error);
+            gridView.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။</div>';
         }
     }
 
     function escapeHtml(text) {
         if (!text) return "";
-        return text
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
+        return text.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            return '&gt;';
+        });
     }
 
-    // Refresh button
     document.getElementById('refreshBtn').addEventListener('click', function() {
         loadImages();
     });
-
-    // Auto refresh every 30 seconds (optional)
-    // setInterval(loadImages, 30000);
     
-    // Load images on page load
     loadImages();
 </script>
 
