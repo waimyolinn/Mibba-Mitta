@@ -31,68 +31,106 @@
         .telegram { background: linear-gradient(135deg, #0088cc, #005f8c); }
         .viber { background: linear-gradient(135deg, #7360f2, #5a4ac7); }
         
+        /* Post Cards - ပုံတစ်ပုံနဲ့တစ်ပုံ ကွာသွားအောင် */
         .post-card {
-            background: #f9f3ec;
-            border-radius: 20px;
+            background: white;
+            border-radius: 24px;
             overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #f0e0d0;
+        }
+        .post-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.16);
         }
         .post-image {
             width: 100%;
             display: block;
+            background: #f5ede3;
         }
         .post-content {
-            padding: 12px;
-            font-size: 14px;
-            color: #5a3e2e;
+            padding: 16px;
             background: white;
-            border-top: 1px solid #eee;
         }
         .post-text {
-            padding: 15px;
-            font-size: 15px;
-            color: #5a3e2e;
+            padding: 18px;
+            font-size: 16px;
+            color: #4a3520;
             background: white;
             line-height: 1.5;
         }
         .post-date {
-            font-size: 11px;
+            font-size: 12px;
             color: #a08060;
-            margin-top: 5px;
+            margin-top: 10px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            border-top: 1px solid #f0e0d0;
+            padding-top: 10px;
         }
         .post-date::before {
-            content: "📅";
-            font-size: 10px;
+            content: "";
+            font-size: 11px;
         }
-        .status-message { text-align: center; padding: 30px; color: #8b5a2b; background: #fef5e8; border-radius: 20px; }
-        .loading-spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid #ddd; border-top-color: #8b5a2b; border-radius: 50%; animation: spin 0.6s linear infinite; }
+        .post-caption {
+            font-size: 15px;
+            color: #5a3e2e;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .status-message { text-align: center; padding: 40px; color: #8b5a2b; background: #fef5e8; border-radius: 24px; }
+        .loading-spinner { display: inline-block; width: 24px; height: 24px; border: 3px solid #ddd; border-top-color: #8b5a2b; border-radius: 50%; animation: spin 0.6s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; cursor: pointer; justify-content: center; align-items: center; }
-        .modal-content { max-width: 95%; max-height: 90%; object-fit: contain; }
+        .modal-content { max-width: 95%; max-height: 90%; object-fit: contain; border-radius: 12px; }
         .modal-caption { text-align: center; color: white; padding: 15px; font-size: 14px; background: rgba(0,0,0,0.7); position: fixed; bottom: 0; left: 0; right: 0; }
         .close-modal { position: fixed; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 1001; }
+        
+        /* Refresh Button */
+        .refresh-btn {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 20px auto;
+            background: #8b5a2b;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: background 0.2s;
+        }
+        .refresh-btn:hover {
+            background: #6b3e1a;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="shop-info">
-        <div class="shop-name">🧵 မိဘမေတ္တာ <small>အထည်ဆိုင်</small></div>
+        <div class="shop-name"> မိဘမေတ္တာ <small>အထည်ဆိုင်</small></div>
         <div class="welcome-message">🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏</div>
         <div class="shop-address">
-            <p>📞 ဆက်သွယ်ရန် - 09697455880</p>
-            <p>📍 လိပ်စာ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
+            <p> ဆက်သွယ်ရန် - 09697455880</p>
+            <p> လိပ်စာ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
         </div>
     </div>
 
     <div class="social-buttons">
-        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank">📱 Telegram Channel သို့ ဝင်ရန်</a>
-        <a href="viber://chat?number=%2B959697455880" class="btn viber">💬 Viber ဖြင့် ဆက်သွယ်ရန်</a>
+        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank"> Telegram Channel သို့ ဝင်ရန်</a>
+        <a href="viber://chat?number=%2B959697455880" class="btn viber"> Viber ဖြင့် ဆက်သွယ်ရန်</a>
     </div>
+
+    <!-- Refresh Button - လိုချင်မှ နှိပ်ပါ -->
+    <button class="refresh-btn" id="refreshBtn"> ပို့စ်များ ပြန်လည်စတင်ရန်</button>
 
     <div id="postGrid">
         <div class="status-message"><span class="loading-spinner"></span> ပို့စ်များ ယူနေပါသည်...</div>
@@ -176,7 +214,7 @@
             posts.sort((a, b) => b.date - a.date);
             
             if (posts.length === 0) {
-                grid.innerHTML = '<div class="status-message">📭 လက်ရှိပို့စ်များ မရှိသေးပါ</div>';
+                grid.innerHTML = '<div class="status-message"> လက်ရှိပို့စ်များ မရှိသေးပါ</div>';
             } else {
                 let html = '';
                 for (const post of posts) {
@@ -187,7 +225,7 @@
                             <div class="post-card">
                                 <img class="post-image" src="${post.url}" onclick="openModal('${post.url}', '${escapeHtml(post.caption)}')">
                                 <div class="post-content">
-                                    ${post.caption ? `<div>📝 ${escapeHtml(post.caption)}</div>` : ''}
+                                    ${post.caption ? `<div class="post-caption"> ${escapeHtml(post.caption)}</div>` : ''}
                                     <div class="post-date">${dateStr}</div>
                                 </div>
                             </div>
@@ -196,7 +234,7 @@
                         html += `
                             <div class="post-card">
                                 <div class="post-text">
-                                    💬 ${escapeHtml(post.text)}
+                                     ${escapeHtml(post.text)}
                                     <div class="post-date">${dateStr}</div>
                                 </div>
                             </div>
@@ -208,12 +246,17 @@
             
         } catch(e) {
             console.error(e);
-            grid.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။</div>';
+            grid.innerHTML = '<div class="status-message"> နည်းပညာချို့ယွင်းနေပါသည်။</div>';
         }
     }
     
+    // Manual refresh only - no auto refresh
+    document.getElementById('refreshBtn').addEventListener('click', function() {
+        loadPosts();
+    });
+    
+    // Load once on page open
     loadPosts();
-    setInterval(loadPosts, 30000);
 </script>
 
 </body>
