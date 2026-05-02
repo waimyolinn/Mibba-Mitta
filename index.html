@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, 'Myanmar Text', sans-serif;
+            background: linear-gradient(135deg, #fdf8f0 0%, #f5e6d3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            border-radius: 32px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .shop-info { text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #f0dcc5; }
+        .shop-name { font-size: 28px; font-weight: bold; color: #8b5a2b; margin-bottom: 8px; }
+        .shop-name small { font-size: 16px; color: #b8863f; }
+        .welcome-message { color: #b8863f; font-size: 18px; font-weight: bold; margin: 10px 0; padding: 8px; background: #fef5e8; border-radius: 50px; }
+        .shop-address { font-size: 13px; color: #7a5a4e; background: #fef5e8; padding: 10px; border-radius: 20px; margin-top: 10px; }
+        .social-buttons { margin-bottom: 25px; }
+        .btn { display: block; text-align: center; padding: 14px; border-radius: 50px; text-decoration: none; font-weight: bold; color: white; margin: 10px 0; transition: transform 0.2s; }
+        .btn:hover { transform: scale(1.02); }
+        .telegram { background: linear-gradient(135deg, #0088cc, #005f8c); }
+        .viber { background: linear-gradient(135deg, #7360f2, #5a4ac7); }
+        
+        .post-card {
+            background: #f9f3ec;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .post-image {
+            width: 100%;
+            display: block;
+        }
+        .post-content {
+            padding: 12px;
+            font-size: 14px;
+            color: #5a3e2e;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+        .post-text {
+            padding: 15px;
+            font-size: 15px;
+            color: #5a3e2e;
+            background: white;
+            line-height: 1.5;
+        }
+        .post-date {
+            font-size: 11px;
+            color: #a08060;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .post-date::before {
+            content: "📅";
+            font-size: 10px;
+        }
+        .status-message { text-align: center; padding: 30px; color: #8b5a2b; background: #fef5e8; border-radius: 20px; }
+        .loading-spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid #ddd; border-top-color: #8b5a2b; border-radius: 50%; animation: spin 0.6s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; cursor: pointer; justify-content: center; align-items: center; }
+        .modal-content { max-width: 95%; max-height: 90%; object-fit: contain; }
+        .modal-caption { text-align: center; color: white; padding: 15px; font-size: 14px; background: rgba(0,0,0,0.7); position: fixed; bottom: 0; left: 0; right: 0; }
+        .close-modal { position: fixed; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 1001; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="shop-info">
+        <div class="shop-name">🧵 မိဘမေတ္တာ <small>အထည်ဆိုင်</small></div>
+        <div class="welcome-message">🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏</div>
+        <div class="shop-address">
+            <p>📞 ဆက်သွယ်ရန် - 09697455880</p>
+            <p>📍 လိပ်စာ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
+        </div>
+    </div>
+
+    <div class="social-buttons">
+        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank">📱 Telegram Channel သို့ ဝင်ရန်</a>
+        <a href="viber://chat?number=%2B959697455880" class="btn viber">💬 Viber ဖြင့် ဆက်သွယ်ရန်</a>
+    </div>
+
+    <div id="postGrid">
+        <div class="status-message"><span class="loading-spinner"></span> ပို့စ်များ ယူနေပါသည်...</div>
+    </div>
+</div>
+
+<div id="imageModal" class="modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modalImage">
+    <div id="modalCaption" class="modal-caption"></div>
+</div>
+
+<script>
+    const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
+    const CHANNEL_USERNAME = "mibamittaa";
+
+    function formatDate(timestamp) {
+        const date = new Date(timestamp * 1000);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${day}/${month}/${year} ${hours}:${minutes}`;
+    }
+
+    function escapeHtml(t) {
+        if (!t) return "";
+        return t.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
+    }
+
+    function openModal(src, caption) {
+        document.getElementById('imageModal').style.display = "flex";
+        document.getElementById('modalImage').src = src;
+        document.getElementById('modalCaption').textContent = caption || "";
+    }
+    function closeModal() { document.getElementById('imageModal').style.display = "none"; }
+
+    async function loadPosts() {
+        const grid = document.getElementById('postGrid');
+        grid.innerHTML = '<div class="status-message"><span class="loading-spinner"></span> ပို့စ်များ ယူနေပါသည်...</div>';
+        
+        try {
+            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?t=${Date.now()}`);
+            const data = await res.json();
+            
+            if (!data.ok) throw new Error("API error");
+            
+            let posts = [];
+            
+            for (const update of data.result) {
+                const msg = update.channel_post;
+                if (!msg) continue;
+                if (msg.chat && msg.chat.username !== CHANNEL_USERNAME) continue;
+                
+                // For photos
+                if (msg.photo) {
+                    const fileId = msg.photo[msg.photo.length - 1].file_id;
+                    const fileRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`);
+                    const fileData = await fileRes.json();
+                    if (fileData.ok && fileData.result) {
+                        posts.push({
+                            type: 'photo',
+                            url: `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.result.file_path}?t=${Date.now()}`,
+                            caption: msg.caption || "",
+                            date: msg.date
+                        });
+                    }
+                }
+                // For text messages
+                else if (msg.text) {
+                    posts.push({
+                        type: 'text',
+                        text: msg.text,
+                        date: msg.date
+                    });
+                }
+            }
+            
+            // Sort: newest first
+            posts.sort((a, b) => b.date - a.date);
+            
+            if (posts.length === 0) {
+                grid.innerHTML = '<div class="status-message">📭 လက်ရှိပို့စ်များ မရှိသေးပါ</div>';
+            } else {
+                let html = '';
+                for (const post of posts) {
+                    const dateStr = formatDate(post.date);
+                    
+                    if (post.type === 'photo') {
+                        html += `
+                            <div class="post-card">
+                                <img class="post-image" src="${post.url}" onclick="openModal('${post.url}', '${escapeHtml(post.caption)}')">
+                                <div class="post-content">
+                                    ${post.caption ? `<div>📝 ${escapeHtml(post.caption)}</div>` : ''}
+                                    <div class="post-date">${dateStr}</div>
+                                </div>
+                            </div>
+                        `;
+                    } else if (post.type === 'text') {
+                        html += `
+                            <div class="post-card">
+                                <div class="post-text">
+                                    💬 ${escapeHtml(post.text)}
+                                    <div class="post-date">${dateStr}</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+                grid.innerHTML = html;
+            }
+            
+        } catch(e) {
+            console.error(e);
+            grid.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။</div>';
+        }
+    }
+    
+    loadPosts();
+    setInterval(loadPosts, 30000);
+</script>
+
+</body>
+</html>
