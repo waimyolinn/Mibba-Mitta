@@ -6,12 +6,14 @@
     <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: system-ui, 'Myanmar Text', sans-serif;
+            font-family: system-ui, 'Myanmar Text', -apple-system, sans-serif;
             background: linear-gradient(135deg, #fdf8f0 0%, #f5e6d3 100%);
             min-height: 100vh;
             padding: 20px;
         }
+
         .container {
             max-width: 600px;
             margin: auto;
@@ -20,16 +22,19 @@
             padding: 25px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
+
         .shop-name {
             text-align: center;
             font-size: 28px;
             font-weight: bold;
             color: #8b5a2b;
         }
+
         .shop-name small {
             font-size: 16px;
             color: #b8863f;
         }
+
         .welcome-message {
             text-align: center;
             color: #b8863f;
@@ -40,71 +45,34 @@
             background: #fef5e8;
             border-radius: 50px;
         }
+
         .image-card {
             background: #f9f3ec;
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
+            transition: transform 0.2s;
         }
+
+        .image-card:hover {
+            transform: translateY(-3px);
+        }
+
         .image-card img {
             width: 100%;
             display: block;
         }
+
         .caption {
             padding: 12px;
             font-size: 14px;
             color: #5a3e2e;
             background: white;
             border-top: 1px solid #eee;
+            word-break: break-word;
         }
-        .delete-global-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(220, 20, 60, 0.9);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 8px 15px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            z-index: 10;
-        }
-        .restore-all-btn {
-            background: #8b5a2b;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .button-group {
-            text-align: center;
-            margin: 15px 0;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .refresh-btn {
-            background: #2c3e50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .social-links {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin: 25px 0;
-        }
+
         .btn {
             display: block;
             text-align: center;
@@ -113,9 +81,17 @@
             text-decoration: none;
             font-weight: bold;
             color: white;
+            margin: 10px 0;
+            transition: transform 0.2s;
         }
+
+        .btn:hover {
+            transform: scale(1.02);
+        }
+
         .telegram { background: linear-gradient(135deg, #0088cc, #005f8c); }
         .viber { background: linear-gradient(135deg, #7360f2, #5a4ac7); }
+
         .contact-info {
             text-align: center;
             padding-top: 15px;
@@ -123,13 +99,36 @@
             font-size: 14px;
             color: #7a5a4e;
         }
-        .contact-info p { margin: 5px 0; }
-        .photo-counter {
+
+        .contact-info p {
+            margin: 5px 0;
+        }
+
+        .refresh-btn {
+            background: #8b5a2b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            cursor: pointer;
+            display: block;
+            margin: 15px auto;
+            transition: background 0.2s;
+        }
+
+        .refresh-btn:hover {
+            background: #6b3e1a;
+        }
+
+        .counter {
             text-align: center;
             margin: 15px 0;
             font-size: 14px;
             color: #b8863f;
+            font-weight: 500;
         }
+
         .status-message {
             text-align: center;
             padding: 30px;
@@ -137,6 +136,7 @@
             background: #fef5e8;
             border-radius: 20px;
         }
+
         .loading-spinner {
             display: inline-block;
             width: 20px;
@@ -146,6 +146,7 @@
             border-radius: 50%;
             animation: spin 0.6s linear infinite;
         }
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -162,27 +163,22 @@
         🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏
     </div>
 
-    <div class="button-group">
-        <button class="refresh-btn" id="refreshBtn">🔄 ပုံများ ပြန်လည်စတင်ရန်</button>
-        <button class="restore-all-btn" id="restoreAllBtn">🗑 ဖျက်ထားသမျှ ပြန်ပြရန်</button>
-    </div>
+    <button class="refresh-btn" id="refreshBtn">🔄 ပုံများ ပြန်လည်စတင်ရန်</button>
 
-    <div id="imageGrid" class="image-grid">
+    <div id="imageGrid">
         <div class="status-message">
             <span class="loading-spinner"></span> ပုံများ ယူနေပါသည်...
         </div>
     </div>
     
-    <div id="photoCounter" class="photo-counter"></div>
+    <div id="photoCounter" class="counter"></div>
 
-    <div class="social-links">
-        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank">
-            📱 Telegram Channel သို့ ဝင်ရန်
-        </a>
-        <a href="viber://chat?number=%2B959676827963" class="btn viber">
-            💬 Viber ဖြင့် ဆက်သွယ်ရန်
-        </a>
-    </div>
+    <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank" rel="noopener noreferrer">
+        📱 Telegram Channel သို့ ဝင်ရန်
+    </a>
+    <a href="viber://chat?number=%2B959676827963" class="btn viber">
+        💬 Viber ဖြင့် ဆက်သွယ်ရန်
+    </a>
 
     <div class="contact-info">
         <p>📞 ဆက်သွယ်ရန် - 09676827963</p>
@@ -193,117 +189,9 @@
 <script>
     // ==================== အသုံးပြုသူ ထည့်ရမည့် အချက်များ ====================
     const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
-    const CHANNEL_ID = "@mibamittaa";
-    
-    // ✅ ခင်ဗျားရဲ့ Worker URL ကို ထည့်ထားပါပြီ
-    const WORKER_URL = "https://withered-bread-7b3c.workers.dev";
+    const CHANNEL_USERNAME = "mibamittaa";  // @ မပါဘဲ ထည့်ပါ
     // ========================================================================
 
-    let allImages = [];
-    let deletedIds = [];
-
-    // ========== Central Database Functions ==========
-    async function fetchDeletedIds() {
-        try {
-            const res = await fetch(`${WORKER_URL}/deleted`);
-            const data = await res.json();
-            if (data.success) {
-                deletedIds = data.data;
-            }
-        } catch (err) {
-            console.error("fetchDeletedIds error:", err);
-            deletedIds = [];
-        }
-    }
-
-    async function deletePhotoGlobally(messageId) {
-        try {
-            const res = await fetch(`${WORKER_URL}/delete`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ messageId })
-            });
-            const data = await res.json();
-            return data.success;
-        } catch (err) {
-            console.error("deletePhotoGlobally error:", err);
-            return false;
-        }
-    }
-
-    async function restoreAllPhotos() {
-        try {
-            const res = await fetch(`${WORKER_URL}/restore_all`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" }
-            });
-            const data = await res.json();
-            return data.success;
-        } catch (err) {
-            console.error("restoreAllPhotos error:", err);
-            return false;
-        }
-    }
-
-    // ========== Telegram API Functions ==========
-    function escapeHtml(text) {
-        if (!text) return "";
-        return text.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            return '&gt;';
-        });
-    }
-
-    async function getImageUrl(fileId) {
-        try {
-            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`);
-            const data = await res.json();
-            if (data.ok && data.result) {
-                return `https://api.telegram.org/file/bot${BOT_TOKEN}/${data.result.file_path}?t=${Date.now()}`;
-            }
-            return null;
-        } catch (e) {
-            return null;
-        }
-    }
-
-    async function fetchTelegramImages() {
-        try {
-            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?t=${Date.now()}`);
-            const data = await res.json();
-            
-            if (!data.ok) throw new Error("API error");
-            
-            const images = [];
-            const channelUsername = CHANNEL_ID.startsWith('@') ? CHANNEL_ID.substring(1) : CHANNEL_ID;
-            
-            for (const update of data.result) {
-                const msg = update.channel_post;
-                if (msg && msg.chat && msg.chat.username === channelUsername && msg.photo) {
-                    const fileId = msg.photo[msg.photo.length - 1].file_id;
-                    const imageUrl = await getImageUrl(fileId);
-                    if (imageUrl) {
-                        images.push({
-                            url: imageUrl,
-                            caption: msg.caption || "",
-                            date: msg.date || 0,
-                            messageId: msg.message_id
-                        });
-                    }
-                }
-            }
-            
-            images.sort((a, b) => b.date - a.date);
-            return images;
-            
-        } catch (error) {
-            console.error("fetchTelegramImages error:", error);
-            return [];
-        }
-    }
-
-    // ========== Main Load Function ==========
     async function loadImages() {
         const gridView = document.getElementById('imageGrid');
         const counterDiv = document.getElementById('photoCounter');
@@ -311,65 +199,82 @@
         gridView.innerHTML = '<div class="status-message"><span class="loading-spinner"></span> ပုံများ ယူနေပါသည်...</div>';
         
         try {
-            await fetchDeletedIds();
-            const telegramImages = await fetchTelegramImages();
-            const visibleImages = telegramImages.filter(img => !deletedIds.includes(img.messageId));
-            allImages = visibleImages;
+            // Telegram API ကို တိုက်ရိုက်ခေါ်မယ်
+            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?t=${Date.now()}`);
+            const data = await res.json();
             
-            if (allImages.length === 0) {
+            if (!data.ok) {
+                throw new Error("Telegram API error");
+            }
+            
+            const images = [];
+            
+            for (const update of data.result) {
+                const msg = update.channel_post;
+                if (msg && msg.chat && msg.chat.username === CHANNEL_USERNAME && msg.photo) {
+                    // Get the largest photo
+                    const fileId = msg.photo[msg.photo.length - 1].file_id;
+                    
+                    // Get file path
+                    const fileRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`);
+                    const fileData = await fileRes.json();
+                    
+                    if (fileData.ok && fileData.result) {
+                        const imageUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.result.file_path}?t=${Date.now()}`;
+                        images.push({
+                            url: imageUrl,
+                            caption: msg.caption || "",
+                            date: msg.date || 0
+                        });
+                    }
+                }
+            }
+            
+            // Sort by date (newest first)
+            images.sort((a, b) => b.date - a.date);
+            
+            if (images.length === 0) {
                 gridView.innerHTML = '<div class="status-message">📭 လက်ရှိပုံများ မရှိသေးပါ</div>';
                 counterDiv.innerHTML = '';
             } else {
                 let html = '';
-                for (let i = 0; i < allImages.length; i++) {
-                    const img = allImages[i];
+                for (const img of images) {
                     const captionHtml = img.caption ? `<div class="caption">${escapeHtml(img.caption)}</div>` : '';
                     html += `
                         <div class="image-card">
-                            <button class="delete-global-btn" onclick="deletePhoto(${img.messageId})">✕ အမြဲတမ်းဖျက်ရန်</button>
                             <img src="${img.url}" alt="အထည်ပုံ" loading="lazy">
                             ${captionHtml}
                         </div>
                     `;
                 }
                 gridView.innerHTML = html;
-                counterDiv.innerHTML = `📸 စုစုပေါင်း ပုံအရေအတွက် - ${allImages.length} (ဖျက်ပြီးသား ${deletedIds.length} ပုံ ဖယ်ထား)`;
+                counterDiv.innerHTML = `📸 စုစုပေါင်း ပုံအရေအတွက် - ${images.length}`;
             }
             
         } catch (error) {
-            console.error(error);
-            gridView.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။</div>';
+            console.error("Load error:", error);
+            gridView.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။ နောက်မှ ထပ်ကြည့်ပါ။</div>';
         }
     }
 
-    async function deletePhoto(messageId) {
-        const success = await deletePhotoGlobally(messageId);
-        if (success) {
-            loadImages();
-        } else {
-            alert("ဖျက်လို့မရပါ။ နောက်မှထပ်စမ်းပါ။");
-        }
+    function escapeHtml(text) {
+        if (!text) return "";
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
     }
 
-    async function restoreAll() {
-        const success = await restoreAllPhotos();
-        if (success) {
-            loadImages();
-        } else {
-            alert("ပြန်ပြလို့မရပါ။");
-        }
-    }
-
+    // Refresh button
     document.getElementById('refreshBtn').addEventListener('click', function() {
         loadImages();
     });
+
+    // Auto refresh every 30 seconds (optional)
+    // setInterval(loadImages, 30000);
     
-    document.getElementById('restoreAllBtn').addEventListener('click', function() {
-        if (confirm("ဖျက်ထားသမျှပုံတွေကို ပြန်ပြမှာပါ။ ဆက်လုပ်မလား?")) {
-            restoreAll();
-        }
-    });
-    
+    // Load images on page load
     loadImages();
 </script>
 
