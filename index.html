@@ -1,262 +1,341 @@
 <!DOCTYPE html>
-<html lang="my">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-:root {
-    --primary: #8b5a2b;
-    --secondary: #b8863f;
-    --bg: #f6efe7;
-}
+        body {
+            font-family: system-ui, 'Myanmar Text', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #fdf8f0 0%, #f5e6d3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            border-radius: 32px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
 
-body {
-    font-family: system-ui, 'Myanmar Text', sans-serif;
-    background: linear-gradient(135deg,#f8f3ed,#efe3d3);
-    padding: 20px;
-}
+        /* Shop Info - အပေါ်ပိုင်း */
+        .shop-info {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0dcc5;
+        }
 
-/* Container */
-.container {
-    max-width: 620px;
-    margin: auto;
-}
+        .shop-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #8b5a2b;
+            margin-bottom: 8px;
+        }
 
-/* Glass Card */
-.card {
-    background: rgba(255,255,255,0.75);
-    backdrop-filter: blur(10px);
-    border-radius: 24px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    margin-bottom: 20px;
-}
+        .shop-name small {
+            font-size: 16px;
+            color: #b8863f;
+        }
 
-/* Header */
-.shop-name {
-    font-size: 26px;
-    font-weight: bold;
-    color: var(--primary);
-}
+        .welcome-message {
+            color: #b8863f;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+            padding: 8px;
+            background: #fef5e8;
+            border-radius: 50px;
+        }
 
-.shop-name small {
-    font-size: 14px;
-    color: var(--secondary);
-}
+        .shop-address {
+            font-size: 13px;
+            color: #7a5a4e;
+            background: #fef5e8;
+            padding: 10px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
 
-.welcome {
-    margin-top: 10px;
-    background: #fff3e3;
-    padding: 10px;
-    border-radius: 50px;
-    text-align: center;
-    font-weight: bold;
-    color: var(--secondary);
-}
+        .shop-address p {
+            margin: 3px 0;
+        }
 
-.info {
-    margin-top: 15px;
-    font-size: 14px;
-    color: #5a3e2e;
-    line-height: 1.6;
-}
+        /* Image Grid */
+        .image-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 20px 0;
+        }
 
-/* Image Grid */
-.grid {
-    display: grid;
-    gap: 15px;
-}
+        .image-card {
+            background: #f9f3ec;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
 
-.image-card {
-    border-radius: 18px;
-    overflow: hidden;
-    background: white;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    transition: 0.3s;
-}
+        .image-card:hover {
+            transform: translateY(-3px);
+        }
 
-.image-card:hover {
-    transform: translateY(-5px) scale(1.01);
-}
+        .image-card img {
+            width: 100%;
+            display: block;
+        }
 
-.image-card img {
-    width: 100%;
-    display: block;
-}
+        .caption {
+            padding: 12px;
+            font-size: 14px;
+            color: #5a3e2e;
+            background: white;
+            border-top: 1px solid #eee;
+            word-break: break-word;
+        }
 
-.caption {
-    padding: 10px;
-    font-size: 13px;
-}
+        /* Social Buttons */
+        .btn {
+            display: block;
+            text-align: center;
+            padding: 14px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            margin: 10px 0;
+            transition: transform 0.2s;
+        }
 
-/* Buttons */
-.btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    padding: 14px;
-    border-radius: 50px;
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
-    margin-top: 10px;
-    transition: 0.3s;
-}
+        .btn:hover {
+            transform: scale(1.02);
+        }
 
-.btn:hover {
-    transform: scale(1.03);
-}
+        .telegram {
+            background: linear-gradient(135deg, #0088cc, #005f8c);
+        }
 
-.telegram {
-    background: linear-gradient(135deg,#0088cc,#005f8c);
-}
+        .viber {
+            background: linear-gradient(135deg, #7360f2, #5a4ac7);
+        }
 
-.viber {
-    background: linear-gradient(135deg,#7360f2,#5a4ac7);
-}
+        .contact-info {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #7a5a4e;
+        }
 
-/* Loading */
-.status {
-    text-align: center;
-    padding: 30px;
-    color: var(--primary);
-}
+        /* Status */
+        .status-message {
+            text-align: center;
+            padding: 30px;
+            color: #8b5a2b;
+            background: #fef5e8;
+            border-radius: 20px;
+        }
 
-.spinner {
-    width: 22px;
-    height: 22px;
-    border: 3px solid #ddd;
-    border-top: 3px solid var(--primary);
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-    display: inline-block;
-}
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ddd;
+            border-top-color: #8b5a2b;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
-/* Modal */
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.9);
-    justify-content: center;
-    align-items: center;
-}
+        /* Modal for zoom */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+        }
 
-.modal img {
-    max-width: 95%;
-    max-height: 90%;
-}
+        .modal-content {
+            max-width: 95%;
+            max-height: 90%;
+            object-fit: contain;
+        }
 
-.close {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    font-size: 30px;
-    color: white;
-    cursor: pointer;
-}
-</style>
+        .modal-caption {
+            text-align: center;
+            color: white;
+            padding: 15px;
+            font-size: 14px;
+            background: rgba(0,0,0,0.7);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .close-modal {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+    </style>
 </head>
-
 <body>
 
 <div class="container">
-
-    <!-- Shop Info -->
-    <div class="card">
+    <div class="shop-info">
         <div class="shop-name">
             🧵 မိဘမေတ္တာ <small>အထည်ဆိုင်</small>
         </div>
-
-        <div class="welcome">
+        <div class="welcome-message">
             🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏
         </div>
-
-        <div class="info">
-            📞 09697455880 <br>
-            📍 အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး
+        <div class="shop-address">
+            <p>📞 ဆက်သွယ်ရန် - 09697455880</p>
+            <p>📍 လိပ်စာ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
         </div>
     </div>
 
-    <!-- Image Section -->
-    <div class="card">
-        <div id="grid" class="grid">
-            <div class="status">
-                <span class="spinner"></span><br>
-                ပုံများ ယူနေပါသည်...
-            </div>
+    <div id="imageGrid">
+        <div class="status-message">
+            <span class="loading-spinner"></span> ပုံများ ယူနေပါသည်...
         </div>
     </div>
 
-    <!-- Buttons -->
-    <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank">
-        📱 Telegram Channel
+    <!-- Telegram & Viber Buttons -->
+    <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank" rel="noopener noreferrer">
+        📱 Telegram Channel သို့ ဝင်ရန်
+    </a>
+    <a href="viber://chat?number=%2B959697455880" class="btn viber" target="_blank" onclick="setTimeout(function(){window.open('https://invite.viber.com/?g2=AQAkFUQwoiv461Yx1zedjxN%2BKlucfZcNOzM%2Bfh28iDVlEEcNa%2BXPXnBI1QCpLX2', '_blank');}, 25);">
+        💬 Viber ဖြင့် ဆက်သွယ်ရန်
     </a>
 
-    <a href="viber://chat?number=%2B959697455880" class="btn viber" target="_blank">
-        💬 Viber Chat
-    </a>
-
+    <div class="contact-info">
+        <p>📞 09697455880</p>
+        <p>📍 အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
+    </div>
 </div>
 
-<!-- Modal -->
-<div id="modal" class="modal" onclick="this.style.display='none'">
-    <span class="close">×</span>
-    <img id="modalImg">
+<!-- Image Modal -->
+<div id="imageModal" class="modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modalImage">
+    <div id="modalCaption" class="modal-caption"></div>
 </div>
 
 <script>
-const BOT_TOKEN = "YOUR_TOKEN";
-const CHANNEL = "mibamittaa";
+    // ==================== Configuration ====================
+    const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
+    const CHANNEL_USERNAME = "mibamittaa";
+    // =======================================================
 
-function openModal(src){
-    document.getElementById("modal").style.display="flex";
-    document.getElementById("modalImg").src = src;
-}
-
-async function load(){
-    const grid = document.getElementById("grid");
-
-    try{
-        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
-        const data = await res.json();
-
-        let html = "";
-
-        data.result.reverse().forEach(u=>{
-            let m = u.channel_post;
-            if(m && m.photo){
-                let fileId = m.photo.pop().file_id;
-
-                html += `
-                <div class="image-card" onclick="openModal('https://api.telegram.org/file/bot${BOT_TOKEN}/${fileId}')">
-                    <img src="https://api.telegram.org/file/bot${BOT_TOKEN}/${fileId}">
-                    ${m.caption ? `<div class="caption">${m.caption}</div>` : ""}
-                </div>`;
-            }
-        });
-
-        grid.innerHTML = html || "No images";
-
-    }catch{
-        grid.innerHTML = "Error loading images";
+    function openModal(imageSrc, caption) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+        modal.style.display = "flex";
+        modalImg.src = imageSrc;
+        modalCaption.textContent = caption || "";
     }
-}
 
-load();
+    function closeModal() {
+        document.getElementById('imageModal').style.display = "none";
+    }
+
+    function escapeHtml(text) {
+        if (!text) return "";
+        return text.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            return '&gt;';
+        });
+    }
+
+    async function loadImages() {
+        const gridView = document.getElementById('imageGrid');
+        
+        gridView.innerHTML = '<div class="status-message"><span class="loading-spinner"></span> ပုံများ ယူနေပါသည်...</div>';
+        
+        try {
+            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?t=${Date.now()}`);
+            const data = await res.json();
+            
+            if (!data.ok) throw new Error("API error");
+            
+            const images = [];
+            
+            for (const update of data.result) {
+                const msg = update.channel_post;
+                if (msg && msg.chat && msg.chat.username === CHANNEL_USERNAME && msg.photo) {
+                    const fileId = msg.photo[msg.photo.length - 1].file_id;
+                    const fileRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`);
+                    const fileData = await fileRes.json();
+                    
+                    if (fileData.ok && fileData.result) {
+                        const imageUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileData.result.file_path}?t=${Date.now()}`;
+                        images.push({
+                            url: imageUrl,
+                            caption: msg.caption || "",
+                            date: msg.date || 0
+                        });
+                    }
+                }
+            }
+            
+            images.sort((a, b) => b.date - a.date);
+            
+            if (images.length === 0) {
+                gridView.innerHTML = '<div class="status-message">📭 လက်ရှိပုံများ မရှိသေးပါ</div>';
+            } else {
+                let html = '';
+                for (let i = 0; i < images.length; i++) {
+                    const img = images[i];
+                    const captionHtml = img.caption ? `<div class="caption">${escapeHtml(img.caption)}</div>` : '';
+                    html += `
+                        <div class="image-card" onclick="openModal('${img.url}', '${escapeHtml(img.caption)}')">
+                            <img src="${img.url}" alt="အထည်ပုံ" loading="lazy">
+                            ${captionHtml}
+                        </div>
+                    `;
+                }
+                gridView.innerHTML = html;
+            }
+            
+        } catch (error) {
+            console.error(error);
+            gridView.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။ နောက်မှ ထပ်ကြည့်ပါ။</div>';
+        }
+    }
+    
+    // Auto refresh every 30 seconds
+    loadImages();
+    setInterval(loadImages, 30000);
 </script>
 
 </body>
