@@ -23,7 +23,6 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
-        /* Shop Info - အပေါ်ပိုင်း */
         .shop-info {
             text-align: center;
             margin-bottom: 25px;
@@ -62,7 +61,6 @@
             margin-top: 10px;
         }
 
-        /* Social Buttons - အလယ်ပိုင်း */
         .social-buttons {
             margin-bottom: 25px;
         }
@@ -79,19 +77,10 @@
             transition: transform 0.2s;
         }
 
-        .btn:hover {
-            transform: scale(1.02);
-        }
+        .btn:hover { transform: scale(1.02); }
+        .telegram { background: linear-gradient(135deg, #0088cc, #005f8c); }
+        .viber { background: linear-gradient(135deg, #7360f2, #5a4ac7); }
 
-        .telegram {
-            background: linear-gradient(135deg, #0088cc, #005f8c);
-        }
-
-        .viber {
-            background: linear-gradient(135deg, #7360f2, #5a4ac7);
-        }
-
-        /* Image Grid - အောက်ဆုံးပိုင်း */
         .image-grid {
             display: flex;
             flex-direction: column;
@@ -108,14 +97,8 @@
             transition: transform 0.2s;
         }
 
-        .image-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .image-card img {
-            width: 100%;
-            display: block;
-        }
+        .image-card:hover { transform: translateY(-3px); }
+        .image-card img { width: 100%; display: block; }
 
         .caption {
             padding: 12px;
@@ -143,11 +126,8 @@
             animation: spin 0.6s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Modal for zoom */
         .modal {
             display: none;
             position: fixed;
@@ -162,12 +142,7 @@
             align-items: center;
         }
 
-        .modal-content {
-            max-width: 95%;
-            max-height: 90%;
-            object-fit: contain;
-        }
-
+        .modal-content { max-width: 95%; max-height: 90%; object-fit: contain; }
         .modal-caption {
             text-align: center;
             color: white;
@@ -179,7 +154,6 @@
             left: 0;
             right: 0;
         }
-
         .close-modal {
             position: fixed;
             top: 20px;
@@ -194,39 +168,25 @@
 <body>
 
 <div class="container">
-    <!-- အပေါ်ပိုင်း - ဆိုင်အချက်အလက်များ -->
     <div class="shop-info">
-        <div class="shop-name">
-            🧵 မိဘမေတ္တာ <small>အထည်ဆိုင်</small>
-        </div>
-        <div class="welcome-message">
-            🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏
-        </div>
+        <div class="shop-name">🧵 မိဘမေတ္တာ <small>အထည်ဆိုင်</small></div>
+        <div class="welcome-message">🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏</div>
         <div class="shop-address">
             <p>📞 ဆက်သွယ်ရန် - 09697455880</p>
             <p>📍 လိပ်စာ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
         </div>
     </div>
 
-    <!-- အလယ်ပိုင်း - Social ခလုတ်များ -->
     <div class="social-buttons">
-        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank">
-            📱 Telegram Channel သို့ ဝင်ရန်
-        </a>
-        <a href="viber://chat?number=%2B959697455880" class="btn viber">
-            💬 Viber ဖြင့် ဆက်သွယ်ရန်
-        </a>
+        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank">📱 Telegram Channel သို့ ဝင်ရန်</a>
+        <a href="viber://chat?number=%2B959697455880" class="btn viber">💬 Viber ဖြင့် ဆက်သွယ်ရန်</a>
     </div>
 
-    <!-- အောက်ဆုံးပိုင်း - ပုံများ -->
     <div id="imageGrid">
-        <div class="status-message">
-            <span class="loading-spinner"></span> ပုံများ ယူနေပါသည်...
-        </div>
+        <div class="status-message"><span class="loading-spinner"></span> ပုံများ ယူနေပါသည်...</div>
     </div>
 </div>
 
-<!-- Image Modal -->
 <div id="imageModal" class="modal" onclick="closeModal()">
     <span class="close-modal">&times;</span>
     <img class="modal-content" id="modalImage">
@@ -234,8 +194,10 @@
 </div>
 
 <script>
-    const BOT_TOKEN = "{{BOT_TOKEN}}";
+    // ==================== Token တိုက်ရိုက်ထည့်ထားပါပြီ ====================
+    const BOT_TOKEN = "8782193599:AAFrPHXaazbPfsZZOmHESiugrnv_M5tiKfE";
     const CHANNEL_USERNAME = "mibamittaa";
+    // ====================================================================
 
     function openModal(src, caption) {
         const modal = document.getElementById('imageModal');
@@ -256,7 +218,9 @@
         try {
             const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?t=${Date.now()}`);
             const data = await res.json();
-            if (!data.ok) throw new Error("API error");
+            
+            if (!data.ok) throw new Error("API error: " + (data.description || "Unknown"));
+            
             const images = [];
             for (const update of data.result) {
                 const msg = update.channel_post;
@@ -274,6 +238,7 @@
                 }
             }
             images.sort((a, b) => b.date - a.date);
+            
             if (images.length === 0) {
                 grid.innerHTML = '<div class="status-message">📭 လက်ရှိပုံများ မရှိသေးပါ</div>';
             } else {
@@ -289,9 +254,11 @@
                 grid.innerHTML = html;
             }
         } catch(e) {
-            grid.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။</div>';
+            console.error("Load error:", e);
+            grid.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။ Token စစ်ဆေးပါ။</div>';
         }
     }
+    
     loadImages();
     setInterval(loadImages, 30000);
 </script>
