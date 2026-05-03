@@ -21,35 +21,61 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
         .shop-info { text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #f0dcc5; }
-        .shop-name { font-size: 28px; font-weight: bold; color: #8b5a2b; margin-bottom: 8px; }
-        .shop-name small { font-size: 16px; color: #b8863f; }
+        .shop-name { font-size: 28px; font-weight: bold; color: #8b5a2b; }
         .welcome-message { color: #b8863f; font-size: 18px; font-weight: bold; margin: 15px 0; padding: 8px; background: #fef5e8; border-radius: 50px; }
         .shop-address { font-size: 13px; color: #7a5a4e; background: #fef5e8; padding: 10px; border-radius: 20px; margin-top: 10px; }
         .social-buttons { margin-bottom: 25px; }
-        .btn { display: block; text-align: center; padding: 14px; border-radius: 50px; text-decoration: none; font-weight: bold; color: white; margin: 10px 0; transition: transform 0.2s; }
-        .btn:hover { transform: scale(1.02); }
-        .telegram { background: linear-gradient(135deg, #0088cc, #005f8c); }
-        .viber { background: linear-gradient(135deg, #7360f2, #5a4ac7); }
+        .btn { display: block; text-align: center; padding: 14px; border-radius: 50px; text-decoration: none; font-weight: bold; color: white; margin: 10px 0; }
+        .telegram { background: #0088cc; }
+        .viber { background: #7360f2; }
         .post-card {
             background: white;
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 25px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
+            position: relative;
         }
-        .post-card:hover { transform: translateY(-3px); }
-        .post-image { width: 100%; display: block; background: #f0e0cd; }
+        .post-image { width: 100%; display: block; }
         .post-content { padding: 15px; }
         .post-text { padding: 18px; font-size: 16px; color: #4a3520; line-height: 1.5; }
         .post-caption { font-size: 15px; color: #5a3e2e; margin-bottom: 8px; }
         .post-date { font-size: 11px; color: #a08060; margin-top: 8px; border-top: 1px solid #eee; padding-top: 8px; }
+        
+        /* Delete Button - Admin မှသာမြင်ရမယ် */
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(220, 20, 60, 0.9);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 10;
+            font-weight: bold;
+        }
+        .delete-btn:hover { background: rgba(200, 0, 0, 0.9); }
+        
+        .admin-badge {
+            background: #c0392b;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
         .status-message { text-align: center; padding: 40px; color: #8b5a2b; background: #fef5e8; border-radius: 20px; }
         .loading-spinner { display: inline-block; width: 24px; height: 24px; border: 3px solid #ddd; border-top-color: #8b5a2b; border-radius: 50%; animation: spin 0.6s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .refresh-btn { background: #8b5a2b; color: white; border: none; padding: 10px 24px; border-radius: 40px; font-size: 14px; font-weight: bold; cursor: pointer; display: block; margin: 0 auto 25px auto; }
+        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; cursor: pointer; justify-content: center; align-items: center; }
-        .modal-content { max-width: 95%; max-height: 90%; object-fit: contain; border-radius: 8px; }
+        .modal-content { max-width: 95%; max-height: 90%; object-fit: contain; }
         .modal-caption { text-align: center; color: white; padding: 15px; font-size: 14px; background: rgba(0,0,0,0.7); position: fixed; bottom: 0; left: 0; right: 0; }
         .close-modal { position: fixed; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 1001; }
     </style>
@@ -67,10 +93,12 @@
     </div>
 
     <div class="social-buttons">
-        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank">📱 Telegram Channel သို့ ဝင်ရန်</a>
-        <a href="viber://chat?number=%2B959697455880" class="btn viber">💬 Viber ဖြင့် ဆက်သွယ်ရန်</a>
+        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank">📱 Telegram Channel</a>
+        <a href="viber://chat?number=%2B959697455880" class="btn viber">💬 Viber</a>
     </div>
 
+    <div id="adminPanel"></div>
+    
     <button class="refresh-btn" id="refreshBtn">🔄 ပို့စ်များ ပြန်လည်စတင်ရန်</button>
 
     <div id="postGrid">
@@ -85,10 +113,30 @@
 </div>
 
 <script>
-    // ==================== Worker API အသုံးပြုခြင်း ====================
-    // သတိပြုရန်- ဒါသည် Telegram API မဟုတ်ဘဲ Worker API ဖြစ်သည်။
     const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
-    // ====================================================================
+    
+    // ==================== Admin Link System ====================
+    // စကားဝှက် (သင့်စိတ်ကြိုက်ပြောင်းပါ)
+    const ADMIN_PASSWORD = "admin123";
+    
+    // URL parameter ကို စစ်ဆေးမယ်
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAdminMode = urlParams.has('admin');
+    
+    let isAdmin = false;
+    
+    // Admin mode ဖြစ်ပြီး စကားဝှက်မှန်မှ Delete Button ပြမယ်
+    if (isAdminMode) {
+        const enteredPassword = prompt("🔒 Admin စကားဝှက် ထည့်ပါ:");
+        if (enteredPassword === ADMIN_PASSWORD) {
+            isAdmin = true;
+            document.getElementById('adminPanel').innerHTML = '<div class="admin-badge">🔐 Admin Mode (ဖျက်ခွင့်ရှိတယ်)</div>';
+        } else {
+            alert("စကားဝှက်မှားယွင်းပါသည်။ သာမန်အသုံးပြုသူအနေနဲ့ ဆက်လက်ကြည့်ရှုပါ။");
+            isAdmin = false;
+        }
+    }
+    // =================================================================
 
     function formatDate(timestamp) {
         if (!timestamp) return "ရက်စွဲမရှိ";
@@ -101,18 +149,36 @@
         return text.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
     }
 
+    async function deletePost(postId) {
+        if (!confirm("ဒီပို့စ်ကို ဖျက်မှာလား?")) return;
+        
+        try {
+            const response = await fetch(`${WORKER_URL}/post/${postId}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                alert("✅ ပို့စ်ဖျက်ပြီးပါပြီ");
+                loadPosts();
+            } else {
+                alert("❌ ဖျက်လို့မရပါ။ Error: " + (data.error || "Unknown"));
+            }
+        } catch(error) {
+            console.error("Delete error:", error);
+            alert("❌ ဖျက်လို့မရပါ။");
+        }
+    }
+
     async function loadPosts() {
         const grid = document.getElementById('postGrid');
         grid.innerHTML = '<div class="status-message"><span class="loading-spinner"></span> ပို့စ်များ ယူနေပါသည်...</div>';
         
         try {
-            // Worker API ကို ခေါ်ခြင်း
             const response = await fetch(`${WORKER_URL}/posts`);
             const data = await response.json();
             
-            if (!data.success) {
-                throw new Error(data.error || "API error");
-            }
+            if (!data.success) throw new Error(data.error || "API error");
             
             const posts = data.posts;
             
@@ -125,9 +191,13 @@
             for (const post of posts) {
                 const dateStr = formatDate(post.date);
                 
+                // Admin မှသာ Delete Button ပြမယ်
+                const deleteButtonHtml = isAdmin ? `<button class="delete-btn" onclick="deletePost(${post.id})">✕ ဖျက်ရန်</button>` : '';
+                
                 if (post.type === 'photo') {
                     html += `
                         <div class="post-card">
+                            ${deleteButtonHtml}
                             <img class="post-image" src="${post.image_url}" onclick="openModal('${post.image_url}', '${escapeHtml(post.caption)}')">
                             <div class="post-content">
                                 ${post.caption ? `<div class="post-caption">📝 ${escapeHtml(post.caption)}</div>` : ''}
@@ -138,6 +208,7 @@
                 } else if (post.type === 'text') {
                     html += `
                         <div class="post-card">
+                            ${deleteButtonHtml}
                             <div class="post-text">
                                 💬 ${escapeHtml(post.text)}
                                 <div class="post-date">📅 ${dateStr}</div>
@@ -167,7 +238,6 @@
 
     document.getElementById('refreshBtn').addEventListener('click', loadPosts);
     
-    // Page ဖွင့်တာနဲ့ ပို့စ်များ Load လုပ်ခြင်း
     loadPosts();
 </script>
 
