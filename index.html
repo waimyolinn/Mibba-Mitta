@@ -42,7 +42,6 @@
         .post-caption { font-size: 15px; color: #5a3e2e; margin-bottom: 8px; }
         .post-date { font-size: 11px; color: #a08060; margin-top: 8px; border-top: 1px solid #eee; padding-top: 8px; }
         
-        /* Delete Button - Admin မှသာမြင်ရမယ် */
         .delete-btn {
             position: absolute;
             top: 10px;
@@ -115,28 +114,30 @@
 <script>
     const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
     
-    // ==================== Admin Link System ====================
-    // စကားဝှက် (သင့်စိတ်ကြိုက်ပြောင်းပါ)
+    // Admin Link System
     const ADMIN_PASSWORD = "admin123";
-    
-    // URL parameter ကို စစ်ဆေးမယ်
     const urlParams = new URLSearchParams(window.location.search);
     const isAdminMode = urlParams.has('admin');
+    const urlPassword = urlParams.get('pwd');
     
     let isAdmin = false;
     
-    // Admin mode ဖြစ်ပြီး စကားဝှက်မှန်မှ Delete Button ပြမယ်
     if (isAdminMode) {
-        const enteredPassword = prompt("🔒 Admin စကားဝှက် ထည့်ပါ:");
-        if (enteredPassword === ADMIN_PASSWORD) {
+        if (urlPassword === ADMIN_PASSWORD) {
             isAdmin = true;
             document.getElementById('adminPanel').innerHTML = '<div class="admin-badge">🔐 Admin Mode (ဖျက်ခွင့်ရှိတယ်)</div>';
+        } else if (!urlPassword) {
+            const enteredPassword = prompt("🔒 Admin စကားဝှက် ထည့်ပါ:");
+            if (enteredPassword === ADMIN_PASSWORD) {
+                isAdmin = true;
+                document.getElementById('adminPanel').innerHTML = '<div class="admin-badge">🔐 Admin Mode (ဖျက်ခွင့်ရှိတယ်)</div>';
+            } else if (enteredPassword !== null) {
+                alert("စကားဝှက်မှားယွင်းပါသည်။");
+            }
         } else {
-            alert("စကားဝှက်မှားယွင်းပါသည်။ သာမန်အသုံးပြုသူအနေနဲ့ ဆက်လက်ကြည့်ရှုပါ။");
-            isAdmin = false;
+            alert("စကားဝှက်မှားယွင်းပါသည်။");
         }
     }
-    // =================================================================
 
     function formatDate(timestamp) {
         if (!timestamp) return "ရက်စွဲမရှိ";
@@ -150,13 +151,19 @@
     }
 
     async function deletePost(postId) {
+        console.log("Delete function called for post:", postId);
+        
         if (!confirm("ဒီပို့စ်ကို ဖျက်မှာလား?")) return;
         
         try {
+            console.log("Sending DELETE to:", `${WORKER_URL}/post/${postId}`);
             const response = await fetch(`${WORKER_URL}/post/${postId}`, {
                 method: 'DELETE'
             });
+            console.log("Response status:", response.status);
+            
             const data = await response.json();
+            console.log("Response data:", data);
             
             if (data.success) {
                 alert("✅ ပို့စ်ဖျက်ပြီးပါပြီ");
@@ -166,7 +173,7 @@
             }
         } catch(error) {
             console.error("Delete error:", error);
-            alert("❌ ဖျက်လို့မရပါ။");
+            alert("❌ ဖျက်လို့မရပါ။ Error: " + error.message);
         }
     }
 
@@ -191,7 +198,6 @@
             for (const post of posts) {
                 const dateStr = formatDate(post.date);
                 
-                // Admin မှသာ Delete Button ပြမယ်
                 const deleteButtonHtml = isAdmin ? `<button class="delete-btn" onclick="deletePost(${post.id})">✕ ဖျက်ရန်</button>` : '';
                 
                 if (post.type === 'photo') {
