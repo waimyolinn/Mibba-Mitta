@@ -39,7 +39,7 @@
         .telegram { background: #0088cc; }
         .viber { background: #7360f2; }
         
-        /* Install Button (အလိုအလျောက် ပေါ်မယ်) */
+        /* Install Banner */
         .install-banner {
             position: fixed;
             bottom: 20px;
@@ -47,7 +47,7 @@
             right: 20px;
             background: #8b5a2b;
             color: white;
-            padding: 15px;
+            padding: 15px 20px;
             border-radius: 30px;
             display: flex;
             justify-content: space-between;
@@ -68,13 +68,15 @@
             border-radius: 30px;
             font-weight: bold;
             cursor: pointer;
+            margin-left: 10px;
         }
-        .close-banner {
+        .install-banner .close-banner {
             background: none;
             color: white;
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
-            padding: 5px;
+            padding: 0 5px;
+            margin-left: 10px;
         }
         
         .post-card {
@@ -157,7 +159,7 @@
 <script>
     const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
     
-    // ========== PWA Installation (အလိုအလျောက် Install Prompt) ==========
+    // ========== PWA Installation (အောက်ခြေ Banner) ==========
     let deferredPrompt;
     let installBanner = null;
     
@@ -169,10 +171,12 @@
     
     function showInstallBanner() {
         if (installBanner) return;
+        if (window.matchMedia('(display-mode: standalone)').matches) return;
+        
         installBanner = document.createElement('div');
         installBanner.className = 'install-banner';
         installBanner.innerHTML = `
-            <span>📲 မိဘမေတ္တာ App ကို Home Screen မှာ ထည့်ပါ</span>
+            <span style="flex:1;">📲 မိဘမေတ္တာ App ထည့်ပါ</span>
             <button id="installNowBtn">Install</button>
             <span class="close-banner" id="closeBannerBtn">✕</span>
         `;
@@ -183,16 +187,15 @@
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    console.log('App installed');
+                    if (installBanner) installBanner.remove();
+                    installBanner = null;
                 }
                 deferredPrompt = null;
-                installBanner.remove();
-                installBanner = null;
             }
         });
         
         document.getElementById('closeBannerBtn').addEventListener('click', () => {
-            installBanner.remove();
+            if (installBanner) installBanner.remove();
             installBanner = null;
         });
     }
@@ -204,11 +207,9 @@
     const urlPassword = urlParams.get('pwd');
     let isAdmin = false;
     
-    if (isAdminMode) {
-        if (urlPassword === "admin123") {
-            isAdmin = true;
-            document.getElementById('adminPanel').innerHTML = '<div class="admin-badge">🔐 Admin Mode (ဖျက်ခွင့်ရှိတယ်)</div>';
-        }
+    if (isAdminMode && urlPassword === "admin123") {
+        isAdmin = true;
+        document.getElementById('adminPanel').innerHTML = '<div class="admin-badge">🔐 Admin Mode (ဖျက်ခွင့်ရှိတယ်)</div>';
     }
 
     function formatDate(timestamp) {
@@ -226,20 +227,16 @@
         if (!confirm("ဒီပို့စ်ကို ဖျက်မှာလား?")) return;
         
         try {
-            const response = await fetch(`${WORKER_URL}/post/${postId}`, {
-                method: 'DELETE'
-            });
+            const response = await fetch(`${WORKER_URL}/post/${postId}`, { method: 'DELETE' });
             const data = await response.json();
-            
             if (data.success) {
-                alert("✅ ပို့စ်ဖျက်ပြီးပါပြီ");
+                alert("✅ ဖျက်ပြီးပါပြီ");
                 loadPosts();
             } else {
-                alert("❌ ဖျက်လို့မရပါ။");
+                alert("❌ ဖျက်လို့မရပါ");
             }
         } catch(error) {
-            console.error(error);
-            alert("❌ ဖျက်လို့မရပါ။");
+            alert("❌ ဖျက်လို့မရပါ");
         }
     }
 
@@ -250,11 +247,9 @@
         try {
             const response = await fetch(`${WORKER_URL}/posts`);
             const data = await response.json();
-            
             if (!data.success) throw new Error("API error");
             
             const posts = data.posts;
-            
             if (!posts || posts.length === 0) {
                 grid.innerHTML = '<div class="status-message">📭 လက်ရှိပို့စ်များ မရှိသေးပါ</div>';
                 return;
@@ -263,13 +258,12 @@
             let html = '';
             for (const post of posts) {
                 const dateStr = formatDate(post.date);
-                
-                const deleteButtonHtml = isAdmin ? `<button class="delete-btn" onclick="deletePost(${post.id})">✕ ဖျက်ရန်</button>` : '';
+                const deleteBtn = isAdmin ? `<button class="delete-btn" onclick="deletePost(${post.id})">✕ ဖျက်ရန်</button>` : '';
                 
                 if (post.type === 'photo') {
                     html += `
                         <div class="post-card">
-                            ${deleteButtonHtml}
+                            ${deleteBtn}
                             <img class="post-image" src="${post.image_url}" onclick="openModal('${post.image_url}', '${escapeHtml(post.caption)}')">
                             <div class="post-content">
                                 ${post.caption ? `<div class="post-caption">📝 ${escapeHtml(post.caption)}</div>` : ''}
@@ -280,7 +274,7 @@
                 } else if (post.type === 'text') {
                     html += `
                         <div class="post-card">
-                            ${deleteButtonHtml}
+                            ${deleteBtn}
                             <div class="post-text">
                                 💬 ${escapeHtml(post.text)}
                                 <div class="post-date">📅 ${dateStr}</div>
@@ -290,9 +284,7 @@
                 }
             }
             grid.innerHTML = html;
-            
         } catch(error) {
-            console.error(error);
             grid.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။</div>';
         }
     }
@@ -309,7 +301,6 @@
     }
 
     document.getElementById('refreshBtn').addEventListener('click', loadPosts);
-    
     loadPosts();
 </script>
 
