@@ -9,7 +9,6 @@
     <meta name="google-site-verification" content="NLqyHByZ-OnqMIKZDidDeUzfNeXN8-SfJElHoPqbrY8" />
     
     <!-- ==================== PWA Meta Tags ==================== -->
-    <!-- Manifest -->
     <link rel="manifest" href="/manifest.json">
     
     <!-- iOS Safari Support -->
@@ -30,7 +29,6 @@
     
     <!-- Description -->
     <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင် - အရည်အသွေးမြင့် အထည်များ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး">
-    <meta name="keywords" content="မိဘမေတ္တာ,အထည်ဆိုင်,အိုးထိန်း,မြန်မာ,အထည်အလိပ်">
     
     <!-- Open Graph (Facebook Share) -->
     <meta property="og:title" content="မိဘမေတ္တာ အထည်ဆိုင်">
@@ -59,17 +57,59 @@
         }
         
         /* Shop Info */
-        .shop-info { text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #f0dcc5; }
-        .shop-name { font-size: 28px; font-weight: bold; color: #8b5a2b; }
-        .welcome-message { color: #b8863f; font-size: 18px; font-weight: bold; margin: 15px 0; padding: 8px; background: #fef5e8; border-radius: 50px; }
-        .shop-address { font-size: 13px; color: #7a5a4e; background: #fef5e8; padding: 10px; border-radius: 20px; margin-top: 10px; }
+        .shop-info { 
+            text-align: center; 
+            margin-bottom: 25px; 
+            padding-bottom: 15px; 
+            border-bottom: 2px solid #f0dcc5; 
+            cursor: default;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .shop-name { 
+            font-size: 28px; 
+            font-weight: bold; 
+            color: #8b5a2b; 
+            padding: 10px;
+            border-radius: 15px;
+            transition: background 0.3s;
+        }
+        .shop-name:active {
+            background: #fef5e8;
+        }
+        .welcome-message { 
+            color: #b8863f; 
+            font-size: 18px; 
+            font-weight: bold; 
+            margin: 15px 0; 
+            padding: 8px; 
+            background: #fef5e8; 
+            border-radius: 50px; 
+        }
+        .shop-address { 
+            font-size: 13px; 
+            color: #7a5a4e; 
+            background: #fef5e8; 
+            padding: 10px; 
+            border-radius: 20px; 
+            margin-top: 10px; 
+        }
         
         /* Buttons */
         .social-buttons { margin-bottom: 25px; }
         .btn { 
-            display: block; text-align: center; padding: 14px; border-radius: 50px; 
-            text-decoration: none; font-weight: bold; color: white; margin: 10px 0; 
-            transition: transform 0.2s; border: none; width: 100%; cursor: pointer;
+            display: block; 
+            text-align: center; 
+            padding: 14px; 
+            border-radius: 50px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            color: white; 
+            margin: 10px 0; 
+            transition: transform 0.2s; 
+            border: none; 
+            width: 100%; 
+            cursor: pointer;
             font-size: 16px;
         }
         .btn:hover { transform: scale(1.02); }
@@ -138,42 +178,121 @@
             color: white;
             border: none;
             border-radius: 30px;
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 8px 16px;
+            font-size: 13px;
             cursor: pointer;
             z-index: 10;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .delete-btn:active {
+            background: rgba(180, 10, 40, 0.9);
+            transform: scale(0.95);
         }
         
         /* Admin Badge */
         .admin-badge {
             background: #c0392b;
             color: white;
-            padding: 5px 12px;
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 13px;
             display: inline-block;
             margin-bottom: 15px;
+            font-weight: bold;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Admin Logout Button */
+        .admin-logout-btn {
+            background: none;
+            border: 1px solid #c0392b;
+            color: #c0392b;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: 10px;
         }
         
         /* Status */
-        .status-message { text-align: center; padding: 40px; color: #8b5a2b; background: #fef5e8; border-radius: 20px; }
-        .loading-spinner { display: inline-block; width: 24px; height: 24px; border: 3px solid #ddd; border-top-color: #8b5a2b; border-radius: 50%; animation: spin 0.6s linear infinite; }
+        .status-message { 
+            text-align: center; 
+            padding: 40px; 
+            color: #8b5a2b; 
+            background: #fef5e8; 
+            border-radius: 20px; 
+        }
+        .loading-spinner { 
+            display: inline-block; 
+            width: 24px; 
+            height: 24px; 
+            border: 3px solid #ddd; 
+            border-top-color: #8b5a2b; 
+            border-radius: 50%; 
+            animation: spin 0.6s linear infinite; 
+        }
         @keyframes spin { to { transform: rotate(360deg); } }
         
         /* Refresh Button */
-        .refresh-btn { background: #8b5a2b; color: white; border: none; padding: 10px 24px; border-radius: 40px; font-size: 14px; font-weight: bold; cursor: pointer; display: block; margin: 0 auto 25px auto; }
+        .refresh-btn { 
+            background: #8b5a2b; 
+            color: white; 
+            border: none; 
+            padding: 10px 24px; 
+            border-radius: 40px; 
+            font-size: 14px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            display: block; 
+            margin: 0 auto 25px auto; 
+        }
         
         /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; cursor: pointer; justify-content: center; align-items: center; }
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.95); 
+            z-index: 1000; 
+            cursor: pointer; 
+            justify-content: center; 
+            align-items: center; 
+        }
         .modal-content { max-width: 95%; max-height: 90%; object-fit: contain; }
-        .modal-caption { text-align: center; color: white; padding: 15px; font-size: 14px; background: rgba(0,0,0,0.7); position: fixed; bottom: 0; left: 0; right: 0; }
-        .close-modal { position: fixed; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 1001; }
+        .modal-caption { 
+            text-align: center; 
+            color: white; 
+            padding: 15px; 
+            font-size: 14px; 
+            background: rgba(0,0,0,0.7); 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+        }
+        .close-modal { 
+            position: fixed; 
+            top: 20px; 
+            right: 30px; 
+            color: white; 
+            font-size: 40px; 
+            cursor: pointer; 
+            z-index: 1001; 
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Shop Info -->
+    <!-- Shop Info (Long Press for Admin = 3 seconds) -->
     <div class="shop-info">
         <div class="shop-name">🧵 မိဘမေတ္တာ <small>အထည်ဆိုင်</small></div>
         <div class="welcome-message">🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏</div>
@@ -185,7 +304,7 @@
 
     <!-- Social Buttons -->
     <div class="social-buttons">
-        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank">📱 Telegram Channel</a>
+        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank" rel="noopener">📱 Telegram Channel</a>
         <a href="viber://chat?number=%2B959697455880" class="btn viber">💬 Viber</a>
     </div>
 
@@ -221,6 +340,21 @@
     <div id="modalCaption" class="modal-caption"></div>
 </div>
 
+<!-- ==================== Admin Login Modal ==================== -->
+<div id="adminModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:999; justify-content:center; align-items:center;">
+    <div style="background:white; padding:30px 25px; border-radius:20px; text-align:center; width:90%; max-width:350px; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+        <div style="font-size:40px; margin-bottom:10px;">🔐</div>
+        <h3 style="color:#8b5a2b; margin-bottom:5px;">Admin Login</h3>
+        <p style="color:#888; margin-bottom:20px; font-size:14px;">မိဘမေတ္တာ အထည်ဆိုင်</p>
+        <input type="password" id="pinInput" style="width:100%; padding:14px; border:2px solid #ddd; border-radius:12px; font-size:16px; text-align:center; outline:none; transition:border 0.3s;" placeholder="Password ထည့်ပါ" onfocus="this.style.borderColor='#8b5a2b'" onblur="this.style.borderColor='#ddd'" onkeypress="if(event.key==='Enter')checkPin()">
+        <div style="margin-top:15px; display:flex; gap:10px;">
+            <button onclick="checkPin()" style="flex:1; background:#8b5a2b; color:white; border:none; padding:12px; border-radius:50px; font-size:15px; font-weight:bold; cursor:pointer;">ဝင်ရောက်မည်</button>
+            <button onclick="closeAdminModal()" style="flex:1; background:#eee; color:#666; border:none; padding:12px; border-radius:50px; font-size:15px; cursor:pointer;">ပိတ်မည်</button>
+        </div>
+        <p id="pinError" style="color:#e74c3c; margin-top:12px; display:none; font-size:13px;"></p>
+    </div>
+</div>
+
 <script>
     // ==================== Configuration ====================
     const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
@@ -232,13 +366,11 @@
                 .then(registration => {
                     console.log('✅ Service Worker registered:', registration.scope);
                     
-                    // Check for updates
                     registration.addEventListener('updatefound', () => {
                         const newWorker = registration.installing;
                         newWorker.addEventListener('statechange', () => {
                             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                                 console.log('🔄 New update available!');
-                                // Auto-update
                                 newWorker.postMessage('SKIP_WAITING');
                                 window.location.reload();
                             }
@@ -254,13 +386,11 @@
     const installBtn = document.getElementById('installBtn');
     const installedMsg = document.getElementById('installedMsg');
     
-    // Check if already installed
     if (window.matchMedia('(display-mode: standalone)').matches) {
         installedMsg.style.display = 'block';
         console.log('✅ App is running in standalone mode');
     }
     
-    // Before Install Prompt Event
     window.addEventListener('beforeinstallprompt', (e) => {
         console.log('📲 beforeinstallprompt fired!');
         e.preventDefault();
@@ -269,7 +399,6 @@
         installBtn.textContent = '📲 အက်ပ် ထည့်သွင်းရန်';
     });
     
-    // Install Button Click
     installBtn.addEventListener('click', async () => {
         if (!deferredPrompt) {
             alert('အက်ပ် ထည့်သွင်းရန် အဆင်သင့်မဖြစ်သေးပါ။ ခဏစောင့်ပါ။');
@@ -301,7 +430,6 @@
         deferredPrompt = null;
     });
     
-    // App Installed Event
     window.addEventListener('appinstalled', () => {
         console.log('🎉 App installed!');
         installBtn.style.display = 'none';
@@ -309,17 +437,115 @@
         deferredPrompt = null;
     });
     
-    // ==================== Admin Check ====================
-    const urlParams = new URLSearchParams(window.location.search);
-    const isAdminMode = urlParams.has('admin');
-    const urlPassword = urlParams.get('pwd');
-    let isAdmin = false;
+    // ==================== 🔐 Admin Login System ====================
+    let adminToken = localStorage.getItem('adminToken') || null;
+    let isAdmin = adminToken ? true : false;
     
-    if (isAdminMode && urlPassword === "admin123") {
-        isAdmin = true;
-        document.getElementById('adminPanel').innerHTML = '<div class="admin-badge">🔐 Admin Mode (ဖျက်ခွင့်ရှိတယ်)</div>';
+    // Page load မှာ token ရှိရင် admin mode ပြန်ဖွင့်
+    if (isAdmin) {
+        document.getElementById('adminPanel').innerHTML = `
+            <div style="display:flex; align-items:center; justify-content:center; margin-bottom:15px;">
+                <div class="admin-badge" style="margin-bottom:0;">🔐 Admin Mode</div>
+                <button class="admin-logout-btn" onclick="adminLogout()" title="Logout">🚪 ထွက်မည်</button>
+            </div>
+        `;
     }
-
+    
+    // Shop name ကို ၃ စက္ကန့် ကြာကြာနှိပ်ရင် Admin Login Modal ပေါ်မယ်
+    let longPressTimer;
+    const shopNameEl = document.querySelector('.shop-name');
+    
+    shopNameEl.addEventListener('touchstart', startLongPress);
+    shopNameEl.addEventListener('touchend', cancelLongPress);
+    shopNameEl.addEventListener('touchmove', cancelLongPress);
+    shopNameEl.addEventListener('mousedown', startLongPress);
+    shopNameEl.addEventListener('mouseup', cancelLongPress);
+    shopNameEl.addEventListener('mouseleave', cancelLongPress);
+    
+    function startLongPress(e) {
+        if (isAdmin) return; // Admin ဝင်ထားပြီးရင် မလိုဘူး
+        longPressTimer = setTimeout(() => {
+            document.getElementById('adminModal').style.display = 'flex';
+            document.getElementById('pinInput').focus();
+            document.getElementById('pinError').style.display = 'none';
+            document.getElementById('pinInput').value = '';
+        }, 3000);
+    }
+    
+    function cancelLongPress() {
+        clearTimeout(longPressTimer);
+    }
+    
+    // Admin Login Function
+    async function checkPin() {
+        const password = document.getElementById('pinInput').value;
+        const errorEl = document.getElementById('pinError');
+        
+        if (!password) {
+            errorEl.style.display = 'block';
+            errorEl.textContent = 'Password ထည့်ပါ';
+            return;
+        }
+        
+        errorEl.style.display = 'none';
+        
+        try {
+            const response = await fetch(`${WORKER_URL}/admin/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: password })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // ✅ Login အောင်မြင်
+                adminToken = data.token;
+                localStorage.setItem('adminToken', adminToken);
+                isAdmin = true;
+                
+                document.getElementById('adminModal').style.display = 'none';
+                document.getElementById('adminPanel').innerHTML = `
+                    <div style="display:flex; align-items:center; justify-content:center; margin-bottom:15px;">
+                        <div class="admin-badge" style="margin-bottom:0;">🔐 Admin Mode</div>
+                        <button class="admin-logout-btn" onclick="adminLogout()" title="Logout">🚪 ထွက်မည်</button>
+                    </div>
+                `;
+                document.getElementById('pinInput').value = '';
+                errorEl.style.display = 'none';
+                
+                loadPosts();
+                console.log('✅ Admin logged in successfully');
+                
+            } else {
+                errorEl.style.display = 'block';
+                errorEl.textContent = '❌ Password မှားနေပါသည်';
+                document.getElementById('pinInput').value = '';
+                document.getElementById('pinInput').focus();
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            errorEl.style.display = 'block';
+            errorEl.textContent = '❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ';
+        }
+    }
+    
+    function closeAdminModal() {
+        document.getElementById('adminModal').style.display = 'none';
+        document.getElementById('pinInput').value = '';
+        document.getElementById('pinError').style.display = 'none';
+    }
+    
+    // Admin Logout
+    function adminLogout() {
+        adminToken = null;
+        isAdmin = false;
+        localStorage.removeItem('adminToken');
+        document.getElementById('adminPanel').innerHTML = '';
+        loadPosts();
+        console.log('👋 Admin logged out');
+    }
+    
     // ==================== Helper Functions ====================
     function formatDate(timestamp) {
         if (!timestamp) return "ရက်စွဲမရှိ";
@@ -331,31 +557,44 @@
         const minutes = date.getMinutes().toString().padStart(2, '0');
         return `${day}/${month}/${year} ${hours}:${minutes}`;
     }
-
+    
     function escapeHtml(text) {
         if (!text) return "";
         const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;' };
         return text.replace(/[&<>]/g, m => map[m]);
     }
-
-    // ==================== Delete Post ====================
+    
+    // ==================== Delete Post (Token ပါ ထည့်ပို့မယ်) ====================
     async function deletePost(postId) {
         if (!confirm("ဒီပို့စ်ကို ဖျက်မှာလား?")) return;
         
         try {
-            const response = await fetch(`${WORKER_URL}/post/${postId}`, { method: 'DELETE' });
+            const response = await fetch(`${WORKER_URL}/post/${postId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${adminToken}`
+                }
+            });
+            
             const data = await response.json();
+            
             if (data.success) {
                 alert("✅ ဖျက်ပြီးပါပြီ");
                 loadPosts();
             } else {
-                alert("❌ ဖျက်လို့မရပါ");
+                if (data.error && data.error.includes('ခွင့်မပြု')) {
+                    alert("⚠️ Admin သက်တမ်းကုန်သွားပါပြီ။ ပြန်လော့ဂ်အင်ဝင်ပါ။");
+                    adminLogout();
+                } else {
+                    alert("❌ ဖျက်လို့မရပါ");
+                }
             }
         } catch(error) {
-            alert("❌ ဖျက်လို့မရပါ");
+            console.error('Delete error:', error);
+            alert("❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ");
         }
     }
-
+    
     // ==================== Load Posts ====================
     async function loadPosts() {
         const grid = document.getElementById('postGrid');
@@ -375,7 +614,7 @@
             let html = '';
             for (const post of posts) {
                 const dateStr = formatDate(post.date);
-                const deleteBtn = isAdmin ? `<button class="delete-btn" onclick="deletePost(${post.id})">✕ ဖျက်ရန်</button>` : '';
+                const deleteBtn = isAdmin ? `<button class="delete-btn" onclick="event.stopPropagation(); deletePost(${post.id})">✕ ဖျက်ရန်</button>` : '';
                 
                 if (post.type === 'photo') {
                     html += `
@@ -402,10 +641,11 @@
             }
             grid.innerHTML = html;
         } catch(error) {
+            console.error('Load posts error:', error);
             grid.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။<br><small>အင်တာနက်ချိတ်ဆက်မှု စစ်ဆေးပါ</small></div>';
         }
     }
-
+    
     // ==================== Modal Functions ====================
     function openModal(src, caption) {
         const modal = document.getElementById('imageModal');
@@ -420,18 +660,17 @@
         document.body.style.overflow = '';
     }
     
-    // Close modal with Escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeModal();
     });
-
+    
     // ==================== Initialize ====================
     document.getElementById('refreshBtn').addEventListener('click', loadPosts);
     loadPosts();
     
     console.log('🚀 App Initialized!');
     console.log('📱 PWA Ready:', 'serviceWorker' in navigator ? 'Yes' : 'No');
-    console.log('🔗 URL:', window.location.href);
+    console.log('🔐 Admin Mode:', isAdmin ? 'Active' : 'Inactive');
 </script>
 
 </body>
