@@ -11,7 +11,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="မိဘမေတ္တာ">
     <meta name="theme-color" content="#8b5a2b">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%238b5a2b'/%3E%3Ctext x='50' y='68' text-anchor='middle' fill='white' font-size='50'%3E🧵%3C/text%3E%3C/svg%3E">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -39,44 +38,10 @@
         .telegram { background: #0088cc; }
         .viber { background: #7360f2; }
         
-        /* Install Banner */
-        .install-banner {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            background: #8b5a2b;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            z-index: 1000;
-            animation: slideUp 0.3s ease;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .install-banner button {
-            background: white;
-            color: #8b5a2b;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        .install-banner .close-banner {
-            background: none;
-            color: white;
-            font-size: 22px;
-            cursor: pointer;
-            padding: 0 5px;
-            margin-left: 10px;
+        .install-app-btn {
+            background: #27ae60;
+            margin-bottom: 20px;
+            display: none;
         }
         
         .post-card {
@@ -141,6 +106,8 @@
         <a href="viber://chat?number=%2B959697455880" class="btn viber">💬 Viber</a>
     </div>
 
+    <button class="btn install-app-btn" id="installBtn">📲 အက်ပ်ထည့်ရန်</button>
+
     <div id="adminPanel"></div>
     
     <button class="refresh-btn" id="refreshBtn">🔄 ပို့စ်များ ပြန်လည်စတင်ရန်</button>
@@ -159,47 +126,33 @@
 <script>
     const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
     
-    // ========== PWA Installation (အောက်ခြေ Banner) ==========
+    // ========== Service Worker Register ==========
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('Service Worker registered', reg))
+            .catch(err => console.log('Service Worker failed', err));
+    }
+    
+    // ========== PWA Installation ==========
     let deferredPrompt;
-    let installBanner = null;
+    const installBtn = document.getElementById('installBtn');
     
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        showInstallBanner();
+        installBtn.style.display = 'block';
     });
     
-    function showInstallBanner() {
-        if (installBanner) return;
-        if (window.matchMedia('(display-mode: standalone)').matches) return;
-        
-        installBanner = document.createElement('div');
-        installBanner.className = 'install-banner';
-        installBanner.innerHTML = `
-            <span style="flex:1;">📲 မိဘမေတ္တာ App ထည့်ပါ</span>
-            <button id="installNowBtn">Install</button>
-            <span class="close-banner" id="closeBannerBtn">✕</span>
-        `;
-        document.body.appendChild(installBanner);
-        
-        document.getElementById('installNowBtn').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    if (installBanner) installBanner.remove();
-                    installBanner = null;
-                }
-                deferredPrompt = null;
-            }
-        });
-        
-        document.getElementById('closeBannerBtn').addEventListener('click', () => {
-            if (installBanner) installBanner.remove();
-            installBanner = null;
-        });
-    }
-    // ================================================
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User choice: ${outcome}`);
+            deferredPrompt = null;
+            installBtn.style.display = 'none';
+        }
+    });
+    // =========================================
     
     // Admin Check
     const urlParams = new URLSearchParams(window.location.search);
