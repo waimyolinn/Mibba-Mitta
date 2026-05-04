@@ -29,7 +29,7 @@ self.addEventListener('activate', event => {
             return Promise.all(
                 cacheNames.map(name => {
                     if (name !== CACHE_NAME) {
-                        return caches.delete(name);
+                        return caches.delete(name);  //  ပြင်ထားပါတယ်
                     }
                 })
             );
