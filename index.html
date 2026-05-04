@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="my">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
@@ -8,12 +8,37 @@
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="NLqyHByZ-OnqMIKZDidDeUzfNeXN8-SfJElHoPqbrY8" />
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
+    <!-- ==================== PWA Meta Tags ==================== -->
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- iOS Safari Support -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="မိဘမေတ္တာ">
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/8b5a2b/fdf8f0?text=%E1%80%99%E1%80%99">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://placehold.co/152x152/8b5a2b/fdf8f0?text=%E1%80%99%E1%80%99">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://placehold.co/180x180/8b5a2b/fdf8f0?text=%E1%80%99%E1%80%99">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://placehold.co/167x167/8b5a2b/fdf8f0?text=%E1%80%99%E1%80%99">
+    
+    <!-- Windows Tile -->
+    <meta name="msapplication-TileColor" content="#8b5a2b">
+    <meta name="msapplication-TileImage" content="https://placehold.co/144x144/8b5a2b/fdf8f0?text=%E1%80%99%E1%80%99">
+    
+    <!-- Theme Color -->
     <meta name="theme-color" content="#8b5a2b">
+    
+    <!-- Description -->
+    <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင် - အရည်အသွေးမြင့် အထည်များ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး">
+    <meta name="keywords" content="မိဘမေတ္တာ,အထည်ဆိုင်,အိုးထိန်း,မြန်မာ,အထည်အလိပ်">
+    
+    <!-- Open Graph (Facebook Share) -->
+    <meta property="og:title" content="မိဘမေတ္တာ အထည်ဆိုင်">
+    <meta property="og:description" content="အရည်အသွေးမြင့် အထည်များ">
+    <meta property="og:image" content="https://placehold.co/512x512/8b5a2b/fdf8f0?text=%E1%80%99%E1%80%99">
+    <meta property="og:url" content="https://mibbamitta.pages.dev">
+    <meta property="og:type" content="website">
+    <!-- ==================== PWA Meta End ==================== -->
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,6 +47,7 @@
             background: linear-gradient(135deg, #fdf8f0 0%, #f5e6d3 100%);
             min-height: 100vh;
             padding: 20px;
+            padding-bottom: 40px;
         }
         .container {
             max-width: 600px;
@@ -31,20 +57,49 @@
             padding: 25px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
+        
+        /* Shop Info */
         .shop-info { text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #f0dcc5; }
         .shop-name { font-size: 28px; font-weight: bold; color: #8b5a2b; }
         .welcome-message { color: #b8863f; font-size: 18px; font-weight: bold; margin: 15px 0; padding: 8px; background: #fef5e8; border-radius: 50px; }
         .shop-address { font-size: 13px; color: #7a5a4e; background: #fef5e8; padding: 10px; border-radius: 20px; margin-top: 10px; }
+        
+        /* Buttons */
         .social-buttons { margin-bottom: 25px; }
-        .btn { display: block; text-align: center; padding: 14px; border-radius: 50px; text-decoration: none; font-weight: bold; color: white; margin: 10px 0; transition: transform 0.2s; }
+        .btn { 
+            display: block; text-align: center; padding: 14px; border-radius: 50px; 
+            text-decoration: none; font-weight: bold; color: white; margin: 10px 0; 
+            transition: transform 0.2s; border: none; width: 100%; cursor: pointer;
+            font-size: 16px;
+        }
         .btn:hover { transform: scale(1.02); }
         .telegram { background: #0088cc; }
         .viber { background: #7360f2; }
         
+        /* Install App Button */
         .install-app-btn {
-            background: #27ae60;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
             margin-bottom: 20px;
             display: none;
+            animation: pulse 2s infinite;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); }
+            50% { box-shadow: 0 4px 25px rgba(39, 174, 96, 0.6); }
+        }
+        
+        /* Already Installed Message */
+        .installed-msg {
+            text-align: center;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: bold;
         }
         
         /* QR Code Section */
@@ -55,20 +110,11 @@
             background: #fef5e8;
             border-radius: 20px;
         }
-        .qr-section p {
-            margin-bottom: 10px;
-            color: #8b5a2b;
-        }
-        .qr-section img {
-            width: 120px;
-            height: 120px;
-        }
-        .qr-section .note {
-            font-size: 12px;
-            color: #a08060;
-            margin-top: 8px;
-        }
+        .qr-section p { margin-bottom: 10px; color: #8b5a2b; }
+        .qr-section img { width: 120px; height: 120px; border-radius: 10px; }
+        .qr-section .note { font-size: 12px; color: #a08060; margin-top: 8px; }
         
+        /* Post Cards */
         .post-card {
             background: white;
             border-radius: 20px;
@@ -77,11 +123,13 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             position: relative;
         }
-        .post-image { width: 100%; display: block; }
+        .post-image { width: 100%; display: block; cursor: pointer; }
         .post-content { padding: 15px; }
         .post-text { padding: 18px; font-size: 16px; color: #4a3520; line-height: 1.5; }
         .post-caption { font-size: 15px; color: #5a3e2e; margin-bottom: 8px; }
         .post-date { font-size: 11px; color: #a08060; margin-top: 8px; border-top: 1px solid #eee; padding-top: 8px; }
+        
+        /* Delete Button */
         .delete-btn {
             position: absolute;
             top: 10px;
@@ -95,6 +143,8 @@
             cursor: pointer;
             z-index: 10;
         }
+        
+        /* Admin Badge */
         .admin-badge {
             background: #c0392b;
             color: white;
@@ -104,10 +154,16 @@
             display: inline-block;
             margin-bottom: 15px;
         }
+        
+        /* Status */
         .status-message { text-align: center; padding: 40px; color: #8b5a2b; background: #fef5e8; border-radius: 20px; }
         .loading-spinner { display: inline-block; width: 24px; height: 24px; border: 3px solid #ddd; border-top-color: #8b5a2b; border-radius: 50%; animation: spin 0.6s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Refresh Button */
         .refresh-btn { background: #8b5a2b; color: white; border: none; padding: 10px 24px; border-radius: 40px; font-size: 14px; font-weight: bold; cursor: pointer; display: block; margin: 0 auto 25px auto; }
+        
+        /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; cursor: pointer; justify-content: center; align-items: center; }
         .modal-content { max-width: 95%; max-height: 90%; object-fit: contain; }
         .modal-caption { text-align: center; color: white; padding: 15px; font-size: 14px; background: rgba(0,0,0,0.7); position: fixed; bottom: 0; left: 0; right: 0; }
@@ -117,6 +173,7 @@
 <body>
 
 <div class="container">
+    <!-- Shop Info -->
     <div class="shop-info">
         <div class="shop-name">🧵 မိဘမေတ္တာ <small>အထည်ဆိုင်</small></div>
         <div class="welcome-message">🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏</div>
@@ -126,6 +183,7 @@
         </div>
     </div>
 
+    <!-- Social Buttons -->
     <div class="social-buttons">
         <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank">📱 Telegram Channel</a>
         <a href="viber://chat?number=%2B959697455880" class="btn viber">💬 Viber</a>
@@ -134,58 +192,124 @@
     <!-- QR Code Section -->
     <div class="qr-section">
         <p>📲 အက်ပ်ထည့်ရန် QR Code ကို Scan လုပ်ပါ</p>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mibbamitta.pages.dev" alt="QR Code">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mibbamitta.pages.dev" alt="QR Code" loading="lazy">
         <div class="note">Chrome Browser ဖြင့် Scan လုပ်ပါ</div>
     </div>
 
-    <button class="btn install-app-btn" id="installBtn">📲 အက်ပ်ထည့်ရန်</button>
+    <!-- Already Installed Message -->
+    <div class="installed-msg" id="installedMsg">✅ အက်ပ် ထည့်သွင်းပြီးပါပြီ</div>
 
+    <!-- Install App Button -->
+    <button class="btn install-app-btn" id="installBtn">📲 အက်ပ် ထည့်သွင်းရန်</button>
+
+    <!-- Admin Panel -->
     <div id="adminPanel"></div>
     
+    <!-- Refresh Button -->
     <button class="refresh-btn" id="refreshBtn">🔄 ပို့စ်များ ပြန်လည်စတင်ရန်</button>
 
+    <!-- Post Grid -->
     <div id="postGrid">
         <div class="status-message"><span class="loading-spinner"></span> ပို့စ်များ ယူနေပါသည်...</div>
     </div>
 </div>
 
+<!-- Image Modal -->
 <div id="imageModal" class="modal" onclick="closeModal()">
     <span class="close-modal">&times;</span>
-    <img class="modal-content" id="modalImage">
+    <img class="modal-content" id="modalImage" alt="ပုံအကြီး">
     <div id="modalCaption" class="modal-caption"></div>
 </div>
 
 <script>
+    // ==================== Configuration ====================
     const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
     
-    // Service Worker Register
+    // ==================== Service Worker Registration ====================
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('Service Worker registered', reg))
-            .catch(err => console.log('Service Worker failed', err));
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('✅ Service Worker registered:', registration.scope);
+                    
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('🔄 New update available!');
+                                // Auto-update
+                                newWorker.postMessage('SKIP_WAITING');
+                                window.location.reload();
+                            }
+                        });
+                    });
+                })
+                .catch(err => console.log('❌ Service Worker failed:', err));
+        });
     }
     
-    // PWA Installation
+    // ==================== PWA Installation ====================
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
+    const installedMsg = document.getElementById('installedMsg');
     
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        installedMsg.style.display = 'block';
+        console.log('✅ App is running in standalone mode');
+    }
+    
+    // Before Install Prompt Event
     window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('📲 beforeinstallprompt fired!');
         e.preventDefault();
         deferredPrompt = e;
         installBtn.style.display = 'block';
+        installBtn.textContent = '📲 အက်ပ် ထည့်သွင်းရန်';
     });
     
+    // Install Button Click
     installBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
+        if (!deferredPrompt) {
+            alert('အက်ပ် ထည့်သွင်းရန် အဆင်သင့်မဖြစ်သေးပါ။ ခဏစောင့်ပါ။');
+            return;
+        }
+        
+        installBtn.textContent = '⏳ ထည့်သွင်းနေသည်...';
+        installBtn.disabled = true;
+        
+        try {
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
-            console.log(`User choice: ${outcome}`);
-            deferredPrompt = null;
-            installBtn.style.display = 'none';
+            console.log(`👤 User choice: ${outcome}`);
+            
+            if (outcome === 'accepted') {
+                installBtn.style.display = 'none';
+                installedMsg.style.display = 'block';
+                console.log('✅ App installed successfully!');
+            } else {
+                installBtn.textContent = '📲 အက်ပ် ထည့်သွင်းရန်';
+                installBtn.disabled = false;
+            }
+        } catch (err) {
+            console.error('Install error:', err);
+            installBtn.textContent = '📲 အက်ပ် ထည့်သွင်းရန်';
+            installBtn.disabled = false;
         }
+        
+        deferredPrompt = null;
     });
     
-    // Admin Check
+    // App Installed Event
+    window.addEventListener('appinstalled', () => {
+        console.log('🎉 App installed!');
+        installBtn.style.display = 'none';
+        installedMsg.style.display = 'block';
+        deferredPrompt = null;
+    });
+    
+    // ==================== Admin Check ====================
     const urlParams = new URLSearchParams(window.location.search);
     const isAdminMode = urlParams.has('admin');
     const urlPassword = urlParams.get('pwd');
@@ -196,17 +320,25 @@
         document.getElementById('adminPanel').innerHTML = '<div class="admin-badge">🔐 Admin Mode (ဖျက်ခွင့်ရှိတယ်)</div>';
     }
 
+    // ==================== Helper Functions ====================
     function formatDate(timestamp) {
         if (!timestamp) return "ရက်စွဲမရှိ";
         const date = new Date(timestamp * 1000);
-        return `${date.getDate().toString().padStart(2,'0')}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}`;
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${day}/${month}/${year} ${hours}:${minutes}`;
     }
 
     function escapeHtml(text) {
         if (!text) return "";
-        return text.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;' };
+        return text.replace(/[&<>]/g, m => map[m]);
     }
 
+    // ==================== Delete Post ====================
     async function deletePost(postId) {
         if (!confirm("ဒီပို့စ်ကို ဖျက်မှာလား?")) return;
         
@@ -224,6 +356,7 @@
         }
     }
 
+    // ==================== Load Posts ====================
     async function loadPosts() {
         const grid = document.getElementById('postGrid');
         grid.innerHTML = '<div class="status-message"><span class="loading-spinner"></span> ပို့စ်များ ယူနေပါသည်...</div>';
@@ -248,7 +381,7 @@
                     html += `
                         <div class="post-card">
                             ${deleteBtn}
-                            <img class="post-image" src="${post.image_url}" onclick="openModal('${post.image_url}', '${escapeHtml(post.caption)}')">
+                            <img class="post-image" src="${post.image_url}" onclick="openModal('${post.image_url}', '${escapeHtml(post.caption || '')}')" alt="ပုံ" loading="lazy">
                             <div class="post-content">
                                 ${post.caption ? `<div class="post-caption">📝 ${escapeHtml(post.caption)}</div>` : ''}
                                 <div class="post-date">📅 ${dateStr}</div>
@@ -260,7 +393,7 @@
                         <div class="post-card">
                             ${deleteBtn}
                             <div class="post-text">
-                                💬 ${escapeHtml(post.text)}
+                                💬 ${escapeHtml(post.text || '')}
                                 <div class="post-date">📅 ${dateStr}</div>
                             </div>
                         </div>
@@ -269,23 +402,36 @@
             }
             grid.innerHTML = html;
         } catch(error) {
-            grid.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။</div>';
+            grid.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။<br><small>အင်တာနက်ချိတ်ဆက်မှု စစ်ဆေးပါ</small></div>';
         }
     }
 
+    // ==================== Modal Functions ====================
     function openModal(src, caption) {
         const modal = document.getElementById('imageModal');
         modal.style.display = "flex";
         document.getElementById('modalImage').src = src;
         document.getElementById('modalCaption').textContent = caption || "";
+        document.body.style.overflow = 'hidden';
     }
     
     function closeModal() {
         document.getElementById('imageModal').style.display = "none";
+        document.body.style.overflow = '';
     }
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
 
+    // ==================== Initialize ====================
     document.getElementById('refreshBtn').addEventListener('click', loadPosts);
     loadPosts();
+    
+    console.log('🚀 App Initialized!');
+    console.log('📱 PWA Ready:', 'serviceWorker' in navigator ? 'Yes' : 'No');
+    console.log('🔗 URL:', window.location.href);
 </script>
 
 </body>
