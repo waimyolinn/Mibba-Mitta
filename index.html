@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
+    
+    <!-- ========== PWA Setup (Web App) ========== -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="မိဘမေတ္တာ">
+    <meta name="theme-color" content="#8b5a2b">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%238b5a2b'/%3E%3Ctext x='50' y='68' text-anchor='middle' fill='white' font-size='50'%3E🧵%3C/text%3E%3C/svg%3E">
+    <!-- ========================================= -->
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -29,11 +39,6 @@
         .btn:hover { transform: scale(1.02); }
         .telegram { background: #0088cc; }
         .viber { background: #7360f2; }
-        .install-btn {
-            background: #27ae60;
-            margin-bottom: 20px;
-        }
-        .install-btn:hover { background: #219a52; }
         .post-card {
             background: white;
             border-radius: 20px;
@@ -77,17 +82,6 @@
         .modal-content { max-width: 95%; max-height: 90%; object-fit: contain; }
         .modal-caption { text-align: center; color: white; padding: 15px; font-size: 14px; background: rgba(0,0,0,0.7); position: fixed; bottom: 0; left: 0; right: 0; }
         .close-modal { position: fixed; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 1001; }
-        
-        /* Install prompt */
-        .install-prompt {
-            background: #f0e0d0;
-            padding: 12px;
-            border-radius: 20px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-size: 13px;
-            color: #5a3e2e;
-        }
     </style>
 </head>
 <body>
@@ -107,10 +101,6 @@
         <a href="viber://chat?number=%2B959697455880" class="btn viber">💬 Viber</a>
     </div>
 
-    <!-- 📲 Home Screen Install Button (User တွေအတွက်) -->
-    <button class="btn install-btn" id="installBtn">📲 အက်ပ်ထည့်ရန် (Home Screen)</button>
-    <div id="installMsg" class="install-prompt" style="display:none;"></div>
-
     <div id="adminPanel"></div>
     
     <button class="refresh-btn" id="refreshBtn">🔄 ပို့စ်များ ပြန်လည်စတင်ရန်</button>
@@ -128,43 +118,6 @@
 
 <script>
     const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
-    
-    // ========== Home Screen Installation ==========
-    let deferredPrompt;
-    const installBtn = document.getElementById('installBtn');
-    const installMsg = document.getElementById('installMsg');
-    
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installBtn.style.display = 'block';
-    });
-    
-    installBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                installMsg.style.display = 'block';
-                installMsg.innerHTML = '✅ အက်ပ်ကို Home Screen မှာ ထည့်ပြီးပါပြီ။';
-                setTimeout(() => { installMsg.style.display = 'none'; }, 3000);
-            }
-            deferredPrompt = null;
-            installBtn.style.display = 'none';
-        } else {
-            // Manual install guide for iOS
-            alert('📲 အက်ပ်ထည့်ရန်: အောက်ခြေ Share ခလုတ် → "Add to Home Screen" ကိုနှိပ်ပါ။');
-        }
-    });
-    
-    // Hide install button if already installed
-    window.addEventListener('appinstalled', () => {
-        installBtn.style.display = 'none';
-        installMsg.style.display = 'block';
-        installMsg.innerHTML = '✅ အက်ပ်ထည့်သွင်းပြီးပါပြီ။';
-        setTimeout(() => { installMsg.style.display = 'none'; }, 3000);
-    });
-    // ================================================
     
     // Admin Check via URL parameter
     const urlParams = new URLSearchParams(window.location.search);
