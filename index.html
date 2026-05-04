@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
     
+    <!-- Google Search Console Verification -->
+    <meta name="google-site-verification" content="NLqyHByZ-OnqMIKZDidDeUzfNeXN8-SfJElHoPqbrY8" />
+    
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -42,6 +45,28 @@
             background: #27ae60;
             margin-bottom: 20px;
             display: none;
+        }
+        
+        /* QR Code Section */
+        .qr-section {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #fef5e8;
+            border-radius: 20px;
+        }
+        .qr-section p {
+            margin-bottom: 10px;
+            color: #8b5a2b;
+        }
+        .qr-section img {
+            width: 120px;
+            height: 120px;
+        }
+        .qr-section .note {
+            font-size: 12px;
+            color: #a08060;
+            margin-top: 8px;
         }
         
         .post-card {
@@ -106,6 +131,13 @@
         <a href="viber://chat?number=%2B959697455880" class="btn viber">💬 Viber</a>
     </div>
 
+    <!-- QR Code Section -->
+    <div class="qr-section">
+        <p>📲 အက်ပ်ထည့်ရန် QR Code ကို Scan လုပ်ပါ</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mibbamitta.pages.dev" alt="QR Code">
+        <div class="note">Chrome Browser ဖြင့် Scan လုပ်ပါ</div>
+    </div>
+
     <button class="btn install-app-btn" id="installBtn">📲 အက်ပ်ထည့်ရန်</button>
 
     <div id="adminPanel"></div>
@@ -126,14 +158,14 @@
 <script>
     const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
     
-    // ========== Service Worker Register ==========
+    // Service Worker Register
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js')
             .then(reg => console.log('Service Worker registered', reg))
             .catch(err => console.log('Service Worker failed', err));
     }
     
-    // ========== PWA Installation ==========
+    // PWA Installation
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
     
@@ -152,7 +184,6 @@
             installBtn.style.display = 'none';
         }
     });
-    // =========================================
     
     // Admin Check
     const urlParams = new URLSearchParams(window.location.search);
