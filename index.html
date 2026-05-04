@@ -25,9 +25,15 @@
         .welcome-message { color: #b8863f; font-size: 18px; font-weight: bold; margin: 15px 0; padding: 8px; background: #fef5e8; border-radius: 50px; }
         .shop-address { font-size: 13px; color: #7a5a4e; background: #fef5e8; padding: 10px; border-radius: 20px; margin-top: 10px; }
         .social-buttons { margin-bottom: 25px; }
-        .btn { display: block; text-align: center; padding: 14px; border-radius: 50px; text-decoration: none; font-weight: bold; color: white; margin: 10px 0; }
+        .btn { display: block; text-align: center; padding: 14px; border-radius: 50px; text-decoration: none; font-weight: bold; color: white; margin: 10px 0; transition: transform 0.2s; }
+        .btn:hover { transform: scale(1.02); }
         .telegram { background: #0088cc; }
         .viber { background: #7360f2; }
+        .install-btn {
+            background: #27ae60;
+            margin-bottom: 20px;
+        }
+        .install-btn:hover { background: #219a52; }
         .post-card {
             background: white;
             border-radius: 20px;
@@ -41,7 +47,6 @@
         .post-text { padding: 18px; font-size: 16px; color: #4a3520; line-height: 1.5; }
         .post-caption { font-size: 15px; color: #5a3e2e; margin-bottom: 8px; }
         .post-date { font-size: 11px; color: #a08060; margin-top: 8px; border-top: 1px solid #eee; padding-top: 8px; }
-        
         .delete-btn {
             position: absolute;
             top: 10px;
@@ -54,10 +59,7 @@
             font-size: 12px;
             cursor: pointer;
             z-index: 10;
-            font-weight: bold;
         }
-        .delete-btn:hover { background: rgba(200, 0, 0, 0.9); }
-        
         .admin-badge {
             background: #c0392b;
             color: white;
@@ -67,16 +69,25 @@
             display: inline-block;
             margin-bottom: 15px;
         }
-        
         .status-message { text-align: center; padding: 40px; color: #8b5a2b; background: #fef5e8; border-radius: 20px; }
         .loading-spinner { display: inline-block; width: 24px; height: 24px; border: 3px solid #ddd; border-top-color: #8b5a2b; border-radius: 50%; animation: spin 0.6s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .refresh-btn { background: #8b5a2b; color: white; border: none; padding: 10px 24px; border-radius: 40px; font-size: 14px; font-weight: bold; cursor: pointer; display: block; margin: 0 auto 25px auto; }
-        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; cursor: pointer; justify-content: center; align-items: center; }
         .modal-content { max-width: 95%; max-height: 90%; object-fit: contain; }
         .modal-caption { text-align: center; color: white; padding: 15px; font-size: 14px; background: rgba(0,0,0,0.7); position: fixed; bottom: 0; left: 0; right: 0; }
         .close-modal { position: fixed; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 1001; }
+        
+        /* Install prompt */
+        .install-prompt {
+            background: #f0e0d0;
+            padding: 12px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 13px;
+            color: #5a3e2e;
+        }
     </style>
 </head>
 <body>
@@ -96,6 +107,10 @@
         <a href="viber://chat?number=%2B959697455880" class="btn viber">💬 Viber</a>
     </div>
 
+    <!-- 📲 Home Screen Install Button (User တွေအတွက်) -->
+    <button class="btn install-btn" id="installBtn">📲 အက်ပ်ထည့်ရန် (Home Screen)</button>
+    <div id="installMsg" class="install-prompt" style="display:none;"></div>
+
     <div id="adminPanel"></div>
     
     <button class="refresh-btn" id="refreshBtn">🔄 ပို့စ်များ ပြန်လည်စတင်ရန်</button>
@@ -114,28 +129,53 @@
 <script>
     const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
     
-    // Admin Link System
-    const ADMIN_PASSWORD = "admin123";
+    // ========== Home Screen Installation ==========
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+    const installMsg = document.getElementById('installMsg');
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = 'block';
+    });
+    
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                installMsg.style.display = 'block';
+                installMsg.innerHTML = '✅ အက်ပ်ကို Home Screen မှာ ထည့်ပြီးပါပြီ။';
+                setTimeout(() => { installMsg.style.display = 'none'; }, 3000);
+            }
+            deferredPrompt = null;
+            installBtn.style.display = 'none';
+        } else {
+            // Manual install guide for iOS
+            alert('📲 အက်ပ်ထည့်ရန်: အောက်ခြေ Share ခလုတ် → "Add to Home Screen" ကိုနှိပ်ပါ။');
+        }
+    });
+    
+    // Hide install button if already installed
+    window.addEventListener('appinstalled', () => {
+        installBtn.style.display = 'none';
+        installMsg.style.display = 'block';
+        installMsg.innerHTML = '✅ အက်ပ်ထည့်သွင်းပြီးပါပြီ။';
+        setTimeout(() => { installMsg.style.display = 'none'; }, 3000);
+    });
+    // ================================================
+    
+    // Admin Check via URL parameter
     const urlParams = new URLSearchParams(window.location.search);
     const isAdminMode = urlParams.has('admin');
     const urlPassword = urlParams.get('pwd');
-    
     let isAdmin = false;
     
     if (isAdminMode) {
-        if (urlPassword === ADMIN_PASSWORD) {
+        if (urlPassword === "admin123") {
             isAdmin = true;
             document.getElementById('adminPanel').innerHTML = '<div class="admin-badge">🔐 Admin Mode (ဖျက်ခွင့်ရှိတယ်)</div>';
-        } else if (!urlPassword) {
-            const enteredPassword = prompt("🔒 Admin စကားဝှက် ထည့်ပါ:");
-            if (enteredPassword === ADMIN_PASSWORD) {
-                isAdmin = true;
-                document.getElementById('adminPanel').innerHTML = '<div class="admin-badge">🔐 Admin Mode (ဖျက်ခွင့်ရှိတယ်)</div>';
-            } else if (enteredPassword !== null) {
-                alert("စကားဝှက်မှားယွင်းပါသည်။");
-            }
-        } else {
-            alert("စကားဝှက်မှားယွင်းပါသည်။");
         }
     }
 
@@ -151,29 +191,23 @@
     }
 
     async function deletePost(postId) {
-        console.log("Delete function called for post:", postId);
-        
         if (!confirm("ဒီပို့စ်ကို ဖျက်မှာလား?")) return;
         
         try {
-            console.log("Sending DELETE to:", `${WORKER_URL}/post/${postId}`);
             const response = await fetch(`${WORKER_URL}/post/${postId}`, {
                 method: 'DELETE'
             });
-            console.log("Response status:", response.status);
-            
             const data = await response.json();
-            console.log("Response data:", data);
             
             if (data.success) {
                 alert("✅ ပို့စ်ဖျက်ပြီးပါပြီ");
                 loadPosts();
             } else {
-                alert("❌ ဖျက်လို့မရပါ။ Error: " + (data.error || "Unknown"));
+                alert("❌ ဖျက်လို့မရပါ။");
             }
         } catch(error) {
-            console.error("Delete error:", error);
-            alert("❌ ဖျက်လို့မရပါ။ Error: " + error.message);
+            console.error(error);
+            alert("❌ ဖျက်လို့မရပါ။");
         }
     }
 
@@ -185,7 +219,7 @@
             const response = await fetch(`${WORKER_URL}/posts`);
             const data = await response.json();
             
-            if (!data.success) throw new Error(data.error || "API error");
+            if (!data.success) throw new Error("API error");
             
             const posts = data.posts;
             
@@ -226,7 +260,7 @@
             grid.innerHTML = html;
             
         } catch(error) {
-            console.error("Load error:", error);
+            console.error(error);
             grid.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။</div>';
         }
     }
