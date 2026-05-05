@@ -57,7 +57,8 @@
             font-size: 13px; font-weight: 600; padding: 6px 20px; border-radius: 50px; margin: 10px 0;
         }
         .contact-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
-        .contact-item { font-size: 12px; color: #7a5a4e; background: #fef9f3; padding: 6px 14px; border-radius: 50px; }
+        .contact-item { font-size: 12px; color: #7a5a4e; background: #fef9f3; padding: 6px 14px; border-radius: 50px; display: flex; align-items: center; gap: 6px; }
+        .contact-item i { color: #8b5a2b; font-size: 13px; }
         
         .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
         .btn {
@@ -125,7 +126,7 @@
 
 <div class="container">
     <div class="header-card">
-        <img class="shop-logo" src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo">
+        <img class="shop-logo" src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo" crossorigin="anonymous">
         <div class="shop-name">မိဘမေတ္တာ <small style="font-weight:500;color:#a0724d;display:block;">အထည်ဆိုင်</small></div>
         <div class="welcome-badge">🙏 မင်္ဂလာပါ ကြိုဆိုပါတယ် 🙏</div>
         <div class="contact-row">
@@ -142,7 +143,7 @@
     <div class="installed-badge" id="installedBadge">✅ အက်ပ် ထည့်သွင်းပြီးပါပြီ</div>
 
     <div class="install-section">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mibbamitta.pages.dev" alt="QR">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mibbamitta.pages.dev" alt="QR" loading="lazy">
         <div class="info">
             <p style="font-size:13px;color:#7a5a4e;">📲 အက်ပ်ထည့်ရန် QR Scan လုပ်ပါ</p>
             <small style="color:#b0a090;">Chrome Browser ဖြင့် Scan လုပ်ပါ</small>
@@ -188,82 +189,77 @@
     let deferredPrompt;
     
     // ==================== Service Worker ====================
-    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }
-    
-    // ==================== Telegram (Intent + Fallback) ====================
-    function openTelegram() {
-        var channel = 'mibamittaa';
-        var now = Date.now();
-        
-        // Method 1: tg:// protocol
-        window.location.href = 'tg://resolve?domain=' + channel;
-        
-        // Method 2: Intent for Android
-        setTimeout(function() {
-            if (Date.now() - now < 2500) return;
-            window.location.href = 'intent://resolve?domain=' + channel + '#Intent;scheme=tg;package=org.telegram.messenger;end;';
-        }, 800);
-        
-        // Method 3: Web fallback
-        setTimeout(function() {
-            if (Date.now() - now < 3500) return;
-            window.open('https://t.me/' + channel, '_blank');
-        }, 1600);
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js').then(function(reg) {
+                console.log('✅ SW registered');
+            }).catch(function(err) {
+                console.log('SW error:', err);
+            });
+        });
     }
     
-    // ==================== Viber (Intent + Fallback) ====================
+    // ==================== Telegram (Simple Direct Link) ====================
+    function openTelegram() {
+        window.open('https://t.me/mibamittaa', '_blank');
+    }
+    
+    // ==================== Viber (Simple Direct Link + Copy) ====================
     function openViber() {
-        var phone = '+959697455880';
-        var phoneDisplay = '09697455880';
-        var now = Date.now();
-        
-        // Method 1: viber:// protocol
-        window.location.href = 'viber://chat?number=' + encodeURIComponent(phone);
-        
-        // Method 2: viber://add for Android
+        var phone = '09697455880';
+        // Copy phone number
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(phone).then(function() {
+                alert("📞 ဖုန်းနံပါတ် " + phone + " ကူးယူပြီးပါပြီ။\nViber App မှာ ရှာပြီး ဆက်သွယ်ပါ။");
+            });
+        } else {
+            alert("📞 ဖုန်းနံပါတ် - " + phone);
+        }
+        // Try viber link
         setTimeout(function() {
-            if (Date.now() - now < 2500) return;
-            window.location.href = 'viber://add?number=' + encodeURIComponent(phone);
-        }, 800);
-        
-        // Method 3: Copy phone number
-        setTimeout(function() {
-            if (Date.now() - now < 3500) return;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(phoneDisplay).then(function() {
-                    alert("📞 ဖုန်းနံပါတ် " + phoneDisplay + " ကူးယူပြီးပါပြီ။\nViber App မှာ ရှာပြီး ဆက်သွယ်ပါ။");
-                });
-            } else {
-                alert("📞 ဖုန်းနံပါတ် - " + phoneDisplay);
-            }
-        }, 2400);
+            window.open('viber://chat?number=%2B959697455880', '_blank');
+        }, 500);
     }
     
     // ==================== PWA Install ====================
     const installBtn = document.getElementById('installBtn');
     const installedBadge = document.getElementById('installedBadge');
-    if (window.matchMedia('(display-mode: standalone)').matches) installedBadge.style.display = 'block';
-    window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'flex'; });
+    
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        installedBadge.style.display = 'block';
+    }
+    
+    window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = 'flex';
+    });
+    
     function installApp() {
         if (!deferredPrompt) return;
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then(function(r) {
-            if (r.outcome === 'accepted') { installBtn.style.display = 'none'; installedBadge.style.display = 'block'; }
+            if (r.outcome === 'accepted') {
+                installBtn.style.display = 'none';
+                installedBadge.style.display = 'block';
+            }
             deferredPrompt = null;
         });
     }
-    window.addEventListener('appinstalled', function() { installBtn.style.display = 'none'; installedBadge.style.display = 'block'; });
+    
+    window.addEventListener('appinstalled', function() {
+        installBtn.style.display = 'none';
+        installedBadge.style.display = 'block';
+    });
     
     // ==================== Admin ====================
     if (isAdmin) showAdminBar();
+    
     var logo = document.querySelector('.shop-logo');
     var longPressTimer;
     logo.addEventListener('touchstart', function() { if(!isAdmin) longPressTimer = setTimeout(showLogin, 3000); });
     logo.addEventListener('touchend', function() { clearTimeout(longPressTimer); });
     logo.addEventListener('touchmove', function() { clearTimeout(longPressTimer); });
-    logo.addEventListener('mousedown', function() { if(!isAdmin) longPressTimer = setTimeout(showLogin, 3000); });
-    logo.addEventListener('mouseup', function() { clearTimeout(longPressTimer); });
-    logo.addEventListener('mouseleave', function() { clearTimeout(longPressTimer); });
     
     function showLogin() {
         document.getElementById('loginOverlay').classList.add('active');
