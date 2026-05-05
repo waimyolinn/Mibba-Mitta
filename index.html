@@ -15,662 +15,833 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="မိဘမေတ္တာ">
-    <link rel="apple-touch-icon" href="https://placehold.co/192x192/8b5a2b/fdf8f0?text=%E1%80%99%E1%80%99">
-    <link rel="apple-touch-icon" sizes="152x152" href="https://placehold.co/152x152/8b5a2b/fdf8f0?text=%E1%80%99%E1%80%99">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://placehold.co/180x180/8b5a2b/fdf8f0?text=%E1%80%99%E1%80%99">
-    <link rel="apple-touch-icon" sizes="167x167" href="https://placehold.co/167x167/8b5a2b/fdf8f0?text=%E1%80%99%E1%80%99">
-    
-    <!-- Windows Tile -->
-    <meta name="msapplication-TileColor" content="#8b5a2b">
-    <meta name="msapplication-TileImage" content="https://placehold.co/144x144/8b5a2b/fdf8f0?text=%E1%80%99%E1%80%99">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png">
     
     <!-- Theme Color -->
     <meta name="theme-color" content="#8b5a2b">
+    <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင် - အရည်အသွေးမြင့် အထည်များ">
     
-    <!-- Description -->
-    <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင် - အရည်အသွေးမြင့် အထည်များ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး">
-    
-    <!-- Open Graph (Facebook Share) -->
-    <meta property="og:title" content="မိဘမေတ္တာ အထည်ဆိုင်">
-    <meta property="og:description" content="အရည်အသွေးမြင့် အထည်များ">
-    <meta property="og:image" content="https://placehold.co/512x512/8b5a2b/fdf8f0?text=%E1%80%99%E1%80%99">
-    <meta property="og:url" content="https://mibbamitta.pages.dev">
-    <meta property="og:type" content="website">
-    <!-- ==================== PWA Meta End ==================== -->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: system-ui, 'Myanmar Text', -apple-system, sans-serif;
-            background: linear-gradient(135deg, #fdf8f0 0%, #f5e6d3 100%);
-            min-height: 100vh;
-            padding: 20px;
-            padding-bottom: 40px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            border-radius: 32px;
-            padding: 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        :root {
+            --primary: #8b5a2b;
+            --primary-light: #a0724d;
+            --bg: #fdf8f0;
+            --card: #ffffff;
+            --text: #3d2b1a;
+            --text-light: #7a5a4e;
+            --text-muted: #b0a090;
+            --border: #f0e0d0;
+            --shadow: 0 2px 16px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        /* Shop Info */
-        .shop-info { 
-            text-align: center; 
-            margin-bottom: 25px; 
-            padding-bottom: 15px; 
-            border-bottom: 2px solid #f0dcc5; 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', system-ui, 'Myanmar Text', -apple-system, sans-serif;
+            background: linear-gradient(160deg, #fdf8f0 0%, #f5e8d8 40%, #fdf8f0 100%);
+            min-height: 100vh;
+            padding: 16px;
+            padding-bottom: 32px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .container {
+            max-width: 560px;
+            margin: 0 auto;
+        }
+        
+        /* ========== Header Card ========== */
+        .header-card {
+            background: linear-gradient(145deg, #ffffff 0%, #fefaf5 100%);
+            border-radius: 24px;
+            padding: 24px 20px 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .header-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5a2b, #c4956a, #8b5a2b);
+        }
+        .shop-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            object-fit: cover;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(139,90,43,0.2);
             cursor: default;
             user-select: none;
             -webkit-user-select: none;
         }
-        .shop-name { 
-            font-size: 28px; 
-            font-weight: bold; 
-            color: #8b5a2b; 
-            padding: 10px;
-            border-radius: 15px;
-            transition: background 0.3s;
+        .shop-name {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            cursor: default;
+            user-select: none;
+            -webkit-user-select: none;
         }
-        .shop-name:active {
+        .shop-name small {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--primary-light);
+            display: block;
+            letter-spacing: 0;
+        }
+        .welcome-badge {
+            display: inline-block;
             background: #fef5e8;
+            color: #b8863f;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 20px;
+            border-radius: 50px;
+            margin: 10px 0;
+            letter-spacing: 0.3px;
         }
-        .welcome-message { 
-            color: #b8863f; 
-            font-size: 18px; 
-            font-weight: bold; 
-            margin: 15px 0; 
-            padding: 8px; 
-            background: #fef5e8; 
-            border-radius: 50px; 
+        .contact-row {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 10px;
         }
-        .shop-address { 
-            font-size: 13px; 
-            color: #7a5a4e; 
-            background: #fef5e8; 
-            padding: 10px; 
-            border-radius: 20px; 
-            margin-top: 10px; 
+        .contact-item {
+            font-size: 12px;
+            color: var(--text-light);
+            background: #fef9f3;
+            padding: 6px 14px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contact-item i {
+            color: var(--primary);
+            font-size: 13px;
         }
         
-        /* Buttons */
-        .social-buttons { margin-bottom: 25px; }
-        .btn { 
-            display: block; 
-            text-align: center; 
-            padding: 14px; 
-            border-radius: 50px; 
-            text-decoration: none; 
-            font-weight: bold; 
-            color: white; 
-            margin: 10px 0; 
-            transition: transform 0.2s; 
-            border: none; 
-            width: 100%; 
+        /* ========== Action Buttons ========== */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
-            font-size: 16px;
+            border: none;
+            text-decoration: none;
+            transition: var(--transition);
+            letter-spacing: 0.2px;
         }
-        .btn:hover { transform: scale(1.02); }
-        .telegram { background: #0088cc; }
-        .viber { background: #7360f2; }
-        
-        /* Install App Button */
-        .install-app-btn {
+        .btn:active { transform: scale(0.96); }
+        .btn-telegram { background: #0088cc; color: #fff; }
+        .btn-viber { background: #7360f2; color: #fff; }
+        .btn-install {
             background: linear-gradient(135deg, #27ae60, #2ecc71);
-            margin-bottom: 20px;
+            color: #fff;
+            grid-column: 1 / -1;
             display: none;
-            animation: pulse 2s infinite;
-            font-size: 18px;
-            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            font-size: 15px;
+            box-shadow: 0 4px 16px rgba(39,174,96,0.25);
+            animation: pulse 2.5s infinite;
         }
         @keyframes pulse {
-            0%, 100% { box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); }
-            50% { box-shadow: 0 4px 25px rgba(39, 174, 96, 0.6); }
+            0%, 100% { box-shadow: 0 4px 16px rgba(39,174,96,0.25); }
+            50% { box-shadow: 0 6px 24px rgba(39,174,96,0.4); }
         }
-        
-        /* Already Installed Message */
-        .installed-msg {
+        .installed-badge {
             text-align: center;
             background: #e8f5e9;
             color: #2e7d32;
             padding: 10px;
-            border-radius: 50px;
-            margin-bottom: 20px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
             display: none;
-            font-weight: bold;
         }
         
-        /* QR Code Section */
-        .qr-section {
-            text-align: center;
-            margin: 20px 0;
-            padding: 15px;
-            background: #fef5e8;
-            border-radius: 20px;
+        /* ========== QR & Install Section ========== */
+        .install-section {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
-        .qr-section p { margin-bottom: 10px; color: #8b5a2b; }
-        .qr-section img { width: 120px; height: 120px; border-radius: 10px; }
-        .qr-section .note { font-size: 12px; color: #a08060; margin-top: 8px; }
+        .install-section img {
+            width: 72px;
+            height: 72px;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+        .install-section .info {
+            flex: 1;
+        }
+        .install-section .info p {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        .install-section .info small {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
         
-        /* Post Cards */
+        /* ========== Admin Badge ========== */
+        .admin-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .admin-badge {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .admin-logout {
+            background: none;
+            border: 1px solid #ddd;
+            color: #999;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        
+        /* ========== Refresh Button ========== */
+        .refresh-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+        }
+        .refresh-btn {
+            background: #fff;
+            border: 1px solid var(--border);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+        .refresh-btn:active { background: #fef5e8; }
+        
+        /* ========== Post Card ========== */
         .post-card {
-            background: white;
-            border-radius: 20px;
+            background: var(--card);
+            border-radius: var(--radius);
+            margin-bottom: 16px;
             overflow: hidden;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
             position: relative;
         }
-        .post-image { width: 100%; display: block; cursor: pointer; }
-        .post-content { padding: 15px; }
-        .post-text { padding: 18px; font-size: 16px; color: #4a3520; line-height: 1.5; }
-        .post-caption { font-size: 15px; color: #5a3e2e; margin-bottom: 8px; }
-        .post-date { font-size: 11px; color: #a08060; margin-top: 8px; border-top: 1px solid #eee; padding-top: 8px; }
+        .post-card:active { transform: scale(0.99); }
+        
+        /* Image Container */
+        .post-image-wrap {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            background: #f5f0ea;
+        }
+        .post-image-wrap img {
+            width: 100%;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .post-image-wrap:active img {
+            transform: scale(1.03);
+        }
+        
+        /* Caption Overlay on Image */
+        .post-image-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.75));
+            color: #fff;
+            padding: 32px 16px 14px;
+            font-size: 14px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+        
+        /* Text Post */
+        .post-text-content {
+            padding: 20px;
+            font-size: 15px;
+            color: var(--text);
+            line-height: 1.7;
+        }
+        
+        /* Post Footer */
+        .post-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-top: 1px solid #faf5f0;
+        }
+        .post-date {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .post-type-badge {
+            font-size: 10px;
+            background: #fef5e8;
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
         
         /* Delete Button */
         .delete-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(220, 20, 60, 0.9);
-            color: white;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #fff;
             border: none;
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-size: 13px;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
             z-index: 10;
-            font-weight: bold;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            letter-spacing: 0.3px;
         }
-        .delete-btn:active {
-            background: rgba(180, 10, 40, 0.9);
-            transform: scale(0.95);
-        }
+        .delete-btn:active { background: rgba(220,20,60,0.85); }
         
-        /* Admin Badge */
-        .admin-badge {
-            background: #c0392b;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            display: inline-block;
-            margin-bottom: 15px;
-            font-weight: bold;
-            animation: fadeIn 0.3s;
+        /* ========== Status ========== */
+        .status-card {
+            text-align: center;
+            padding: 48px 24px;
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            color: var(--text-muted);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Admin Logout Button */
-        .admin-logout-btn {
-            background: none;
-            border: 1px solid #c0392b;
-            color: #c0392b;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        
-        /* Status */
-        .status-message { 
-            text-align: center; 
-            padding: 40px; 
-            color: #8b5a2b; 
-            background: #fef5e8; 
-            border-radius: 20px; 
-        }
-        .loading-spinner { 
-            display: inline-block; 
-            width: 24px; 
-            height: 24px; 
-            border: 3px solid #ddd; 
-            border-top-color: #8b5a2b; 
-            border-radius: 50%; 
-            animation: spin 0.6s linear infinite; 
+        .spinner {
+            width: 28px;
+            height: 28px;
+            border: 3px solid #f0e0d0;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 12px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* Refresh Button */
-        .refresh-btn { 
-            background: #8b5a2b; 
-            color: white; 
-            border: none; 
-            padding: 10px 24px; 
-            border-radius: 40px; 
-            font-size: 14px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            display: block; 
-            margin: 0 auto 25px auto; 
+        /* ========== Image Viewer Modal ========== */
+        .viewer-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.96);
+            z-index: 2000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s;
+        }
+        .viewer-overlay.active { display: flex; }
+        .viewer-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            color: #fff;
+            font-size: 32px;
+            z-index: 2001;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            border: none;
+        }
+        .viewer-image-wrap {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .viewer-image-wrap img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .viewer-caption {
+            color: #fff;
+            text-align: center;
+            padding: 12px 24px 32px;
+            font-size: 14px;
+            line-height: 1.6;
+            max-width: 500px;
+            opacity: 0.9;
+        }
+        .viewer-zoom-hint {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
         }
         
-        /* Modal */
-        .modal { 
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0,0,0,0.95); 
-            z-index: 1000; 
-            cursor: pointer; 
-            justify-content: center; 
-            align-items: center; 
+        /* ========== Admin Login Modal ========== */
+        .login-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s;
         }
-        .modal-content { max-width: 95%; max-height: 90%; object-fit: contain; }
-        .modal-caption { 
-            text-align: center; 
-            color: white; 
-            padding: 15px; 
-            font-size: 14px; 
-            background: rgba(0,0,0,0.7); 
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            right: 0; 
+        .login-overlay.active { display: flex; }
+        .login-box {
+            background: #fff;
+            border-radius: 24px;
+            padding: 32px 24px;
+            width: 90%;
+            max-width: 360px;
+            text-align: center;
         }
-        .close-modal { 
-            position: fixed; 
-            top: 20px; 
-            right: 30px; 
-            color: white; 
-            font-size: 40px; 
-            cursor: pointer; 
-            z-index: 1001; 
+        .login-box h3 { color: var(--primary); margin-bottom: 4px; }
+        .login-box p { color: #999; font-size: 13px; margin-bottom: 20px; }
+        .login-box input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #eee;
+            border-radius: 14px;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: var(--transition);
+        }
+        .login-box input:focus { border-color: var(--primary); }
+        .login-box .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .login-box .btn-login {
+            flex: 1;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .login-box .btn-cancel {
+            flex: 1;
+            background: #f0f0f0;
+            color: #666;
+            border: none;
+            padding: 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .login-error {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 10px;
+            display: none;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Shop Info (Long Press for Admin = 3 seconds) -->
-    <div class="shop-info">
-        <div class="shop-name">🧵 မိဘမေတ္တာ <small>အထည်ဆိုင်</small></div>
-        <div class="welcome-message">🙏 မင်္ဂလာပါ မိမိတို့ဆိုင်သို့ ကြိုဆိုပါတယ် 🙏</div>
-        <div class="shop-address">
-            <p>📞 ဆက်သွယ်ရန် - 09697455880</p>
-            <p>📍 လိပ်စာ - အိုးထိန်းကျေးရွာ၊ ပုသိမ်-မုံရွာ ကားလမ်းဘေး</p>
+    <!-- ==================== Header ==================== -->
+    <div class="header-card">
+        <img class="shop-logo" src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo">
+        <div class="shop-name">မိဘမေတ္တာ <small>အထည်ဆိုင်</small></div>
+        <div class="welcome-badge">🙏 မင်္ဂလာပါ ကြိုဆိုပါတယ် 🙏</div>
+        <div class="contact-row">
+            <span class="contact-item"><i class="fas fa-phone"></i> 09697455880</span>
+            <span class="contact-item"><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
         </div>
     </div>
 
-    <!-- Social Buttons -->
-    <div class="social-buttons">
-        <a href="https://t.me/mibamittaa" class="btn telegram" target="_blank" rel="noopener">📱 Telegram Channel</a>
-        <a href="viber://chat?number=%2B959697455880" class="btn viber">💬 Viber</a>
+    <!-- ==================== Action Buttons ==================== -->
+    <div class="action-buttons">
+        <a href="#" class="btn btn-telegram" onclick="openTelegram(event)">
+            <i class="fab fa-telegram-plane"></i> Telegram
+        </a>
+        <a href="#" class="btn btn-viber" onclick="openViber(event)">
+            <i class="fab fa-viber"></i> Viber
+        </a>
+        <a href="#" class="btn btn-install" id="installBtn" onclick="installApp()">
+            <i class="fas fa-download"></i> အက်ပ် ထည့်သွင်းရန်
+        </a>
+    </div>
+    <div class="installed-badge" id="installedBadge">✅ အက်ပ် ထည့်သွင်းပြီးပါပြီ</div>
+
+    <!-- ==================== QR Section ==================== -->
+    <div class="install-section">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mibbamitta.pages.dev" alt="QR">
+        <div class="info">
+            <p>📲 အက်ပ်ထည့်ရန် QR Scan လုပ်ပါ</p>
+            <small>Chrome Browser ဖြင့် Scan လုပ်ပါ</small>
+        </div>
     </div>
 
-    <!-- QR Code Section -->
-    <div class="qr-section">
-        <p>📲 အက်ပ်ထည့်ရန် QR Code ကို Scan လုပ်ပါ</p>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mibbamitta.pages.dev" alt="QR Code" loading="lazy">
-        <div class="note">Chrome Browser ဖြင့် Scan လုပ်ပါ</div>
+    <!-- ==================== Admin Bar ==================== -->
+    <div id="adminBar"></div>
+
+    <!-- ==================== Refresh ==================== -->
+    <div class="refresh-bar">
+        <button class="refresh-btn" onclick="loadPosts()">
+            <i class="fas fa-sync-alt"></i> ပြန်လည်စတင်ရန်
+        </button>
     </div>
 
-    <!-- Already Installed Message -->
-    <div class="installed-msg" id="installedMsg">✅ အက်ပ် ထည့်သွင်းပြီးပါပြီ</div>
-
-    <!-- Install App Button -->
-    <button class="btn install-app-btn" id="installBtn">📲 အက်ပ် ထည့်သွင်းရန်</button>
-
-    <!-- Admin Panel -->
-    <div id="adminPanel"></div>
-    
-    <!-- Refresh Button -->
-    <button class="refresh-btn" id="refreshBtn">🔄 ပို့စ်များ ပြန်လည်စတင်ရန်</button>
-
-    <!-- Post Grid -->
+    <!-- ==================== Posts ==================== -->
     <div id="postGrid">
-        <div class="status-message"><span class="loading-spinner"></span> ပို့စ်များ ယူနေပါသည်...</div>
+        <div class="status-card">
+            <div class="spinner"></div>
+            <p>ပို့စ်များ ယူနေပါသည်...</p>
+        </div>
     </div>
 </div>
 
-<!-- Image Modal -->
-<div id="imageModal" class="modal" onclick="closeModal()">
-    <span class="close-modal">&times;</span>
-    <img class="modal-content" id="modalImage" alt="ပုံအကြီး">
-    <div id="modalCaption" class="modal-caption"></div>
+<!-- ==================== Image Viewer ==================== -->
+<div class="viewer-overlay" id="imageViewer" onclick="closeViewer()">
+    <button class="viewer-close">&times;</button>
+    <div class="viewer-image-wrap">
+        <img id="viewerImage" src="" alt="ပုံအကြီး">
+    </div>
+    <div class="viewer-caption" id="viewerCaption"></div>
 </div>
 
-<!-- ==================== Admin Login Modal ==================== -->
-<div id="adminModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:999; justify-content:center; align-items:center;">
-    <div style="background:white; padding:30px 25px; border-radius:20px; text-align:center; width:90%; max-width:350px; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-        <div style="font-size:40px; margin-bottom:10px;">🔐</div>
-        <h3 style="color:#8b5a2b; margin-bottom:5px;">Admin Login</h3>
-        <p style="color:#888; margin-bottom:20px; font-size:14px;">မိဘမေတ္တာ အထည်ဆိုင်</p>
-        <input type="password" id="pinInput" style="width:100%; padding:14px; border:2px solid #ddd; border-radius:12px; font-size:16px; text-align:center; outline:none; transition:border 0.3s;" placeholder="Password ထည့်ပါ" onfocus="this.style.borderColor='#8b5a2b'" onblur="this.style.borderColor='#ddd'" onkeypress="if(event.key==='Enter')checkPin()">
-        <div style="margin-top:15px; display:flex; gap:10px;">
-            <button onclick="checkPin()" style="flex:1; background:#8b5a2b; color:white; border:none; padding:12px; border-radius:50px; font-size:15px; font-weight:bold; cursor:pointer;">ဝင်ရောက်မည်</button>
-            <button onclick="closeAdminModal()" style="flex:1; background:#eee; color:#666; border:none; padding:12px; border-radius:50px; font-size:15px; cursor:pointer;">ပိတ်မည်</button>
+<!-- ==================== Admin Login ==================== -->
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+        <div style="font-size:40px;">🔐</div>
+        <h3>Admin Login</h3>
+        <p>Password ထည့်ပါ</p>
+        <input type="password" id="loginPassword" placeholder="••••••••" onkeypress="if(event.key==='Enter')adminLogin()">
+        <div class="btn-row">
+            <button class="btn-login" onclick="adminLogin()">ဝင်ရောက်မည်</button>
+            <button class="btn-cancel" onclick="closeLogin()">ပိတ်မည်</button>
         </div>
-        <p id="pinError" style="color:#e74c3c; margin-top:12px; display:none; font-size:13px;"></p>
+        <p class="login-error" id="loginError"></p>
     </div>
 </div>
 
 <script>
-    // ==================== Configuration ====================
+    // ==================== Config ====================
     const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
     
-    // ==================== Service Worker Registration ====================
+    // ==================== Service Worker ====================
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(registration => {
-                    console.log('✅ Service Worker registered:', registration.scope);
-                    
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                console.log('🔄 New update available!');
-                                newWorker.postMessage('SKIP_WAITING');
-                                window.location.reload();
-                            }
-                        });
-                    });
-                })
-                .catch(err => console.log('❌ Service Worker failed:', err));
-        });
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('✅ SW registered'))
+            .catch(err => console.log('SW failed', err));
     }
     
-    // ==================== PWA Installation ====================
+    // ==================== PWA Install ====================
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
-    const installedMsg = document.getElementById('installedMsg');
+    const installedBadge = document.getElementById('installedBadge');
     
     if (window.matchMedia('(display-mode: standalone)').matches) {
-        installedMsg.style.display = 'block';
-        console.log('✅ App is running in standalone mode');
+        installedBadge.style.display = 'block';
     }
     
     window.addEventListener('beforeinstallprompt', (e) => {
-        console.log('📲 beforeinstallprompt fired!');
         e.preventDefault();
         deferredPrompt = e;
-        installBtn.style.display = 'block';
-        installBtn.textContent = '📲 အက်ပ် ထည့်သွင်းရန်';
+        installBtn.style.display = 'flex';
     });
     
-    installBtn.addEventListener('click', async () => {
-        if (!deferredPrompt) {
-            alert('အက်ပ် ထည့်သွင်းရန် အဆင်သင့်မဖြစ်သေးပါ။ ခဏစောင့်ပါ။');
-            return;
-        }
-        
-        installBtn.textContent = '⏳ ထည့်သွင်းနေသည်...';
-        installBtn.disabled = true;
-        
-        try {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`👤 User choice: ${outcome}`);
-            
-            if (outcome === 'accepted') {
+    function installApp() {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(result => {
+            if (result.outcome === 'accepted') {
                 installBtn.style.display = 'none';
-                installedMsg.style.display = 'block';
-                console.log('✅ App installed successfully!');
-            } else {
-                installBtn.textContent = '📲 အက်ပ် ထည့်သွင်းရန်';
-                installBtn.disabled = false;
+                installedBadge.style.display = 'block';
             }
-        } catch (err) {
-            console.error('Install error:', err);
-            installBtn.textContent = '📲 အက်ပ် ထည့်သွင်းရန်';
-            installBtn.disabled = false;
-        }
-        
-        deferredPrompt = null;
-    });
+            deferredPrompt = null;
+        });
+    }
     
     window.addEventListener('appinstalled', () => {
-        console.log('🎉 App installed!');
         installBtn.style.display = 'none';
-        installedMsg.style.display = 'block';
-        deferredPrompt = null;
+        installedBadge.style.display = 'block';
     });
     
-    // ==================== 🔐 Admin Login System ====================
+    // ==================== Viber & Telegram ====================
+    function openTelegram(e) {
+        e.preventDefault();
+        const url = "https://t.me/mibamittaa";
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        } else {
+            window.open(url, '_blank');
+        }
+    }
+    
+    function openViber(e) {
+        e.preventDefault();
+        const url = "viber://chat?number=%2B959697455880";
+        window.location.href = url;
+        setTimeout(() => {
+            if (!document.hidden) {
+                navigator.clipboard?.writeText("09697455880");
+                alert("Viber မရှိပါက ဖုန်းနံပါတ် ကူးထားပြီးပါပြီ။");
+            }
+        }, 2000);
+    }
+    
+    // ==================== Admin System ====================
     let adminToken = localStorage.getItem('adminToken') || null;
     let isAdmin = adminToken ? true : false;
     
-    // Page load မှာ token ရှိရင် admin mode ပြန်ဖွင့်
-    if (isAdmin) {
-        document.getElementById('adminPanel').innerHTML = `
-            <div style="display:flex; align-items:center; justify-content:center; margin-bottom:15px;">
-                <div class="admin-badge" style="margin-bottom:0;">🔐 Admin Mode</div>
-                <button class="admin-logout-btn" onclick="adminLogout()" title="Logout">🚪 ထွက်မည်</button>
-            </div>
-        `;
-    }
+    if (isAdmin) showAdminBar();
     
-    // Shop name ကို ၃ စက္ကန့် ကြာကြာနှိပ်ရင် Admin Login Modal ပေါ်မယ်
+    // Long press on logo = 3 seconds
     let longPressTimer;
-    const shopNameEl = document.querySelector('.shop-name');
+    const logo = document.querySelector('.shop-logo');
+    logo.addEventListener('touchstart', e => { if(!isAdmin) longPressTimer = setTimeout(showLogin, 3000); });
+    logo.addEventListener('touchend', () => clearTimeout(longPressTimer));
+    logo.addEventListener('touchmove', () => clearTimeout(longPressTimer));
+    logo.addEventListener('mousedown', e => { if(!isAdmin) longPressTimer = setTimeout(showLogin, 3000); });
+    logo.addEventListener('mouseup', () => clearTimeout(longPressTimer));
+    logo.addEventListener('mouseleave', () => clearTimeout(longPressTimer));
     
-    shopNameEl.addEventListener('touchstart', startLongPress);
-    shopNameEl.addEventListener('touchend', cancelLongPress);
-    shopNameEl.addEventListener('touchmove', cancelLongPress);
-    shopNameEl.addEventListener('mousedown', startLongPress);
-    shopNameEl.addEventListener('mouseup', cancelLongPress);
-    shopNameEl.addEventListener('mouseleave', cancelLongPress);
-    
-    function startLongPress(e) {
-        if (isAdmin) return; // Admin ဝင်ထားပြီးရင် မလိုဘူး
-        longPressTimer = setTimeout(() => {
-            document.getElementById('adminModal').style.display = 'flex';
-            document.getElementById('pinInput').focus();
-            document.getElementById('pinError').style.display = 'none';
-            document.getElementById('pinInput').value = '';
-        }, 3000);
+    function showLogin() {
+        document.getElementById('loginOverlay').classList.add('active');
+        document.getElementById('loginPassword').focus();
+        document.getElementById('loginError').style.display = 'none';
+        document.getElementById('loginPassword').value = '';
     }
     
-    function cancelLongPress() {
-        clearTimeout(longPressTimer);
+    function closeLogin() {
+        document.getElementById('loginOverlay').classList.remove('active');
     }
     
-    // Admin Login Function
-    async function checkPin() {
-        const password = document.getElementById('pinInput').value;
-        const errorEl = document.getElementById('pinError');
-        
-        if (!password) {
-            errorEl.style.display = 'block';
-            errorEl.textContent = 'Password ထည့်ပါ';
-            return;
-        }
-        
-        errorEl.style.display = 'none';
+    async function adminLogin() {
+        const password = document.getElementById('loginPassword').value;
+        const errorEl = document.getElementById('loginError');
+        if (!password) { errorEl.style.display = 'block'; errorEl.textContent = 'Password ထည့်ပါ'; return; }
         
         try {
-            const response = await fetch(`${WORKER_URL}/admin/login`, {
+            const res = await fetch(`${WORKER_URL}/admin/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password: password })
+                body: JSON.stringify({ password })
             });
-            
-            const data = await response.json();
-            
+            const data = await res.json();
             if (data.success) {
-                // ✅ Login အောင်မြင်
                 adminToken = data.token;
                 localStorage.setItem('adminToken', adminToken);
                 isAdmin = true;
-                
-                document.getElementById('adminModal').style.display = 'none';
-                document.getElementById('adminPanel').innerHTML = `
-                    <div style="display:flex; align-items:center; justify-content:center; margin-bottom:15px;">
-                        <div class="admin-badge" style="margin-bottom:0;">🔐 Admin Mode</div>
-                        <button class="admin-logout-btn" onclick="adminLogout()" title="Logout">🚪 ထွက်မည်</button>
-                    </div>
-                `;
-                document.getElementById('pinInput').value = '';
-                errorEl.style.display = 'none';
-                
+                closeLogin();
+                showAdminBar();
                 loadPosts();
-                console.log('✅ Admin logged in successfully');
-                
             } else {
                 errorEl.style.display = 'block';
                 errorEl.textContent = '❌ Password မှားနေပါသည်';
-                document.getElementById('pinInput').value = '';
-                document.getElementById('pinInput').focus();
+                document.getElementById('loginPassword').value = '';
             }
-        } catch (error) {
-            console.error('Login error:', error);
+        } catch(e) {
             errorEl.style.display = 'block';
             errorEl.textContent = '❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ';
         }
     }
     
-    function closeAdminModal() {
-        document.getElementById('adminModal').style.display = 'none';
-        document.getElementById('pinInput').value = '';
-        document.getElementById('pinError').style.display = 'none';
+    function showAdminBar() {
+        document.getElementById('adminBar').innerHTML = `
+            <div class="admin-bar">
+                <div class="admin-badge">🔐 Admin Mode</div>
+                <button class="admin-logout" onclick="adminLogout()">ထွက်မည်</button>
+            </div>`;
     }
     
-    // Admin Logout
     function adminLogout() {
         adminToken = null;
         isAdmin = false;
         localStorage.removeItem('adminToken');
-        document.getElementById('adminPanel').innerHTML = '';
+        document.getElementById('adminBar').innerHTML = '';
         loadPosts();
-        console.log('👋 Admin logged out');
     }
     
-    // ==================== Helper Functions ====================
-    function formatDate(timestamp) {
-        if (!timestamp) return "ရက်စွဲမရှိ";
-        const date = new Date(timestamp * 1000);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        return `${day}/${month}/${year} ${hours}:${minutes}`;
-    }
-    
-    function escapeHtml(text) {
-        if (!text) return "";
-        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;' };
-        return text.replace(/[&<>]/g, m => map[m]);
-    }
-    
-    // ==================== Delete Post (Token ပါ ထည့်ပို့မယ်) ====================
+    // ==================== Delete Post ====================
     async function deletePost(postId) {
         if (!confirm("ဒီပို့စ်ကို ဖျက်မှာလား?")) return;
-        
         try {
-            const response = await fetch(`${WORKER_URL}/post/${postId}`, {
+            const res = await fetch(`${WORKER_URL}/post/${postId}`, {
                 method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${adminToken}`
-                }
+                headers: { 'Authorization': `Bearer ${adminToken}` }
             });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                alert("✅ ဖျက်ပြီးပါပြီ");
-                loadPosts();
-            } else {
-                if (data.error && data.error.includes('ခွင့်မပြု')) {
-                    alert("⚠️ Admin သက်တမ်းကုန်သွားပါပြီ။ ပြန်လော့ဂ်အင်ဝင်ပါ။");
-                    adminLogout();
-                } else {
-                    alert("❌ ဖျက်လို့မရပါ");
-                }
-            }
-        } catch(error) {
-            console.error('Delete error:', error);
-            alert("❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ");
-        }
+            const data = await res.json();
+            if (data.success) { loadPosts(); }
+            else if (data.error?.includes('ခွင့်မပြု')) { alert("သက်တမ်းကုန်ပါပြီ။ ပြန်ဝင်ပါ။"); adminLogout(); }
+            else { alert("ဖျက်လို့မရပါ"); }
+        } catch(e) { alert("ချိတ်ဆက်မှု မအောင်မြင်ပါ"); }
+    }
+    
+    // ==================== Format Date ====================
+    function formatDate(timestamp) {
+        if (!timestamp) return "";
+        const d = new Date(timestamp * 1000);
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const day = d.getDate();
+        const month = months[d.getMonth()];
+        const year = d.getFullYear().toString().slice(2);
+        const h = d.getHours().toString().padStart(2,'0');
+        const m = d.getMinutes().toString().padStart(2,'0');
+        return `${day} ${month} '${year} · ${h}:${m}`;
     }
     
     // ==================== Load Posts ====================
     async function loadPosts() {
         const grid = document.getElementById('postGrid');
-        grid.innerHTML = '<div class="status-message"><span class="loading-spinner"></span> ပို့စ်များ ယူနေပါသည်...</div>';
+        grid.innerHTML = '<div class="status-card"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>';
         
         try {
-            const response = await fetch(`${WORKER_URL}/posts`);
-            const data = await response.json();
-            if (!data.success) throw new Error("API error");
+            const res = await fetch(`${WORKER_URL}/posts`);
+            const data = await res.json();
+            if (!data.success) throw new Error("API Error");
             
             const posts = data.posts;
-            if (!posts || posts.length === 0) {
-                grid.innerHTML = '<div class="status-message">📭 လက်ရှိပို့စ်များ မရှိသေးပါ</div>';
+            if (!posts?.length) {
+                grid.innerHTML = '<div class="status-card"><p>📭 ပို့စ်မရှိသေးပါ</p></div>';
                 return;
             }
             
             let html = '';
-            for (const post of posts) {
+            posts.forEach(post => {
                 const dateStr = formatDate(post.date);
-                const deleteBtn = isAdmin ? `<button class="delete-btn" onclick="event.stopPropagation(); deletePost(${post.id})">✕ ဖျက်ရန်</button>` : '';
+                const deleteBtn = isAdmin ? `<button class="delete-btn" onclick="event.stopPropagation(); deletePost(${post.id})"><i class="fas fa-trash"></i> ဖျက်ရန်</button>` : '';
+                const caption = post.caption || '';
                 
                 if (post.type === 'photo') {
                     html += `
-                        <div class="post-card">
-                            ${deleteBtn}
-                            <img class="post-image" src="${post.image_url}" onclick="openModal('${post.image_url}', '${escapeHtml(post.caption || '')}')" alt="ပုံ" loading="lazy">
-                            <div class="post-content">
-                                ${post.caption ? `<div class="post-caption">📝 ${escapeHtml(post.caption)}</div>` : ''}
-                                <div class="post-date">📅 ${dateStr}</div>
-                            </div>
+                    <div class="post-card">
+                        ${deleteBtn}
+                        <div class="post-image-wrap" onclick="openViewer('${post.image_url}', \`${caption.replace(/`/g,'\\`')}\`)">
+                            <img src="${post.image_url}" alt="ပုံ" loading="lazy">
+                            ${caption ? `<div class="post-image-caption">${escapeHtml(caption)}</div>` : ''}
                         </div>
-                    `;
+                        <div class="post-footer">
+                            <span class="post-type-badge">📷 ပုံ</span>
+                            <span class="post-date"><i class="far fa-clock"></i> ${dateStr}</span>
+                        </div>
+                    </div>`;
                 } else if (post.type === 'text') {
                     html += `
-                        <div class="post-card">
-                            ${deleteBtn}
-                            <div class="post-text">
-                                💬 ${escapeHtml(post.text || '')}
-                                <div class="post-date">📅 ${dateStr}</div>
-                            </div>
+                    <div class="post-card">
+                        ${deleteBtn}
+                        <div class="post-text-content">${escapeHtml(post.text || '')}</div>
+                        <div class="post-footer">
+                            <span class="post-type-badge">📝 စာသား</span>
+                            <span class="post-date"><i class="far fa-clock"></i> ${dateStr}</span>
                         </div>
-                    `;
+                    </div>`;
                 }
-            }
+            });
             grid.innerHTML = html;
-        } catch(error) {
-            console.error('Load posts error:', error);
-            grid.innerHTML = '<div class="status-message">❌ နည်းပညာချို့ယွင်းနေပါသည်။<br><small>အင်တာနက်ချိတ်ဆက်မှု စစ်ဆေးပါ</small></div>';
+        } catch(e) {
+            grid.innerHTML = '<div class="status-card"><p>❌ ချို့ယွင်းနေပါသည်</p><small>အင်တာနက်စစ်ဆေးပါ</small></div>';
         }
     }
     
-    // ==================== Modal Functions ====================
-    function openModal(src, caption) {
-        const modal = document.getElementById('imageModal');
-        modal.style.display = "flex";
-        document.getElementById('modalImage').src = src;
-        document.getElementById('modalCaption').textContent = caption || "";
+    function escapeHtml(text) {
+        if (!text) return "";
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+        return text.replace(/[&<>"']/g, m => map[m]);
+    }
+    
+    // ==================== Image Viewer ====================
+    function openViewer(src, caption) {
+        document.getElementById('viewerImage').src = src;
+        document.getElementById('viewerCaption').textContent = caption || '';
+        document.getElementById('imageViewer').classList.add('active');
         document.body.style.overflow = 'hidden';
     }
     
-    function closeModal() {
-        document.getElementById('imageModal').style.display = "none";
+    function closeViewer() {
+        document.getElementById('imageViewer').classList.remove('active');
         document.body.style.overflow = '';
     }
     
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeViewer();
     });
     
-    // ==================== Initialize ====================
-    document.getElementById('refreshBtn').addEventListener('click', loadPosts);
+    // ==================== Init ====================
     loadPosts();
-    
-    console.log('🚀 App Initialized!');
-    console.log('📱 PWA Ready:', 'serviceWorker' in navigator ? 'Yes' : 'No');
-    console.log('🔐 Admin Mode:', isAdmin ? 'Active' : 'Inactive');
+    console.log('🚀 Modern UI Ready');
 </script>
 
 </body>
