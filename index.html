@@ -5,23 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
     
-    <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="NLqyHByZ-OnqMIKZDidDeUzfNeXN8-SfJElHoPqbrY8" />
     
-    <!-- ==================== PWA Meta Tags ==================== -->
     <link rel="manifest" href="/manifest.json">
-    
-    <!-- iOS Safari Support -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="မိဘမေတ္တာ">
     <link rel="apple-touch-icon" href="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png">
-    
-    <!-- Theme Color -->
     <meta name="theme-color" content="#8b5a2b">
     <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင် - အရည်အသွေးမြင့် အထည်များ">
-    
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
@@ -29,6 +21,7 @@
             --primary: #8b5a2b;
             --primary-light: #a0724d;
             --bg: #fdf8f0;
+            --bg-secondary: #f5e8d8;
             --card: #ffffff;
             --text: #3d2b1a;
             --text-light: #7a5a4e;
@@ -41,25 +34,89 @@
             --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
+        /* Dark Mode */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1a1a2e;
+                --bg-secondary: #16213e;
+                --card: #0f3460;
+                --text: #e0d5c0;
+                --text-light: #c0b090;
+                --text-muted: #8a7a60;
+                --border: #2a3050;
+                --shadow: 0 2px 16px rgba(0,0,0,0.3);
+                --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+            }
+            .header-card { background: linear-gradient(145deg, #1a2744 0%, #162540 100%); }
+            .post-card { background: #162540; }
+            .welcome-badge { background: #1e3050; color: #c4956a; }
+            .contact-item { background: #1a3050; }
+            .install-section { background: #162540; }
+            .refresh-btn { background: #162540; border-color: #2a3050; }
+            .post-type-badge { background: #1e3050; }
+            .post-footer { border-color: #1a3050; }
+            .status-card { background: #162540; }
+            .btn-cancel { background: #2a3050; color: #aaa; }
+            .login-box { background: #162540; }
+            .login-box h3 { color: #c4956a; }
+            .shop-name { color: #c4956a; }
+            .shop-name small { color: #d4a574; }
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Inter', system-ui, 'Myanmar Text', -apple-system, sans-serif;
-            background: linear-gradient(160deg, #fdf8f0 0%, #f5e8d8 40%, #fdf8f0 100%);
+            background: linear-gradient(160deg, var(--bg) 0%, var(--bg-secondary) 40%, var(--bg) 100%);
             min-height: 100vh;
             min-height: 100dvh;
             padding: 16px;
             padding-bottom: 32px;
             -webkit-tap-highlight-color: transparent;
             -webkit-font-smoothing: antialiased;
+            color: var(--text);
+            overscroll-behavior-y: contain;
         }
         
-        .container {
-            max-width: 560px;
-            margin: 0 auto;
+        .container { max-width: 560px; margin: 0 auto; }
+        
+        /* Pull to Refresh */
+        .pull-indicator {
+            text-align: center;
+            padding: 12px;
+            color: var(--text-muted);
+            font-size: 13px;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        .pull-indicator.show { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        /* ========== Header Card ========== */
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--card);
+            box-shadow: var(--shadow-lg);
+            border: none;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .dark-mode-toggle:active { transform: scale(0.9); }
+        
+        /* Header Card */
         .header-card {
             background: linear-gradient(145deg, #ffffff 0%, #fefaf5 100%);
             border-radius: 24px;
@@ -78,8 +135,7 @@
             background: linear-gradient(90deg, #8b5a2b, #c4956a, #8b5a2b);
         }
         .shop-logo {
-            width: 64px;
-            height: 64px;
+            width: 64px; height: 64px;
             border-radius: 16px;
             object-fit: cover;
             margin-bottom: 12px;
@@ -97,13 +153,6 @@
             user-select: none;
             -webkit-user-select: none;
         }
-        .shop-name small {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--primary-light);
-            display: block;
-            letter-spacing: 0;
-        }
         .welcome-badge {
             display: inline-block;
             background: #fef5e8;
@@ -113,7 +162,6 @@
             padding: 6px 20px;
             border-radius: 50px;
             margin: 10px 0;
-            letter-spacing: 0.3px;
         }
         .contact-row {
             display: flex;
@@ -132,12 +180,31 @@
             align-items: center;
             gap: 6px;
         }
-        .contact-item i {
-            color: var(--primary);
-            font-size: 13px;
+        
+        /* New Post Badge */
+        .new-post-badge {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #e74c3c;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 50;
+            display: none;
+            animation: bounceIn 0.5s;
+        }
+        @keyframes bounceIn {
+            0% { transform: translateX(-50%) scale(0); }
+            50% { transform: translateX(-50%) scale(1.2); }
+            100% { transform: translateX(-50%) scale(1); }
         }
         
-        /* ========== Action Buttons ========== */
+        /* Action Buttons */
         .action-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -157,7 +224,6 @@
             border: none;
             text-decoration: none;
             transition: var(--transition);
-            letter-spacing: 0.2px;
             -webkit-tap-highlight-color: transparent;
         }
         .btn:active { transform: scale(0.96); }
@@ -188,9 +254,9 @@
             display: none;
         }
         
-        /* ========== QR & Install Section ========== */
+        /* QR Section */
         .install-section {
-            background: #fff;
+            background: var(--card);
             border-radius: var(--radius);
             padding: 16px;
             margin-bottom: 16px;
@@ -199,37 +265,15 @@
             align-items: center;
             gap: 16px;
         }
-        .install-section img {
-            width: 72px;
-            height: 72px;
-            border-radius: 12px;
-            flex-shrink: 0;
-        }
-        .install-section .info {
-            flex: 1;
-        }
-        .install-section .info p {
-            font-size: 13px;
-            color: var(--text-light);
-            font-weight: 500;
-        }
-        .install-section .info small {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
+        .install-section img { width: 72px; height: 72px; border-radius: 12px; flex-shrink: 0; }
         
-        /* ========== Admin Badge ========== */
+        /* Admin Bar */
         .admin-bar {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             margin-bottom: 16px;
-            animation: fadeIn 0.3s;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         .admin-badge {
             background: #1a1a2e;
@@ -238,7 +282,6 @@
             border-radius: 50px;
             font-size: 12px;
             font-weight: 700;
-            letter-spacing: 0.5px;
         }
         .admin-logout {
             background: none;
@@ -250,14 +293,19 @@
             cursor: pointer;
         }
         
-        /* ========== Refresh Button ========== */
+        /* Refresh Bar */
         .refresh-bar {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 12px;
         }
+        .post-count {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
         .refresh-btn {
-            background: #fff;
+            background: var(--card);
             border: 1px solid var(--border);
             color: var(--primary);
             padding: 8px 16px;
@@ -268,68 +316,59 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: var(--transition);
         }
-        .refresh-btn:active { background: #fef5e8; }
         
-        /* ========== Post Card ========== */
+        /* Post Card */
         .post-card {
             background: var(--card);
             border-radius: var(--radius);
             margin-bottom: 16px;
             overflow: hidden;
             box-shadow: var(--shadow);
-            transition: var(--transition);
             position: relative;
+            animation: fadeSlideUp 0.4s ease-out;
         }
-        
-        /* Image Container */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .post-image-wrap {
             position: relative;
             cursor: pointer;
             overflow: hidden;
             background: #f5f0ea;
-            -webkit-tap-highlight-color: transparent;
         }
         .post-image-wrap img {
             width: 100%;
             display: block;
             transition: transform 0.3s ease;
         }
-        .post-image-wrap:active img {
-            transform: scale(1.03);
-        }
-        
-        /* Caption Overlay on Image */
         .post-image-caption {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             background: linear-gradient(transparent, rgba(0,0,0,0.75));
             color: #fff;
             padding: 32px 16px 14px;
             font-size: 14px;
             line-height: 1.5;
-            font-weight: 500;
             pointer-events: none;
         }
-        
-        /* Text Post */
         .post-text-content {
             padding: 20px;
             font-size: 15px;
-            color: var(--text);
             line-height: 1.7;
         }
-        
-        /* Post Footer */
         .post-footer {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 10px 16px;
-            border-top: 1px solid #faf5f0;
+            border-top: 1px solid var(--border);
+        }
+        .post-footer-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .post-date {
             font-size: 11px;
@@ -347,15 +386,22 @@
             border-radius: 50px;
             font-weight: 600;
         }
-        
-        /* Delete Button */
+        .share-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 50px;
+            transition: var(--transition);
+        }
+        .share-btn:active { color: var(--primary); background: #fef5e8; }
         .delete-btn {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 12px; right: 12px;
             background: rgba(0,0,0,0.65);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             color: #fff;
             border: none;
             border-radius: 50px;
@@ -364,31 +410,53 @@
             font-weight: 600;
             cursor: pointer;
             z-index: 10;
-            letter-spacing: 0.3px;
         }
-        .delete-btn:active { background: rgba(220,20,60,0.85); }
         
-        /* ========== Status ========== */
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #f0e0d0 25%, #f5ece0 50%, #f0e0d0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: var(--radius-sm);
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .skeleton-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+        }
+        .skeleton-img { width: 100%; height: 250px; }
+        .skeleton-footer { padding: 12px 16px; display: flex; justify-content: space-between; }
+        .skeleton-badge { width: 50px; height: 20px; border-radius: 50px; }
+        .skeleton-date { width: 80px; height: 14px; }
+        
+        /* Status */
         .status-card {
             text-align: center;
             padding: 48px 24px;
-            background: #fff;
+            background: var(--card);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             color: var(--text-muted);
         }
-        .spinner {
-            width: 28px;
-            height: 28px;
-            border: 3px solid #f0e0d0;
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            margin: 0 auto 12px;
+        .retry-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+            font-size: 14px;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* ========== Image Viewer Modal (Pinch Zoom Enabled) ========== */
+        /* Image Viewer */
         .viewer-overlay {
             display: none;
             position: fixed;
@@ -398,26 +466,23 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            animation: fadeIn 0.2s;
             touch-action: none;
         }
         .viewer-overlay.active { display: flex; }
         .viewer-close {
             position: absolute;
-            top: 16px;
-            right: 20px;
+            top: 16px; right: 20px;
             color: #fff;
             font-size: 32px;
             z-index: 2001;
-            cursor: pointer;
-            width: 44px;
-            height: 44px;
+            width: 44px; height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(255,255,255,0.15);
             border-radius: 50%;
             border: none;
+            cursor: pointer;
         }
         .viewer-image-wrap {
             flex: 1;
@@ -426,7 +491,6 @@
             justify-content: center;
             padding: 40px 0;
             overflow: auto;
-            -webkit-overflow-scrolling: touch;
             touch-action: pan-x pan-y pinch-zoom;
             width: 100%;
         }
@@ -435,30 +499,16 @@
             max-height: 75vh;
             object-fit: contain;
             border-radius: 8px;
-            touch-action: pan-x pan-y pinch-zoom;
-            user-select: none;
-            -webkit-user-select: none;
         }
         .viewer-caption {
             color: #fff;
             text-align: center;
             padding: 8px 24px 24px;
             font-size: 14px;
-            line-height: 1.6;
             max-width: 500px;
-            opacity: 0.9;
-        }
-        .viewer-zoom-hint {
-            position: absolute;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255,255,255,0.45);
-            font-size: 11px;
-            pointer-events: none;
         }
         
-        /* ========== Admin Login Modal ========== */
+        /* Admin Login Modal */
         .login-overlay {
             display: none;
             position: fixed;
@@ -467,19 +517,16 @@
             z-index: 3000;
             align-items: center;
             justify-content: center;
-            animation: fadeIn 0.2s;
         }
         .login-overlay.active { display: flex; }
         .login-box {
-            background: #fff;
+            background: var(--card);
             border-radius: 24px;
             padding: 32px 24px;
             width: 90%;
             max-width: 360px;
             text-align: center;
         }
-        .login-box h3 { color: var(--primary); margin-bottom: 4px; }
-        .login-box p { color: #999; font-size: 13px; margin-bottom: 20px; }
         .login-box input {
             width: 100%;
             padding: 14px;
@@ -488,15 +535,11 @@
             font-size: 16px;
             text-align: center;
             outline: none;
-            transition: var(--transition);
+            background: var(--bg);
+            color: var(--text);
         }
-        .login-box input:focus { border-color: var(--primary); }
-        .login-box .btn-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 16px;
-        }
-        .login-box .btn-login {
+        .login-box .btn-row { display: flex; gap: 10px; margin-top: 16px; }
+        .btn-login {
             flex: 1;
             background: var(--primary);
             color: #fff;
@@ -507,7 +550,7 @@
             font-size: 14px;
             cursor: pointer;
         }
-        .login-box .btn-cancel {
+        .btn-cancel {
             flex: 1;
             background: #f0f0f0;
             color: #666;
@@ -518,20 +561,41 @@
             font-size: 14px;
             cursor: pointer;
         }
-        .login-error {
-            color: #e74c3c;
-            font-size: 12px;
-            margin-top: 10px;
-            display: none;
+        .login-error { color: #e74c3c; font-size: 12px; margin-top: 10px; display: none; }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 13px;
+            z-index: 4000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
         }
+        .toast.show { opacity: 1; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- ==================== Header ==================== -->
+    <!-- New Post Badge -->
+    <div class="new-post-badge" id="newPostBadge" onclick="loadPosts()">🆕 ပို့စ်သစ်ရှိသည်</div>
+    
+    <!-- Pull to Refresh -->
+    <div class="pull-indicator" id="pullIndicator">⬇️ ဆွဲချပြီး ပြန်စတင်ပါ</div>
+
+    <!-- Header -->
     <div class="header-card">
-        <img class="shop-logo" src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo">
+        <div style="position:relative;display:inline-block;">
+            <img class="shop-logo" src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo">
+        </div>
         <div class="shop-name">မိဘမေတ္တာ <small>အထည်ဆိုင်</small></div>
         <div class="welcome-badge">🙏 မင်္ဂလာပါ ကြိုဆိုပါတယ် 🙏</div>
         <div class="contact-row">
@@ -540,64 +604,56 @@
         </div>
     </div>
 
-    <!-- ==================== Action Buttons ==================== -->
+    <!-- Action Buttons -->
     <div class="action-buttons">
-        <a href="#" class="btn btn-telegram" onclick="openTelegram(event)">
-            <i class="fab fa-telegram-plane"></i> Telegram
-        </a>
-        <a href="#" class="btn btn-viber" onclick="openViber(event)">
-            <i class="fab fa-viber"></i> Viber
-        </a>
-        <a href="#" class="btn btn-install" id="installBtn" onclick="installApp()">
-            <i class="fas fa-download"></i> အက်ပ် ထည့်သွင်းရန်
-        </a>
+        <a href="#" class="btn btn-telegram" onclick="openTelegram(event)"><i class="fab fa-telegram-plane"></i> Telegram</a>
+        <a href="#" class="btn btn-viber" onclick="openViber(event)"><i class="fab fa-viber"></i> Viber</a>
+        <a href="#" class="btn btn-install" id="installBtn" onclick="installApp()"><i class="fas fa-download"></i> အက်ပ် ထည့်သွင်းရန်</a>
     </div>
     <div class="installed-badge" id="installedBadge">✅ အက်ပ် ထည့်သွင်းပြီးပါပြီ</div>
 
-    <!-- ==================== QR Section ==================== -->
+    <!-- QR Section -->
     <div class="install-section">
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mibbamitta.pages.dev" alt="QR">
         <div class="info">
-            <p>📲 အက်ပ်ထည့်ရန် QR Scan လုပ်ပါ</p>
-            <small>Chrome Browser ဖြင့် Scan လုပ်ပါ</small>
+            <p style="font-size:13px;font-weight:500;">📲 အက်ပ်ထည့်ရန် QR Scan လုပ်ပါ</p>
+            <small style="font-size:11px;color:var(--text-muted);">Chrome Browser ဖြင့် Scan လုပ်ပါ</small>
         </div>
     </div>
 
-    <!-- ==================== Admin Bar ==================== -->
+    <!-- Admin Bar -->
     <div id="adminBar"></div>
 
-    <!-- ==================== Refresh ==================== -->
+    <!-- Refresh Bar -->
     <div class="refresh-bar">
-        <button class="refresh-btn" onclick="loadPosts()">
-            <i class="fas fa-sync-alt"></i> ပြန်လည်စတင်ရန်
-        </button>
+        <span class="post-count" id="postCount"></span>
+        <button class="refresh-btn" onclick="loadPosts()"><i class="fas fa-sync-alt"></i> ပြန်လည်စတင်ရန်</button>
     </div>
 
-    <!-- ==================== Posts ==================== -->
-    <div id="postGrid">
-        <div class="status-card">
-            <div class="spinner"></div>
-            <p>ပို့စ်များ ယူနေပါသည်...</p>
-        </div>
-    </div>
+    <!-- Posts -->
+    <div id="postGrid"></div>
 </div>
 
-<!-- ==================== Image Viewer (Pinch Zoom) ==================== -->
+<!-- Dark Mode Toggle -->
+<button class="dark-mode-toggle" onclick="toggleDarkMode()" title="အနက်ရောင်မုဒ်">
+    <span id="darkIcon">🌙</span>
+</button>
+
+<!-- Image Viewer -->
 <div class="viewer-overlay" id="imageViewer">
     <button class="viewer-close" onclick="closeViewer()">&times;</button>
-    <div class="viewer-image-wrap" id="viewerImageWrap">
+    <div class="viewer-image-wrap">
         <img id="viewerImage" src="" alt="ပုံအကြီး">
     </div>
     <div class="viewer-caption" id="viewerCaption"></div>
-    <div class="viewer-zoom-hint">👆 လက်နှစ်ချောင်းဖြင့် ချဲ့ကြည့်နိုင်ပါသည်</div>
 </div>
 
-<!-- ==================== Admin Login ==================== -->
+<!-- Admin Login -->
 <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
         <div style="font-size:40px;">🔐</div>
         <h3>Admin Login</h3>
-        <p>Password ထည့်ပါ</p>
+        <p style="color:#999;font-size:13px;margin-bottom:20px;">Password ထည့်ပါ</p>
         <input type="password" id="loginPassword" placeholder="••••••••" onkeypress="if(event.key==='Enter')adminLogin()">
         <div class="btn-row">
             <button class="btn-login" onclick="adminLogin()">ဝင်ရောက်မည်</button>
@@ -607,15 +663,55 @@
     </div>
 </div>
 
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <script>
-    // ==================== Config ====================
     const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
+    let postCount = 0;
     
     // ==================== Service Worker ====================
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('✅ SW registered'))
-            .catch(err => console.log('SW failed', err));
+        navigator.serviceWorker.register('/sw.js').then(reg => {
+            console.log('✅ SW registered');
+            reg.addEventListener('updatefound', () => {
+                const w = reg.installing;
+                w.addEventListener('statechange', () => {
+                    if (w.state === 'installed' && navigator.serviceWorker.controller) {
+                        showToast('🔄 Update ready! Restarting...');
+                        setTimeout(() => { w.postMessage('SKIP_WAITING'); window.location.reload(); }, 1500);
+                    }
+                });
+            });
+        });
+    }
+    
+    // ==================== Dark Mode ====================
+    let darkMode = localStorage.getItem('darkMode') === 'true';
+    if (darkMode) document.documentElement.setAttribute('data-dark', 'true');
+    updateDarkIcon();
+    
+    function toggleDarkMode() {
+        darkMode = !darkMode;
+        localStorage.setItem('darkMode', darkMode);
+        if (darkMode) {
+            document.documentElement.setAttribute('data-dark', 'true');
+        } else {
+            document.documentElement.removeAttribute('data-dark');
+        }
+        updateDarkIcon();
+    }
+    
+    function updateDarkIcon() {
+        document.getElementById('darkIcon').textContent = darkMode ? '☀️' : '🌙';
+    }
+    
+    // ==================== Toast ====================
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
     }
     
     // ==================== PWA Install ====================
@@ -650,50 +746,32 @@
         installedBadge.style.display = 'block';
     });
     
-    // ==================== Viber & Telegram (Fixed for PWA) ====================
+    // ==================== Telegram / Viber ====================
     function openTelegram(e) {
         e.preventDefault();
-        const url = "https://t.me/mibamittaa";
-        const a = document.createElement('a');
-        a.href = url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        window.location.href = 'tg://resolve?domain=mibamittaa';
+        setTimeout(() => {
+            if (!document.hidden) window.open('https://t.me/mibamittaa', '_system');
+        }, 1500);
     }
     
     function openViber(e) {
         e.preventDefault();
-        const viberUrl = "viber://chat?number=%2B959697455880";
-        const phoneNumber = "09697455880";
-        
-        const a = document.createElement('a');
-        a.href = viberUrl;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        
+        window.location.href = 'viber://chat?number=%2B959697455880';
         setTimeout(() => {
-            if (!document.hidden) {
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(phoneNumber).then(() => {
-                        alert("✅ Viber မရှိပါ။ ဖုန်းနံပါတ် " + phoneNumber + " ကူးယူပြီးပါပြီ။");
-                    });
-                } else {
-                    alert("📞 Viber မရှိပါ။ ဖုန်းနံပါတ် - " + phoneNumber);
-                }
+            if (!document.hidden && navigator.clipboard) {
+                navigator.clipboard.writeText("09697455880").then(() => {
+                    alert("✅ Viber မရှိပါ။ နံပါတ် ကူးပြီးပါပြီ။");
+                });
             }
-        }, 2500);
+        }, 1500);
     }
     
-    // ==================== Admin System ====================
+    // ==================== Admin ====================
     let adminToken = localStorage.getItem('adminToken') || null;
     let isAdmin = adminToken ? true : false;
-    
     if (isAdmin) showAdminBar();
     
-    // Long press on logo = 3 seconds
     let longPressTimer;
     const logo = document.querySelector('.shop-logo');
     logo.addEventListener('touchstart', e => { if(!isAdmin) longPressTimer = setTimeout(showLogin, 3000); });
@@ -709,217 +787,213 @@
         document.getElementById('loginError').style.display = 'none';
         document.getElementById('loginPassword').value = '';
     }
-    
-    function closeLogin() {
-        document.getElementById('loginOverlay').classList.remove('active');
-    }
+    function closeLogin() { document.getElementById('loginOverlay').classList.remove('active'); }
     
     async function adminLogin() {
-        const password = document.getElementById('loginPassword').value;
-        const errorEl = document.getElementById('loginError');
-        if (!password) { errorEl.style.display = 'block'; errorEl.textContent = 'Password ထည့်ပါ'; return; }
-        
+        const pw = document.getElementById('loginPassword').value;
+        const err = document.getElementById('loginError');
+        if (!pw) { err.style.display = 'block'; err.textContent = 'Password ထည့်ပါ'; return; }
         try {
             const res = await fetch(`${WORKER_URL}/admin/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password })
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: pw })
             });
             const data = await res.json();
             if (data.success) {
-                adminToken = data.token;
-                localStorage.setItem('adminToken', adminToken);
-                isAdmin = true;
-                closeLogin();
-                showAdminBar();
-                loadPosts();
-            } else {
-                errorEl.style.display = 'block';
-                errorEl.textContent = '❌ Password မှားနေပါသည်';
-                document.getElementById('loginPassword').value = '';
-            }
-        } catch(e) {
-            errorEl.style.display = 'block';
-            errorEl.textContent = '❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ';
-        }
+                adminToken = data.token; localStorage.setItem('adminToken', adminToken); isAdmin = true;
+                closeLogin(); showAdminBar(); loadPosts();
+            } else { err.style.display = 'block'; err.textContent = '❌ Password မှားနေပါသည်'; }
+        } catch(e) { err.style.display = 'block'; err.textContent = '❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'; }
     }
     
     function showAdminBar() {
-        document.getElementById('adminBar').innerHTML = `
-            <div class="admin-bar">
-                <div class="admin-badge">🔐 Admin Mode</div>
-                <button class="admin-logout" onclick="adminLogout()">ထွက်မည်</button>
-            </div>`;
+        document.getElementById('adminBar').innerHTML = `<div class="admin-bar"><div class="admin-badge">🔐 Admin Mode</div><button class="admin-logout" onclick="adminLogout()">ထွက်မည်</button></div>`;
     }
-    
     function adminLogout() {
-        adminToken = null;
-        isAdmin = false;
-        localStorage.removeItem('adminToken');
-        document.getElementById('adminBar').innerHTML = '';
-        loadPosts();
+        adminToken = null; isAdmin = false; localStorage.removeItem('adminToken');
+        document.getElementById('adminBar').innerHTML = ''; loadPosts();
     }
     
-    // ==================== Delete Post ====================
+    // ==================== Delete ====================
     async function deletePost(postId) {
-        if (!confirm("ဒီပို့စ်ကို ဖျက်မှာလား?")) return;
+        if (!confirm("ဖျက်မှာလား?")) return;
         try {
             const res = await fetch(`${WORKER_URL}/post/${postId}`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${adminToken}` }
+                method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` }
             });
             const data = await res.json();
-            if (data.success) { loadPosts(); }
-            else if (data.error?.includes('ခွင့်မပြု')) { alert("သက်တမ်းကုန်ပါပြီ။ ပြန်ဝင်ပါ။"); adminLogout(); }
-            else { alert("ဖျက်လို့မရပါ"); }
+            if (data.success) { loadPosts(); showToast('✅ ဖျက်ပြီးပါပြီ'); }
+            else if (data.error?.includes('ခွင့်မပြု')) { alert("သက်တမ်းကုန်ပါပြီ။"); adminLogout(); }
         } catch(e) { alert("ချိတ်ဆက်မှု မအောင်မြင်ပါ"); }
     }
     
-    // ==================== Format Date ====================
-    function formatDate(timestamp) {
-        if (!timestamp) return "";
-        const d = new Date(timestamp * 1000);
-        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        const day = d.getDate();
-        const month = months[d.getMonth()];
-        const year = d.getFullYear().toString().slice(2);
-        const h = d.getHours().toString().padStart(2,'0');
-        const m = d.getMinutes().toString().padStart(2,'0');
-        return `${day} ${month} '${year} · ${h}:${m}`;
+    // ==================== Share ====================
+    function sharePost(post) {
+        const text = post.type === 'photo' ? (post.caption || 'ပုံ') : (post.text || 'စာသား');
+        if (navigator.share) {
+            navigator.share({ title: 'မိဘမေတ္တာ', text: text.substring(0, 100), url: post.image_url || '' });
+        } else {
+            navigator.clipboard?.writeText(text);
+            showToast('📋 ကူးယူပြီးပါပြီ');
+        }
     }
     
-    function escapeHtml(text) {
-        if (!text) return "";
-        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;', '`': '&#96;' };
-        return text.replace(/[&<>"'`]/g, m => map[m]);
+    // ==================== Format ====================
+    function formatDate(ts) {
+        if (!ts) return "";
+        const d = new Date(ts * 1000);
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return `${d.getDate()} ${months[d.getMonth()]} '${d.getFullYear().toString().slice(2)} · ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+    }
+    function escapeHtml(t) {
+        if (!t) return "";
+        const m = { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;','`':'&#96;' };
+        return t.replace(/[&<>"'`]/g, c => m[c]);
     }
     
     // ==================== Load Posts ====================
-    async function loadPosts() {
+    let lastPostId = 0;
+    
+    async function loadPosts(showSkeleton = true) {
         const grid = document.getElementById('postGrid');
-        grid.innerHTML = '<div class="status-card"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>';
+        if (showSkeleton) showSkeletonLoader(grid);
         
         try {
             const res = await fetch(`${WORKER_URL}/posts`);
             const data = await res.json();
             if (!data.success) throw new Error("API Error");
             
-            const posts = data.posts;
-            if (!posts?.length) {
+            const posts = data.posts || [];
+            document.getElementById('postCount').textContent = posts.length ? `ပို့စ် ${posts.length} ခု` : '';
+            
+            // Check new posts
+            if (posts.length > 0 && posts[0].id > lastPostId && lastPostId > 0) {
+                document.getElementById('newPostBadge').style.display = 'block';
+            }
+            if (posts.length > 0) lastPostId = posts[0].id;
+            
+            if (!posts.length) {
                 grid.innerHTML = '<div class="status-card"><p>📭 ပို့စ်မရှိသေးပါ</p></div>';
                 return;
             }
             
             let html = '';
-            posts.forEach(post => {
+            posts.forEach((post, i) => {
                 const dateStr = formatDate(post.date);
-                const deleteBtn = isAdmin ? `<button class="delete-btn" onclick="event.stopPropagation(); deletePost(${post.id})"><i class="fas fa-trash"></i> ဖျက်ရန်</button>` : '';
+                const deleteBtn = isAdmin ? `<button class="delete-btn" onclick="event.stopPropagation();deletePost(${post.id})"><i class="fas fa-trash"></i> ဖျက်ရန်</button>` : '';
                 const caption = post.caption || '';
                 const safeCaption = escapeHtml(caption);
                 
                 if (post.type === 'photo') {
                     html += `
-                    <div class="post-card">
+                    <div class="post-card" style="animation-delay:${i * 0.05}s">
                         ${deleteBtn}
-                        <div class="post-image-wrap" onclick="openViewer('${post.image_url}', '${safeCaption}')">
+                        <div class="post-image-wrap" onclick="openViewer('${post.image_url}','${safeCaption}')">
                             <img src="${post.image_url}" alt="ပုံ" loading="lazy">
                             ${caption ? `<div class="post-image-caption">${safeCaption}</div>` : ''}
                         </div>
                         <div class="post-footer">
-                            <span class="post-type-badge">📷 ပုံ</span>
-                            <span class="post-date"><i class="far fa-clock"></i> ${dateStr}</span>
+                            <div class="post-footer-left">
+                                <span class="post-type-badge">📷 ပုံ</span>
+                                <span class="post-date"><i class="far fa-clock"></i> ${dateStr}</span>
+                            </div>
+                            <button class="share-btn" onclick="event.stopPropagation();sharePost({type:'photo',caption:'${safeCaption}',image_url:'${post.image_url}'})"><i class="fas fa-share-alt"></i></button>
                         </div>
                     </div>`;
-                } else if (post.type === 'text') {
+                } else {
                     html += `
-                    <div class="post-card">
+                    <div class="post-card" style="animation-delay:${i * 0.05}s">
                         ${deleteBtn}
                         <div class="post-text-content">${escapeHtml(post.text || '')}</div>
                         <div class="post-footer">
-                            <span class="post-type-badge">📝 စာသား</span>
-                            <span class="post-date"><i class="far fa-clock"></i> ${dateStr}</span>
+                            <div class="post-footer-left">
+                                <span class="post-type-badge">📝 စာသား</span>
+                                <span class="post-date"><i class="far fa-clock"></i> ${dateStr}</span>
+                            </div>
+                            <button class="share-btn" onclick="event.stopPropagation();sharePost({type:'text',text:'${escapeHtml(post.text||'')}'})"><i class="fas fa-share-alt"></i></button>
                         </div>
                     </div>`;
                 }
             });
             grid.innerHTML = html;
         } catch(e) {
-            grid.innerHTML = '<div class="status-card"><p>❌ ချို့ယွင်းနေပါသည်</p><small>အင်တာနက်စစ်ဆေးပါ</small></div>';
+            grid.innerHTML = `
+                <div class="status-card">
+                    <p>❌ ချို့ယွင်းနေပါသည်</p>
+                    <small>အင်တာနက်စစ်ဆေးပါ</small>
+                    <br><button class="retry-btn" onclick="loadPosts()"><i class="fas fa-redo"></i> ပြန်ကြိုးစားမည်</button>
+                </div>`;
         }
     }
     
-    // ==================== Image Viewer (Pinch Zoom Enabled) ====================
-    let currentScale = 1;
-    
-    function openViewer(src, caption) {
-        const viewer = document.getElementById('imageViewer');
-        const img = document.getElementById('viewerImage');
-        img.src = src;
-        img.style.transform = 'scale(1)';
-        currentScale = 1;
-        document.getElementById('viewerCaption').textContent = caption || '';
-        viewer.classList.add('active');
-        document.body.style.overflow = 'hidden';
+    function showSkeletonLoader(grid) {
+        grid.innerHTML = '';
+        for (let i = 0; i < 3; i++) {
+            grid.innerHTML += `
+                <div class="skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton-footer">
+                        <div class="skeleton skeleton-badge"></div>
+                        <div class="skeleton skeleton-date"></div>
+                    </div>
+                </div>`;
+        }
     }
     
+    // ==================== Image Viewer ====================
+    let currentScale = 1;
+    function openViewer(src, caption) {
+        const v = document.getElementById('imageViewer');
+        const img = document.getElementById('viewerImage');
+        img.src = src; img.style.transform = 'scale(1)'; currentScale = 1;
+        document.getElementById('viewerCaption').textContent = caption || '';
+        v.classList.add('active'); document.body.style.overflow = 'hidden';
+    }
     function closeViewer() {
-        const viewer = document.getElementById('imageViewer');
-        viewer.classList.remove('active');
+        document.getElementById('imageViewer').classList.remove('active');
         document.getElementById('viewerImage').style.transform = 'scale(1)';
-        currentScale = 1;
         document.body.style.overflow = '';
     }
     
-    // Pinch Zoom Handler
-    let initialDistance = 0;
-    
-    document.getElementById('imageViewer').addEventListener('touchstart', (e) => {
-        if (e.touches.length === 2) {
-            initialDistance = Math.hypot(
-                e.touches[0].clientX - e.touches[1].clientX,
-                e.touches[0].clientY - e.touches[1].clientY
-            );
-        }
-    }, { passive: true });
-    
-    document.getElementById('imageViewer').addEventListener('touchmove', (e) => {
+    let initialDist = 0;
+    document.getElementById('imageViewer').addEventListener('touchstart', e => {
+        if (e.touches.length === 2) initialDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    });
+    document.getElementById('imageViewer').addEventListener('touchmove', e => {
         if (e.touches.length === 2) {
             e.preventDefault();
-            const currentDistance = Math.hypot(
-                e.touches[0].clientX - e.touches[1].clientX,
-                e.touches[0].clientY - e.touches[1].clientY
-            );
-            const scale = currentDistance / initialDistance;
-            const newScale = Math.min(Math.max(scale, 1), 5);
-            document.getElementById('viewerImage').style.transform = `scale(${newScale})`;
+            const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+            const s = Math.min(Math.max(dist / initialDist, 1), 5);
+            document.getElementById('viewerImage').style.transform = `scale(${s})`;
         }
     }, { passive: false });
-    
     document.getElementById('imageViewer').addEventListener('touchend', () => {
-        const transform = document.getElementById('viewerImage').style.transform;
-        const match = transform.match(/scale\(([\d.]+)\)/);
-        currentScale = match ? parseFloat(match[1]) : 1;
+        const m = document.getElementById('viewerImage').style.transform.match(/scale\(([\d.]+)\)/);
+        currentScale = m ? parseFloat(m[1]) : 1;
     });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
     
-    // Double tap to zoom
-    document.getElementById('viewerImage').addEventListener('dblclick', (e) => {
-        e.preventDefault();
-        if (currentScale > 1.5) {
-            currentScale = 1;
-        } else {
-            currentScale = 2.5;
+    // ==================== Pull to Refresh ====================
+    let pullStart = 0;
+    document.addEventListener('touchstart', e => { pullStart = e.touches[0].clientY; }, { passive: true });
+    document.addEventListener('touchmove', e => {
+        const pull = e.touches[0].clientY - pullStart;
+        if (pull > 60 && window.scrollY === 0) {
+            document.getElementById('pullIndicator').classList.add('show');
         }
-        document.getElementById('viewerImage').style.transform = `scale(${currentScale})`;
-    });
-    
-    // Keyboard
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') closeViewer();
+    }, { passive: true });
+    document.addEventListener('touchend', e => {
+        const indicator = document.getElementById('pullIndicator');
+        if (indicator.classList.contains('show')) {
+            indicator.classList.remove('show');
+            document.getElementById('newPostBadge').style.display = 'none';
+            loadPosts();
+        }
     });
     
     // ==================== Init ====================
     loadPosts();
-    console.log('🚀 Modern UI Ready | Pinch Zoom | PWA Links Fixed');
+    console.log('🚀 All Systems Ready | Cache + Skeleton + Dark Mode + Share + Pull-to-Refresh');
 </script>
 
 </body>
