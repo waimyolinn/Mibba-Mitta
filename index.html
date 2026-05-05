@@ -2,7 +2,7 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
     
     <!-- Google Search Console Verification -->
@@ -47,9 +47,11 @@
             font-family: 'Inter', system-ui, 'Myanmar Text', -apple-system, sans-serif;
             background: linear-gradient(160deg, #fdf8f0 0%, #f5e8d8 40%, #fdf8f0 100%);
             min-height: 100vh;
+            min-height: 100dvh;
             padding: 16px;
             padding-bottom: 32px;
             -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
         }
         
         .container {
@@ -156,6 +158,7 @@
             text-decoration: none;
             transition: var(--transition);
             letter-spacing: 0.2px;
+            -webkit-tap-highlight-color: transparent;
         }
         .btn:active { transform: scale(0.96); }
         .btn-telegram { background: #0088cc; color: #fff; }
@@ -279,7 +282,6 @@
             transition: var(--transition);
             position: relative;
         }
-        .post-card:active { transform: scale(0.99); }
         
         /* Image Container */
         .post-image-wrap {
@@ -287,6 +289,7 @@
             cursor: pointer;
             overflow: hidden;
             background: #f5f0ea;
+            -webkit-tap-highlight-color: transparent;
         }
         .post-image-wrap img {
             width: 100%;
@@ -309,6 +312,7 @@
             font-size: 14px;
             line-height: 1.5;
             font-weight: 500;
+            pointer-events: none;
         }
         
         /* Text Post */
@@ -384,7 +388,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* ========== Image Viewer Modal ========== */
+        /* ========== Image Viewer Modal (Pinch Zoom Enabled) ========== */
         .viewer-overlay {
             display: none;
             position: fixed;
@@ -395,6 +399,7 @@
             align-items: center;
             justify-content: center;
             animation: fadeIn 0.2s;
+            touch-action: none;
         }
         .viewer-overlay.active { display: flex; }
         .viewer-close {
@@ -410,7 +415,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.15);
             border-radius: 50%;
             border: none;
         }
@@ -419,21 +424,25 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 16px;
+            padding: 40px 0;
             overflow: auto;
             -webkit-overflow-scrolling: touch;
+            touch-action: pan-x pan-y pinch-zoom;
+            width: 100%;
         }
         .viewer-image-wrap img {
-            max-width: 100%;
-            max-height: 80vh;
+            max-width: 90%;
+            max-height: 75vh;
             object-fit: contain;
             border-radius: 8px;
-            transition: transform 0.3s ease;
+            touch-action: pan-x pan-y pinch-zoom;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .viewer-caption {
             color: #fff;
             text-align: center;
-            padding: 12px 24px 32px;
+            padding: 8px 24px 24px;
             font-size: 14px;
             line-height: 1.6;
             max-width: 500px;
@@ -441,11 +450,12 @@
         }
         .viewer-zoom-hint {
             position: absolute;
-            bottom: 80px;
+            bottom: 70px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.45);
             font-size: 11px;
+            pointer-events: none;
         }
         
         /* ========== Admin Login Modal ========== */
@@ -572,13 +582,14 @@
     </div>
 </div>
 
-<!-- ==================== Image Viewer ==================== -->
-<div class="viewer-overlay" id="imageViewer" onclick="closeViewer()">
-    <button class="viewer-close">&times;</button>
-    <div class="viewer-image-wrap">
+<!-- ==================== Image Viewer (Pinch Zoom) ==================== -->
+<div class="viewer-overlay" id="imageViewer">
+    <button class="viewer-close" onclick="closeViewer()">&times;</button>
+    <div class="viewer-image-wrap" id="viewerImageWrap">
         <img id="viewerImage" src="" alt="ပုံအကြီး">
     </div>
     <div class="viewer-caption" id="viewerCaption"></div>
+    <div class="viewer-zoom-hint">👆 လက်နှစ်ချောင်းဖြင့် ချဲ့ကြည့်နိုင်ပါသည်</div>
 </div>
 
 <!-- ==================== Admin Login ==================== -->
@@ -639,27 +650,41 @@
         installedBadge.style.display = 'block';
     });
     
-    // ==================== Viber & Telegram ====================
+    // ==================== Viber & Telegram (Fixed for PWA) ====================
     function openTelegram(e) {
         e.preventDefault();
         const url = "https://t.me/mibamittaa";
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-            window.open(url, '_blank', 'noopener,noreferrer');
-        } else {
-            window.open(url, '_blank');
-        }
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     }
     
     function openViber(e) {
         e.preventDefault();
-        const url = "viber://chat?number=%2B959697455880";
-        window.location.href = url;
+        const viberUrl = "viber://chat?number=%2B959697455880";
+        const phoneNumber = "09697455880";
+        
+        const a = document.createElement('a');
+        a.href = viberUrl;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        
         setTimeout(() => {
             if (!document.hidden) {
-                navigator.clipboard?.writeText("09697455880");
-                alert("Viber မရှိပါက ဖုန်းနံပါတ် ကူးထားပြီးပါပြီ။");
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(phoneNumber).then(() => {
+                        alert("✅ Viber မရှိပါ။ ဖုန်းနံပါတ် " + phoneNumber + " ကူးယူပြီးပါပြီ။");
+                    });
+                } else {
+                    alert("📞 Viber မရှိပါ။ ဖုန်းနံပါတ် - " + phoneNumber);
+                }
             }
-        }, 2000);
+        }, 2500);
     }
     
     // ==================== Admin System ====================
@@ -763,6 +788,12 @@
         return `${day} ${month} '${year} · ${h}:${m}`;
     }
     
+    function escapeHtml(text) {
+        if (!text) return "";
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;', '`': '&#96;' };
+        return text.replace(/[&<>"'`]/g, m => map[m]);
+    }
+    
     // ==================== Load Posts ====================
     async function loadPosts() {
         const grid = document.getElementById('postGrid');
@@ -784,14 +815,15 @@
                 const dateStr = formatDate(post.date);
                 const deleteBtn = isAdmin ? `<button class="delete-btn" onclick="event.stopPropagation(); deletePost(${post.id})"><i class="fas fa-trash"></i> ဖျက်ရန်</button>` : '';
                 const caption = post.caption || '';
+                const safeCaption = escapeHtml(caption);
                 
                 if (post.type === 'photo') {
                     html += `
                     <div class="post-card">
                         ${deleteBtn}
-                        <div class="post-image-wrap" onclick="openViewer('${post.image_url}', \`${caption.replace(/`/g,'\\`')}\`)">
+                        <div class="post-image-wrap" onclick="openViewer('${post.image_url}', '${safeCaption}')">
                             <img src="${post.image_url}" alt="ပုံ" loading="lazy">
-                            ${caption ? `<div class="post-image-caption">${escapeHtml(caption)}</div>` : ''}
+                            ${caption ? `<div class="post-image-caption">${safeCaption}</div>` : ''}
                         </div>
                         <div class="post-footer">
                             <span class="post-type-badge">📷 ပုံ</span>
@@ -816,32 +848,78 @@
         }
     }
     
-    function escapeHtml(text) {
-        if (!text) return "";
-        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-        return text.replace(/[&<>"']/g, m => map[m]);
-    }
+    // ==================== Image Viewer (Pinch Zoom Enabled) ====================
+    let currentScale = 1;
     
-    // ==================== Image Viewer ====================
     function openViewer(src, caption) {
-        document.getElementById('viewerImage').src = src;
+        const viewer = document.getElementById('imageViewer');
+        const img = document.getElementById('viewerImage');
+        img.src = src;
+        img.style.transform = 'scale(1)';
+        currentScale = 1;
         document.getElementById('viewerCaption').textContent = caption || '';
-        document.getElementById('imageViewer').classList.add('active');
+        viewer.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
     
     function closeViewer() {
-        document.getElementById('imageViewer').classList.remove('active');
+        const viewer = document.getElementById('imageViewer');
+        viewer.classList.remove('active');
+        document.getElementById('viewerImage').style.transform = 'scale(1)';
+        currentScale = 1;
         document.body.style.overflow = '';
     }
     
+    // Pinch Zoom Handler
+    let initialDistance = 0;
+    
+    document.getElementById('imageViewer').addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            initialDistance = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+        }
+    }, { passive: true });
+    
+    document.getElementById('imageViewer').addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2) {
+            e.preventDefault();
+            const currentDistance = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            const scale = currentDistance / initialDistance;
+            const newScale = Math.min(Math.max(scale, 1), 5);
+            document.getElementById('viewerImage').style.transform = `scale(${newScale})`;
+        }
+    }, { passive: false });
+    
+    document.getElementById('imageViewer').addEventListener('touchend', () => {
+        const transform = document.getElementById('viewerImage').style.transform;
+        const match = transform.match(/scale\(([\d.]+)\)/);
+        currentScale = match ? parseFloat(match[1]) : 1;
+    });
+    
+    // Double tap to zoom
+    document.getElementById('viewerImage').addEventListener('dblclick', (e) => {
+        e.preventDefault();
+        if (currentScale > 1.5) {
+            currentScale = 1;
+        } else {
+            currentScale = 2.5;
+        }
+        document.getElementById('viewerImage').style.transform = `scale(${currentScale})`;
+    });
+    
+    // Keyboard
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape') closeViewer();
     });
     
     // ==================== Init ====================
     loadPosts();
-    console.log('🚀 Modern UI Ready');
+    console.log('🚀 Modern UI Ready | Pinch Zoom | PWA Links Fixed');
 </script>
 
 </body>
