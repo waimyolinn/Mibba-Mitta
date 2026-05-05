@@ -71,6 +71,11 @@
         .btn-install {
             background: linear-gradient(135deg, #27ae60, #2ecc71); color: #fff;
             grid-column: 1 / -1; display: none; font-size: 15px;
+            box-shadow: 0 4px 16px rgba(39,174,96,0.25); animation: pulse 2.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 16px rgba(39,174,96,0.25); }
+            50% { box-shadow: 0 6px 24px rgba(39,174,96,0.4); }
         }
         .installed-badge { text-align: center; background: #e8f5e9; color: #2e7d32; padding: 10px; border-radius: 16px; font-size: 13px; font-weight: 600; margin-bottom: 16px; display: none; }
         
@@ -114,7 +119,6 @@
         .btn-login { flex: 1; background: #8b5a2b; color: #fff; border: none; padding: 12px; border-radius: 50px; font-weight: 600; cursor: pointer; }
         .btn-cancel { flex: 1; background: #f0f0f0; color: #666; border: none; padding: 12px; border-radius: 50px; font-weight: 600; cursor: pointer; }
         .login-error { color: #e74c3c; font-size: 12px; margin-top: 10px; display: none; }
-        .dark-toggle { position: fixed; bottom: 24px; right: 24px; width: 52px; height: 52px; border-radius: 50%; background: #fff; box-shadow: 0 8px 32px rgba(0,0,0,0.10); border: 2px solid #f0e0d0; cursor: pointer; z-index: 100; font-size: 22px; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
@@ -131,9 +135,9 @@
     </div>
 
     <div class="action-buttons">
-        <a href="https://t.me/mibamittaa" class="btn btn-telegram" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i> Telegram</a>
-        <a href="#" class="btn btn-viber" onclick="openViber(event)"><i class="fab fa-viber"></i> Viber</a>
-        <a href="#" class="btn btn-install" id="installBtn" onclick="installApp()"><i class="fas fa-download"></i> အက်ပ် ထည့်သွင်းရန်</a>
+        <button class="btn btn-telegram" onclick="openTelegram()"><i class="fab fa-telegram-plane"></i> Telegram</button>
+        <button class="btn btn-viber" onclick="openViber()"><i class="fab fa-viber"></i> Viber</button>
+        <button class="btn btn-install" id="installBtn" onclick="installApp()"><i class="fas fa-download"></i> အက်ပ် ထည့်သွင်းရန်</button>
     </div>
     <div class="installed-badge" id="installedBadge">✅ အက်ပ် ထည့်သွင်းပြီးပါပြီ</div>
 
@@ -156,8 +160,6 @@
         <div class="status-card"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>
     </div>
 </div>
-
-<button class="dark-toggle" onclick="toggleDarkMode()"><span id="darkIcon">🌙</span></button>
 
 <div class="viewer-overlay" id="imageViewer" onclick="closeViewer()">
     <button class="viewer-close">&times;</button>
@@ -188,24 +190,54 @@
     // ==================== Service Worker ====================
     if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }
     
-    // ==================== Dark Mode ====================
-    let darkMode = localStorage.getItem('darkMode') === 'true';
-    function applyDarkMode() {
-        if (darkMode) {
-            document.documentElement.style.filter = 'invert(1) hue-rotate(180deg)';
-            document.querySelectorAll('img, video, .viewer-overlay, .viewer-overlay img').forEach(function(el) {
-                el.style.filter = 'invert(1) hue-rotate(180deg)';
-            });
-        } else {
-            document.documentElement.style.filter = '';
-            document.querySelectorAll('img, video, .viewer-overlay, .viewer-overlay img').forEach(function(el) {
-                el.style.filter = '';
-            });
-        }
-        document.getElementById('darkIcon').textContent = darkMode ? '☀️' : '🌙';
+    // ==================== Telegram (Intent + Fallback) ====================
+    function openTelegram() {
+        var channel = 'mibamittaa';
+        var now = Date.now();
+        
+        // Method 1: tg:// protocol
+        window.location.href = 'tg://resolve?domain=' + channel;
+        
+        // Method 2: Intent for Android
+        setTimeout(function() {
+            if (Date.now() - now < 2500) return;
+            window.location.href = 'intent://resolve?domain=' + channel + '#Intent;scheme=tg;package=org.telegram.messenger;end;';
+        }, 800);
+        
+        // Method 3: Web fallback
+        setTimeout(function() {
+            if (Date.now() - now < 3500) return;
+            window.open('https://t.me/' + channel, '_blank');
+        }, 1600);
     }
-    function toggleDarkMode() { darkMode = !darkMode; localStorage.setItem('darkMode', darkMode); applyDarkMode(); }
-    applyDarkMode();
+    
+    // ==================== Viber (Intent + Fallback) ====================
+    function openViber() {
+        var phone = '+959697455880';
+        var phoneDisplay = '09697455880';
+        var now = Date.now();
+        
+        // Method 1: viber:// protocol
+        window.location.href = 'viber://chat?number=' + encodeURIComponent(phone);
+        
+        // Method 2: viber://add for Android
+        setTimeout(function() {
+            if (Date.now() - now < 2500) return;
+            window.location.href = 'viber://add?number=' + encodeURIComponent(phone);
+        }, 800);
+        
+        // Method 3: Copy phone number
+        setTimeout(function() {
+            if (Date.now() - now < 3500) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(phoneDisplay).then(function() {
+                    alert("📞 ဖုန်းနံပါတ် " + phoneDisplay + " ကူးယူပြီးပါပြီ။\nViber App မှာ ရှာပြီး ဆက်သွယ်ပါ။");
+                });
+            } else {
+                alert("📞 ဖုန်းနံပါတ် - " + phoneDisplay);
+            }
+        }, 2400);
+    }
     
     // ==================== PWA Install ====================
     const installBtn = document.getElementById('installBtn');
@@ -221,24 +253,6 @@
         });
     }
     window.addEventListener('appinstalled', function() { installBtn.style.display = 'none'; installedBadge.style.display = 'block'; });
-    
-    // ==================== Viber ====================
-    function openViber(e) {
-        e.preventDefault();
-        var phone = '09697455880';
-        var a = document.createElement('a');
-        a.href = 'viber://chat?number=%2B959697455880';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(function() {
-            if (!document.hidden && navigator.clipboard) {
-                navigator.clipboard.writeText(phone).then(function() {
-                    alert("📞 ဖုန်းနံပါတ် " + phone + " ကူးယူပြီးပါပြီ။");
-                });
-            }
-        }, 2000);
-    }
     
     // ==================== Admin ====================
     if (isAdmin) showAdminBar();
