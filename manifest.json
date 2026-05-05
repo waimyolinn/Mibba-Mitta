@@ -4,7 +4,7 @@
   "description": "အရည်အသွေးမြင့် အထည်များ - အိုးထိန်းကျေးရွာ",
   "start_url": "/",
   "scope": "/",
-  "display": "standalone",
+  "display": "minimal-ui",
   "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "theme_color": "#8b5a2b",
