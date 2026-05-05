@@ -1,77 +1,95 @@
-const CACHE_NAME = 'mibamittaa-v2';
+const CACHE_NAME = 'mibamittaa-v4';
+const API_CACHE = 'api-cache-v1';
+const IMAGE_CACHE = 'image-cache-v1';
+
 const urlsToCache = [
     '/',
     '/index.html',
-    '/manifest.json',
-    '/sw.js'
+    '/manifest.json'
 ];
 
-// Install Event
+// Install
 self.addEventListener('install', event => {
-    console.log('[SW] Installing...');
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => {
-                console.log('[SW] Caching files...');
-                return cache.addAll(urlsToCache);
-            })
-            .then(() => {
-                console.log('[SW] Skip waiting...');
-                return self.skipWaiting();
-            })
+        caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
     );
+    self.skipWaiting();
 });
 
-// Activate Event - Clean old caches
+// Activate - Clean old caches
 self.addEventListener('activate', event => {
-    console.log('[SW] Activating...');
     event.waitUntil(
-        caches.keys().then(cacheNames => {
+        caches.keys().then(names => {
             return Promise.all(
-                cacheNames.filter(name => name !== CACHE_NAME)
-                    .map(name => {
-                        console.log('[SW] Deleting old cache:', name);
-                        return caches.delete(name);
-                    })
+                names.filter(n => n !== CACHE_NAME && n !== API_CACHE && n !== IMAGE_CACHE)
+                    .map(n => caches.delete(n))
             );
         })
-        .then(() => {
-            console.log('[SW] Claiming clients...');
-            return self.clients.claim();
-        })
     );
+    self.clients.claim();
 });
 
-// Fetch Event - Network first, then cache
+// Fetch
 self.addEventListener('fetch', event => {
-    // API calls တွေအတွက် network only
-    if (event.request.url.includes('workers.dev') || 
-        event.request.url.includes('telegram')) {
-        return; // bypass cache
+    const url = new URL(event.request.url);
+    
+    // API - Network first, cache fallback (1 min cache)
+    if (url.hostname.includes('workers.dev')) {
+        event.respondWith(networkFirst(event.request, API_CACHE));
+        return;
     }
     
+    // Images - Cache first, network fallback
+    if (url.hostname.includes('telegram.org') && event.request.destination === 'image') {
+        event.respondWith(cacheFirst(event.request, IMAGE_CACHE));
+        return;
+    }
+    
+    // Static files - Cache first
     event.respondWith(
-        fetch(event.request)
-            .then(response => {
-                // Clone response for cache
-                const responseClone = response.clone();
-                caches.open(CACHE_NAME).then(cache => {
-                    cache.put(event.request, responseClone);
-                });
-                return response;
-            })
-            .catch(() => {
-                // Offline - return cached version
-                return caches.match(event.request);
-            })
+        caches.match(event.request)
+            .then(response => response || fetch(event.request))
     );
 });
 
-// Message Event - Update cache on demand
+// Network First Strategy
+async function networkFirst(request, cacheName) {
+    const cache = await caches.open(cacheName);
+    try {
+        const response = await fetch(request);
+        if (response.ok) {
+            cache.put(request, response.clone());
+        }
+        return response;
+    } catch(e) {
+        const cached = await cache.match(request);
+        return cached || new Response(JSON.stringify({ success: false, error: 'offline' }), {
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+}
+
+// Cache First Strategy
+async function cacheFirst(request, cacheName) {
+    const cache = await caches.open(cacheName);
+    const cached = await cache.match(request);
+    if (cached) return cached;
+    try {
+        const response = await fetch(request);
+        if (response.ok) {
+            cache.put(request, response.clone());
+        }
+        return response;
+    } catch(e) {
+        return new Response('', { status: 408 });
+    }
+}
+
+// Message handler
 self.addEventListener('message', event => {
-    if (event.data === 'SKIP_WAITING') {
-        self.skipWaiting();
+    if (event.data === 'SKIP_WAITING') self.skipWaiting();
+    if (event.data === 'CLEAR_CACHE') {
+        caches.delete(API_CACHE);
+        caches.delete(IMAGE_CACHE);
     }
 });
-
-console.log('[SW] Service Worker Loaded!');
