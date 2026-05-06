@@ -12,286 +12,292 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="မိဘမေတ္တာ">
     <link rel="apple-touch-icon" href="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png">
-    <meta name="theme-color" content="#8b5a2b">
-    <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင်">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင် - အရည်အသွေးမြင့် အထည်များ">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root {
-            --primary: #8b5a2b;
-            --primary-light: #a0724d;
-            --bg: #fdf8f0;
-            --bg-secondary: #f5e8d8;
+            --bg: #fafafa;
             --card: #ffffff;
-            --text: #3d2b1a;
-            --text-light: #7a5a4e;
-            --text-muted: #b0a090;
-            --border: #f0e0d0;
-            --shadow: 0 2px 16px rgba(0,0,0,0.06);
-            --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
-            --shadow-xl: 0 20px 60px rgba(0,0,0,0.12);
-            --radius: 20px;
-            --radius-lg: 24px;
-            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --text: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --border: #f3f4f6;
+            --primary: #1a1a1a;
+            --accent: #8b5a2b;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-lg: 0 4px 20px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --radius-lg: 16px;
         }
         
         [data-dark="true"] {
-            --primary: #c4956a;
-            --primary-light: #d4a574;
-            --bg: #0d1117;
-            --bg-secondary: #161b22;
-            --card: #21262d;
-            --text: #e6edf3;
-            --text-light: #c9d1d9;
-            --text-muted: #8b949e;
-            --border: #30363d;
-            --shadow: 0 2px 16px rgba(0,0,0,0.4);
-            --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
-            --shadow-xl: 0 20px 60px rgba(0,0,0,0.6);
+            --bg: #0a0a0a;
+            --card: #141414;
+            --text: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #1f1f1f;
+            --primary: #fafafa;
+            --shadow: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-lg: 0 4px 20px rgba(0,0,0,0.5);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Inter', 'Myanmar Text', system-ui, sans-serif;
+            font-family: 'Inter', 'Myanmar Text', system-ui, -apple-system, sans-serif;
             background: var(--bg);
             min-height: 100vh;
-            padding: 12px; padding-bottom: 80px;
             color: var(--text);
-            transition: background var(--transition), color var(--transition);
+            transition: background 0.3s, color 0.3s;
+            -webkit-font-smoothing: antialiased;
         }
-        .container { max-width: 540px; margin: 0 auto; }
         
-        /* Dark Mode Toggle */
+        /* ========== TOP NAV ========== */
+        .top-nav {
+            position: sticky; top: 0; z-index: 50;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            backdrop-filter: blur(10px);
+        }
+        .top-nav .logo-text {
+            font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -0.5px;
+        }
+        .top-nav .logo-text span { color: var(--accent); }
+        .top-nav-actions { display: flex; gap: 8px; align-items: center; }
+        .top-nav-actions a {
+            text-decoration: none; font-size: 13px; font-weight: 600;
+            padding: 8px 14px; border-radius: 50px;
+            transition: all 0.2s;
+        }
+        .nav-telegram { background: #0088cc; color: #fff; }
+        .nav-viber { background: #7360f2; color: #fff; }
         .dark-toggle {
-            position: fixed; bottom: 24px; right: 24px; width: 50px; height: 50px;
-            border-radius: 50%; background: var(--card); box-shadow: var(--shadow-lg);
-            border: 2px solid var(--border); cursor: pointer; z-index: 100;
-            font-size: 20px; display: flex; align-items: center; justify-content: center;
-            transition: var(--transition);
+            background: var(--card); border: 1px solid var(--border);
+            width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+            font-size: 14px; display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary);
         }
-        .dark-toggle:active { transform: scale(0.9); }
         
-        /* Header */
-        .header-card {
-            background: var(--card);
-            border-radius: var(--radius-lg); padding: 20px 16px 16px; margin-bottom: 12px;
-            box-shadow: var(--shadow-lg); text-align: center; position: relative; overflow: hidden;
-            transition: var(--transition);
+        /* ========== ADMIN BAR ========== */
+        .admin-bar {
+            background: #1a1a2e; color: #fff; text-align: center; padding: 6px;
+            font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        .header-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--primary));
-        }
-        .shop-logo { width: 56px; height: 56px; border-radius: 14px; object-fit: cover; margin-bottom: 8px; border: 3px solid var(--border); }
-        .shop-name { font-size: 24px; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
-        .shop-name small { font-weight: 500; color: var(--primary-light); display: block; font-size: 13px; }
-        .welcome-badge {
-            display: inline-block; background: #fef5e8; color: #b8863f;
-            font-size: 12px; font-weight: 600; padding: 5px 16px; border-radius: 50px; margin: 8px 0;
-        }
-        [data-dark="true"] .welcome-badge { background: #1c2541; color: #c4956a; }
-        .contact-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-        .contact-item {
-            font-size: 11px; color: var(--text-light); background: #fef9f3;
-            padding: 5px 12px; border-radius: 50px; display: flex; align-items: center; gap: 5px;
-        }
-        [data-dark="true"] .contact-item { background: #1c2541; }
-        .contact-item i { color: var(--primary); font-size: 12px; }
+        .admin-logout { background: none; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 3px 10px; border-radius: 50px; font-size: 10px; cursor: pointer; }
         
-        /* Buttons */
-        .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-        .btn {
-            display: flex; align-items: center; justify-content: center; gap: 6px;
-            padding: 12px 14px; border-radius: 14px; font-weight: 600; font-size: 13px;
-            cursor: pointer; border: none; text-decoration: none; letter-spacing: 0.2px;
-            transition: var(--transition);
-        }
-        .btn:active { transform: scale(0.96); }
-        .btn-telegram { background: #0088cc; color: #fff; }
-        .btn-viber { background: #7360f2; color: #fff; }
-        .btn-install {
-            background: linear-gradient(135deg, #27ae60, #2ecc71); color: #fff;
-            grid-column: 1 / -1; display: none; font-size: 14px;
-            box-shadow: 0 4px 16px rgba(39,174,96,0.3); animation: pulse 2.5s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 4px 16px rgba(39,174,96,0.3); }
-            50% { box-shadow: 0 6px 24px rgba(39,174,96,0.5); }
-        }
-        .installed-badge {
-            text-align: center; background: #e8f5e9; color: #2e7d32;
-            padding: 8px; border-radius: 14px; font-size: 12px; font-weight: 600;
-            margin-bottom: 12px; display: none;
-        }
-        [data-dark="true"] .installed-badge { background: #1a3a2a; }
+        /* ========== MAIN CONTAINER ========== */
+        .main-container { max-width: 600px; margin: 0 auto; padding: 16px; }
         
-        /* QR */
-        .install-section {
-            background: var(--card); border-radius: var(--radius); padding: 12px 16px;
-            margin-bottom: 12px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 14px;
-            transition: var(--transition);
+        /* ========== HERO ========== */
+        .hero-section {
+            text-align: center; padding: 24px 16px 16px;
         }
-        .install-section img { width: 64px; height: 64px; border-radius: 10px; flex-shrink: 0; }
-        .install-section .info p { font-size: 12px; color: var(--text-light); font-weight: 500; }
-        .install-section .info small { font-size: 10px; color: var(--text-muted); }
+        .hero-logo {
+            width: 72px; height: 72px; border-radius: 20px; object-fit: cover;
+            margin-bottom: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        .hero-title { font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -1px; }
+        .hero-subtitle { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+        .hero-contact {
+            display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .hero-contact span {
+            font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 4px;
+        }
         
-        /* Admin */
-        .admin-bar { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; }
-        .admin-badge { background: #1a1a2e; color: #fff; padding: 6px 14px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
-        .admin-logout { background: none; border: 1px solid var(--border); color: var(--text-muted); padding: 5px 12px; border-radius: 50px; font-size: 10px; cursor: pointer; }
+        /* ========== POSTS GRID ========== */
+        .posts-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+            padding-bottom: 40px;
+        }
+        @media (max-width: 420px) {
+            .posts-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+        }
         
-        /* Refresh */
-        .refresh-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .post-count { font-size: 11px; color: var(--text-muted); }
-        .refresh-btn { background: var(--card); border: 1px solid var(--border); color: var(--primary); padding: 7px 14px; border-radius: 50px; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: var(--transition); }
-        .refresh-btn:active { background: #fef5e8; }
-        
-        /* Post Card */
         .post-card {
-            background: var(--card); border-radius: var(--radius); margin-bottom: 12px;
-            overflow: hidden; box-shadow: var(--shadow); position: relative;
-            transition: var(--transition); animation: fadeSlide 0.4s ease-out;
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            position: relative;
         }
-        @keyframes fadeSlide { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .post-card:active { transform: scale(0.98); }
         
-        .post-image-wrap { position: relative; cursor: pointer; overflow: hidden; background: #f5f0ea; }
-        [data-dark="true"] .post-image-wrap { background: #1a1a2e; }
-        .post-image-wrap img { width: 100%; display: block; transition: transform 0.3s ease; }
-        .post-image-wrap:active img { transform: scale(1.02); }
+        .post-image-wrap {
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            background: #f5f5f5;
+            position: relative;
+        }
+        [data-dark="true"] .post-image-wrap { background: #1a1a1a; }
+        .post-image-wrap img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .post-image-wrap:active img { transform: scale(1.05); }
         
-        /* Caption under image */
-        .post-caption-section {
-            padding: 12px 16px 0;
-            font-size: 14px;
-            color: var(--text);
-            line-height: 1.6;
-            font-weight: 500;
+        .post-info {
+            padding: 10px 12px 12px;
+        }
+        .post-caption {
+            font-size: 12px; color: var(--text); line-height: 1.5;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden; font-weight: 500;
+        }
+        .post-meta {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 6px;
+        }
+        .post-date { font-size: 10px; color: var(--text-muted); }
+        .share-btn {
+            background: none; border: none; color: var(--text-muted);
+            cursor: pointer; font-size: 12px; padding: 2px 6px;
         }
         
-        .post-text-content { padding: 16px; font-size: 14px; line-height: 1.7; }
-        
-        .post-footer { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px 12px; }
-        .post-footer-left { display: flex; align-items: center; gap: 8px; }
-        .post-date { font-size: 10px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
-        .post-type-badge { font-size: 9px; background: #fef5e8; color: var(--primary); padding: 3px 8px; border-radius: 50px; font-weight: 600; letter-spacing: 0.3px; }
-        [data-dark="true"] .post-type-badge { background: #1c2541; }
-        .share-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 13px; padding: 4px 6px; border-radius: 50px; transition: var(--transition); }
-        .share-btn:active { color: var(--primary); background: #fef5e8; }
         .delete-btn {
-            position: absolute; top: 8px; right: 8px;
-            background: rgba(0,0,0,0.65); backdrop-filter: blur(8px);
-            color: #fff; border: none; border-radius: 50px; padding: 5px 12px;
-            font-size: 11px; font-weight: 600; cursor: pointer; z-index: 10;
+            position: absolute; top: 6px; right: 6px;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            color: #fff; border: none; border-radius: 50px;
+            padding: 4px 10px; font-size: 10px; font-weight: 600;
+            cursor: pointer; z-index: 10;
         }
-        .delete-btn:active { background: rgba(220,20,60,0.85); }
         
-        /* Skeleton */
-        .skeleton-card { background: var(--card); border-radius: var(--radius); overflow: hidden; margin-bottom: 12px; box-shadow: var(--shadow); }
-        .skeleton { background: linear-gradient(90deg, #f0e0d0, #f5ece0, #f0e0d0); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 10px; }
-        [data-dark="true"] .skeleton { background: linear-gradient(90deg, #21262d, #30363d, #21262d); background-size: 200% 100%; }
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-        .skeleton-img { width: 100%; height: 240px; }
-        .skeleton-line { height: 14px; margin: 12px 16px; }
-        .skeleton-line-short { width: 60%; }
+        /* Text Post */
+        .text-post-card {
+            background: var(--card); border-radius: var(--radius-lg); padding: 16px;
+            box-shadow: var(--shadow); position: relative;
+        }
+        .text-post-content { font-size: 13px; line-height: 1.7; color: var(--text); }
         
-        /* Status */
-        .status-card { text-align: center; padding: 40px 20px; background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); color: var(--text-muted); transition: var(--transition); }
-        .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 10px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .retry-btn { background: var(--primary); color: #fff; border: none; padding: 8px 20px; border-radius: 50px; font-weight: 600; cursor: pointer; margin-top: 10px; font-size: 13px; }
-        
-        /* Image Viewer (Zoom Enabled) */
-        .viewer-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.96); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; touch-action: none; }
+        /* ========== FULL SCREEN VIEWER ========== */
+        .viewer-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: #000; z-index: 2000; flex-direction: column;
+            touch-action: pan-x pan-y pinch-zoom;
+        }
         .viewer-overlay.active { display: flex; }
-        .viewer-close { position: absolute; top: 12px; right: 16px; color: #fff; font-size: 30px; z-index: 2001; width: 40px; height: 40px; background: rgba(255,255,255,0.12); border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .viewer-image-wrap { flex: 1; display: flex; align-items: center; justify-content: center; overflow: auto; -webkit-overflow-scrolling: touch; touch-action: pan-x pan-y pinch-zoom; width: 100%; padding: 16px; }
-        .viewer-image-wrap img { max-width: 95%; max-height: 82vh; object-fit: contain; border-radius: 8px; touch-action: pan-x pan-y pinch-zoom; user-select: none; -webkit-user-select: none; }
-        .viewer-caption-section { color: #fff; text-align: center; padding: 8px 20px 20px; font-size: 13px; line-height: 1.5; max-width: 500px; opacity: 0.9; }
-        .viewer-zoom-hint { position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.4); font-size: 10px; pointer-events: none; }
+        .viewer-header {
+            position: absolute; top: 0; left: 0; right: 0; z-index: 2001;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 16px;
+            background: linear-gradient(rgba(0,0,0,0.6), transparent);
+        }
+        .viewer-close {
+            background: rgba(255,255,255,0.1); border: none; color: #fff;
+            width: 36px; height: 36px; border-radius: 50%; font-size: 22px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .viewer-image-wrap {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            overflow: auto; -webkit-overflow-scrolling: touch;
+            touch-action: pan-x pan-y pinch-zoom; padding: 60px 0 0;
+        }
+        .viewer-image-wrap img {
+            width: 100%; height: auto; max-height: none;
+            object-fit: contain; touch-action: pan-x pan-y pinch-zoom;
+            user-select: none; -webkit-user-select: none;
+        }
+        .viewer-caption-bar {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #fff; padding: 24px 16px 20px; font-size: 13px; line-height: 1.6;
+            text-align: center;
+        }
+        .viewer-zoom-hint {
+            position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%);
+            color: rgba(255,255,255,0.5); font-size: 10px;
+        }
         
-        /* Login Modal */
-        .login-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 3000; align-items: center; justify-content: center; }
+        /* ========== STATUS ========== */
+        .status-card { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+        .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* ========== LOGIN MODAL ========== */
+        .login-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 3000; align-items: center; justify-content: center; }
         .login-overlay.active { display: flex; }
-        .login-box { background: var(--card); border-radius: var(--radius-lg); padding: 28px 20px; width: 90%; max-width: 340px; text-align: center; transition: var(--transition); }
-        .login-box h3 { color: var(--primary); font-size: 18px; margin-bottom: 4px; }
-        .login-box input { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; text-align: center; outline: none; background: var(--bg); color: var(--text); margin: 14px 0; transition: var(--transition); }
-        .login-box input:focus { border-color: var(--primary); }
+        .login-box { background: var(--card); border-radius: var(--radius-lg); padding: 28px 20px; width: 90%; max-width: 340px; text-align: center; }
+        .login-box h3 { color: var(--text); font-size: 18px; }
+        .login-box input { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; text-align: center; outline: none; background: var(--bg); color: var(--text); margin: 14px 0; }
         .login-box .btn-row { display: flex; gap: 8px; }
-        .btn-login { flex: 1; background: var(--primary); color: #fff; border: none; padding: 10px; border-radius: 50px; font-weight: 600; font-size: 13px; cursor: pointer; }
-        .btn-cancel { flex: 1; background: var(--border); color: var(--text); border: none; padding: 10px; border-radius: 50px; font-weight: 600; font-size: 13px; cursor: pointer; }
+        .btn-login { flex: 1; background: var(--primary); color: var(--bg); border: none; padding: 10px; border-radius: 50px; font-weight: 600; cursor: pointer; }
+        .btn-cancel { flex: 1; background: var(--border); color: var(--text); border: none; padding: 10px; border-radius: 50px; font-weight: 600; cursor: pointer; }
         .login-error { color: #e74c3c; font-size: 11px; margin-top: 8px; display: none; }
         
-        /* Pull Indicator */
-        .pull-indicator { text-align: center; padding: 8px; color: var(--text-muted); font-size: 12px; display: none; }
-        .pull-indicator.show { display: block; }
-        
         /* Toast */
-        .toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 8px 20px; border-radius: 50px; font-size: 12px; z-index: 4000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 8px 20px; border-radius: 50px; font-size: 12px; z-index: 4000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
         .toast.show { opacity: 1; }
+        
+        /* Refresh */
+        .refresh-bar { text-align: center; padding: 8px 0 16px; }
+        .refresh-btn { background: var(--card); border: 1px solid var(--border); color: var(--text-secondary); padding: 8px 16px; border-radius: 50px; font-size: 11px; font-weight: 600; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="pull-indicator" id="pullIndicator">⬇️ ဆွဲချပြီး ပြန်စတင်ပါ</div>
+<!-- Admin Bar -->
+<div id="adminBar"></div>
 
-    <div class="header-card">
-        <img class="shop-logo" src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo">
-        <div class="shop-name">မိဘမေတ္တာ <small>အထည်ဆိုင်</small></div>
-        <div class="welcome-badge">🙏 မင်္ဂလာပါ ကြိုဆိုပါတယ် 🙏</div>
-        <div class="contact-row">
-            <span class="contact-item"><i class="fas fa-phone"></i> 09697455880</span>
-            <span class="contact-item"><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
+<!-- Top Navigation -->
+<div class="top-nav">
+    <div class="logo-text">မိဘမေတ္တာ <span>အထည်ဆိုင်</span></div>
+    <div class="top-nav-actions">
+        <a href="https://t.me/mibamittaa" class="nav-telegram" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i> Telegram</a>
+        <a href="viber://chat?number=%2B959697455880" class="nav-viber" target="_blank" rel="noopener noreferrer"><i class="fab fa-viber"></i> Viber</a>
+        <button class="dark-toggle" onclick="toggleDarkMode()"><span id="darkIcon"></span></button>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-container">
+    <!-- Hero -->
+    <div class="hero-section">
+        <img class="hero-logo" src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo" id="adminLogo">
+        <div class="hero-title">မိဘမေတ္တာ</div>
+        <div class="hero-subtitle">အရည်အသွေးမြင့် အထည်များ</div>
+        <div class="hero-contact">
+            <span><i class="fas fa-phone"></i> 09697455880</span>
+            <span><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
         </div>
     </div>
 
-    <div class="action-buttons">
-        <button class="btn btn-telegram" onclick="openTelegram()"><i class="fab fa-telegram-plane"></i> Telegram</button>
-        <button class="btn btn-viber" onclick="openViber()"><i class="fab fa-viber"></i> Viber</button>
-        <button class="btn btn-install" id="installBtn" onclick="installApp()"><i class="fas fa-download"></i> အက်ပ် ထည့်သွင်းရန်</button>
-    </div>
-    <div class="installed-badge" id="installedBadge">✅ အက်ပ် ထည့်သွင်းပြီးပါပြီ</div>
-
-    <div class="install-section">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mibbamitta.pages.dev" alt="QR" loading="lazy">
-        <div class="info">
-            <p>📲 အက်ပ်ထည့်ရန် QR Scan လုပ်ပါ</p>
-            <small>Chrome Browser ဖြင့် Scan လုပ်ပါ</small>
-        </div>
-    </div>
-
-    <div id="adminBar"></div>
-
+    <!-- Refresh -->
     <div class="refresh-bar">
-        <span class="post-count" id="postCount"></span>
         <button class="refresh-btn" onclick="loadPosts()"><i class="fas fa-sync-alt"></i> ပြန်လည်စတင်ရန်</button>
     </div>
 
-    <div id="postGrid">
-        <div class="status-card"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>
+    <!-- Posts -->
+    <div class="posts-grid" id="postGrid">
+        <div class="status-card" style="grid-column:1/-1;"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>
     </div>
 </div>
 
-<!-- Dark Mode Toggle -->
-<button class="dark-toggle" onclick="toggleDarkMode()"><span id="darkIcon">🌙</span></button>
-
-<!-- Image Viewer -->
+<!-- Full Screen Viewer -->
 <div class="viewer-overlay" id="imageViewer">
-    <button class="viewer-close" onclick="closeViewer()">&times;</button>
-    <div class="viewer-image-wrap" id="viewerImageWrap">
-        <img id="viewerImage" src="" alt="ပုံအကြီး">
+    <div class="viewer-header">
+        <span style="color:#fff;font-size:13px;font-weight:600;">မိဘမေတ္တာ</span>
+        <button class="viewer-close" onclick="closeViewer()">&times;</button>
     </div>
-    <div class="viewer-caption-section" id="viewerCaption"></div>
-    <div class="viewer-zoom-hint">👆 လက်နှစ်ချောင်းဖြင့် ချဲ့ကြည့်နိုင်ပါသည်</div>
+    <div class="viewer-image-wrap"><img id="viewerImage" src="" alt="ပုံအကြီး"></div>
+    <div class="viewer-caption-bar" id="viewerCaption"></div>
+    <div class="viewer-zoom-hint"> လက်နှစ်ချောင်းဖြင့် ချဲ့ကြည့်နိုင်ပါသည်</div>
 </div>
 
-<!-- Login -->
+<!-- Login Modal -->
 <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
-        <div style="font-size:36px;">🔐</div>
+        <div style="font-size:36px;"></div>
         <h3>Admin Login</h3>
-        <input type="password" id="loginPassword" placeholder="••••••••" onkeypress="if(event.key==='Enter')adminLogin()">
+        <input type="password" id="loginPassword" placeholder="" onkeypress="if(event.key==='Enter')adminLogin()">
         <div class="btn-row">
             <button class="btn-login" onclick="adminLogin()">ဝင်ရောက်မည်</button>
             <button class="btn-cancel" onclick="closeLogin()">ပိတ်မည်</button>
@@ -304,14 +310,10 @@
 
 <script>
     const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
-    let lastPostId = 0;
     let adminToken = localStorage.getItem('adminToken') || null;
     let isAdmin = adminToken ? true : false;
-    let deferredPrompt;
-    let darkMode = localStorage.getItem('darkMode') === 'true';
     let currentScale = 1;
     let initialDist = 0;
-    let pullStart = 0;
     
     // ==================== Service Worker ====================
     if ('serviceWorker' in navigator) {
@@ -319,15 +321,16 @@
     }
     
     // ==================== Dark Mode ====================
+    let darkMode = localStorage.getItem('darkMode') === 'true';
     function applyDarkMode() {
         if (darkMode) {
             document.documentElement.setAttribute('data-dark', 'true');
-            document.querySelector('meta[name="theme-color"]').content = '#0d1117';
+            document.querySelector('meta[name="theme-color"]').content = '#0a0a0a';
         } else {
             document.documentElement.removeAttribute('data-dark');
-            document.querySelector('meta[name="theme-color"]').content = '#8b5a2b';
+            document.querySelector('meta[name="theme-color"]').content = '#1a1a2e';
         }
-        document.getElementById('darkIcon').textContent = darkMode ? '☀️' : '🌙';
+        document.getElementById('darkIcon').textContent = darkMode ? '' : '';
     }
     function toggleDarkMode() { darkMode = !darkMode; localStorage.setItem('darkMode', darkMode); applyDarkMode(); }
     applyDarkMode();
@@ -338,37 +341,10 @@
         setTimeout(() => t.classList.remove('show'), 2500);
     }
     
-    // ==================== PWA Install ====================
-    const installBtn = document.getElementById('installBtn');
-    const installedBadge = document.getElementById('installedBadge');
-    if (window.matchMedia('(display-mode: standalone)').matches) installedBadge.style.display = 'block';
-    window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'flex'; });
-    function installApp() {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(r => { if (r.outcome === 'accepted') { installBtn.style.display = 'none'; installedBadge.style.display = 'block'; } deferredPrompt = null; });
-    }
-    window.addEventListener('appinstalled', function() { installBtn.style.display = 'none'; installedBadge.style.display = 'block'; });
-    
-    // ==================== Telegram ====================
-    function openTelegram() {
-        window.open('https://t.me/mibamittaa', '_blank');
-    }
-    
-    // ==================== Viber ====================
-    function openViber() {
-        const phone = '09697455880';
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(phone).then(() => alert("📞 ဖုန်းနံပါတ် " + phone + " ကူးပြီးပါပြီ။\nViber မှာ ရှာပြီး ဆက်သွယ်ပါ။"));
-        } else {
-            alert("📞 ဖုန်းနံပါတ် - " + phone);
-        }
-        setTimeout(() => window.open('viber://chat?number=%2B959697455880', '_blank'), 500);
-    }
-    
     // ==================== Admin ====================
     if (isAdmin) showAdminBar();
-    const logo = document.querySelector('.shop-logo');
+    
+    const logo = document.getElementById('adminLogo');
     let longPressTimer;
     logo.addEventListener('touchstart', () => { if(!isAdmin) longPressTimer = setTimeout(showLogin, 3000); });
     logo.addEventListener('touchend', () => clearTimeout(longPressTimer));
@@ -389,15 +365,13 @@
         try {
             const res = await fetch(WORKER_URL + '/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) });
             const data = await res.json();
-            if (data.success) {
-                adminToken = data.token; localStorage.setItem('adminToken', adminToken); isAdmin = true;
-                closeLogin(); showAdminBar(); loadPosts();
-            } else { err.style.display = 'block'; err.textContent = '❌ Password မှားနေပါသည်'; }
-        } catch(e) { err.style.display = 'block'; err.textContent = '❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'; }
+            if (data.success) { adminToken = data.token; localStorage.setItem('adminToken', adminToken); isAdmin = true; closeLogin(); showAdminBar(); loadPosts(); }
+            else { err.style.display = 'block'; err.textContent = ' Password မှားနေပါသည်'; }
+        } catch(e) { err.style.display = 'block'; err.textContent = ' ချိတ်ဆက်မှု မအောင်မြင်ပါ'; }
     }
     
     function showAdminBar() {
-        document.getElementById('adminBar').innerHTML = '<div class="admin-bar"><div class="admin-badge">🔐 Admin Mode</div><button class="admin-logout" onclick="adminLogout()">ထွက်မည်</button></div>';
+        document.getElementById('adminBar').innerHTML = '<div class="admin-bar"> Admin Mode <button class="admin-logout" onclick="adminLogout()">ထွက်မည်</button></div>';
     }
     function adminLogout() { adminToken = null; isAdmin = false; localStorage.removeItem('adminToken'); document.getElementById('adminBar').innerHTML = ''; loadPosts(); }
     
@@ -407,7 +381,7 @@
         try {
             const res = await fetch(WORKER_URL + '/post/' + postId, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + adminToken } });
             const data = await res.json();
-            if (data.success) { loadPosts(); showToast('✅ ဖျက်ပြီးပါပြီ'); }
+            if (data.success) { loadPosts(); showToast(' ဖျက်ပြီးပါပြီ'); }
             else if (data.error?.includes('ခွင့်မပြု')) { alert("သက်တမ်းကုန်ပါပြီ။"); adminLogout(); }
         } catch(e) { alert("ချိတ်ဆက်မှု မအောင်မြင်ပါ"); }
     }
@@ -416,7 +390,7 @@
     function sharePost(post) {
         const text = post.type === 'photo' ? (post.caption || 'ပုံ') : (post.text || 'စာသား');
         if (navigator.share) navigator.share({ title: 'မိဘမေတ္တာ', text: text.substring(0, 100) });
-        else if (navigator.clipboard) { navigator.clipboard.writeText(text); showToast('📋 ကူးပြီးပါပြီ'); }
+        else if (navigator.clipboard) { navigator.clipboard.writeText(text); showToast(' ကူးပြီးပါပြီ'); }
     }
     
     // ==================== Format ====================
@@ -424,23 +398,17 @@
         if (!ts) return "";
         const d = new Date(ts * 1000);
         const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        return d.getDate() + ' ' + months[d.getMonth()] + ' \'' + d.getFullYear().toString().slice(2) + ' · ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+        return d.getDate() + ' ' + months[d.getMonth()] + ' \'' + d.getFullYear().toString().slice(2);
     }
     function escapeHtml(t) {
         if (!t) return "";
-        const m = { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;','`':'&#96;' };
-        return t.replace(/[&<>"'`]/g, c => m[c]);
+        return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
     }
     
     // ==================== Load Posts ====================
-    async function loadPosts(showSkeleton = true) {
+    async function loadPosts() {
         const grid = document.getElementById('postGrid');
-        if (showSkeleton) {
-            grid.innerHTML = '';
-            for (let i = 0; i < 3; i++) {
-                grid.innerHTML += '<div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-line"></div><div class="skeleton skeleton-line skeleton-line-short"></div></div>';
-            }
-        }
+        grid.innerHTML = '<div class="status-card" style="grid-column:1/-1;"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>';
         
         try {
             const res = await fetch(WORKER_URL + '/posts');
@@ -448,30 +416,28 @@
             if (!data.success) throw new Error("API Error");
             
             const posts = data.posts || [];
-            document.getElementById('postCount').textContent = posts.length ? 'ပို့စ် ' + posts.length + ' ခု' : '';
-            if (posts.length > 0) lastPostId = posts[0].id;
-            if (!posts.length) { grid.innerHTML = '<div class="status-card"><p>📭 ပို့စ်မရှိသေးပါ</p></div>'; return; }
+            if (!posts.length) { grid.innerHTML = '<div class="status-card" style="grid-column:1/-1;"><p> ပို့စ်မရှိသေးပါ</p></div>'; return; }
             
             let html = '';
             posts.forEach(function(post) {
                 const dateStr = formatDate(post.date);
-                const deleteBtn = isAdmin ? '<button class="delete-btn" onclick="event.stopPropagation();deletePost(' + post.id + ')"><i class="fas fa-trash"></i> ဖျက်ရန်</button>' : '';
+                const deleteBtn = isAdmin ? '<button class="delete-btn" onclick="event.stopPropagation();deletePost(' + post.id + ')"><i class="fas fa-trash"></i></button>' : '';
                 const caption = post.caption || '';
                 const safeCaption = escapeHtml(caption);
                 
                 if (post.type === 'photo') {
-                    html += '<div class="post-card">' + deleteBtn + '<div class="post-image-wrap" onclick="openViewer(\'' + post.image_url + '\',\'' + safeCaption + '\')"><img src="' + post.image_url + '" alt="ပုံ" loading="lazy"></div>' + (caption ? '<div class="post-caption-section">📝 ' + safeCaption + '</div>' : '') + '<div class="post-footer"><div class="post-footer-left"><span class="post-type-badge">📷 ပုံ</span><span class="post-date"><i class="far fa-clock"></i> ' + dateStr + '</span></div><button class="share-btn" onclick="event.stopPropagation();sharePost({type:\'photo\',caption:\'' + safeCaption + '\'})"><i class="fas fa-share-alt"></i></button></div></div>';
+                    html += '<div class="post-card" onclick="openViewer(\'' + post.image_url + '\',\'' + safeCaption + '\')">' + deleteBtn + '<div class="post-image-wrap"><img src="' + post.image_url + '" alt="ပုံ" loading="lazy"></div><div class="post-info">' + (caption ? '<div class="post-caption">' + safeCaption + '</div>' : '') + '<div class="post-meta"><span class="post-date">' + dateStr + '</span><button class="share-btn" onclick="event.stopPropagation();sharePost({type:\'photo\',caption:\'' + safeCaption + '\'})"><i class="fas fa-share-alt"></i></button></div></div></div>';
                 } else {
-                    html += '<div class="post-card">' + deleteBtn + '<div class="post-text-content">' + escapeHtml(post.text || '') + '</div><div class="post-footer"><div class="post-footer-left"><span class="post-type-badge">📝 စာသား</span><span class="post-date"><i class="far fa-clock"></i> ' + dateStr + '</span></div><button class="share-btn" onclick="event.stopPropagation();sharePost({type:\'text\',text:\'' + escapeHtml(post.text || '') + '\'})"><i class="fas fa-share-alt"></i></button></div></div>';
+                    html += '<div class="text-post-card" style="grid-column:1/-1;">' + deleteBtn + '<div class="text-post-content">' + escapeHtml(post.text || '') + '</div><div class="post-meta" style="margin-top:8px;"><span class="post-date">' + dateStr + '</span><button class="share-btn" onclick="event.stopPropagation();sharePost({type:\'text\',text:\'' + escapeHtml(post.text || '') + '\'})"><i class="fas fa-share-alt"></i></button></div></div>';
                 }
             });
             grid.innerHTML = html;
         } catch(e) {
-            grid.innerHTML = '<div class="status-card"><p>❌ ချို့ယွင်းနေပါသည်</p><small>အင်တာနက်စစ်ဆေးပါ</small><br><button class="retry-btn" onclick="loadPosts()"><i class="fas fa-redo"></i> ပြန်ကြိုးစားမည်</button></div>';
+            grid.innerHTML = '<div class="status-card" style="grid-column:1/-1;"><p> ချို့ယွင်းနေပါသည်</p><small>အင်တာနက်စစ်ဆေးပါ</small><br><button class="refresh-btn" onclick="loadPosts()" style="margin-top:10px;"><i class="fas fa-redo"></i> ပြန်ကြိုးစားမည်</button></div>';
         }
     }
     
-    // ==================== Image Viewer (Pinch Zoom) ====================
+    // ==================== Image Viewer ====================
     function openViewer(src, caption) {
         const v = document.getElementById('imageViewer');
         document.getElementById('viewerImage').src = src;
@@ -489,7 +455,6 @@
     document.getElementById('imageViewer').addEventListener('touchstart', e => {
         if (e.touches.length === 2) initialDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
     }, { passive: true });
-    
     document.getElementById('imageViewer').addEventListener('touchmove', e => {
         if (e.touches.length === 2) {
             e.preventDefault();
@@ -498,24 +463,7 @@
         }
     }, { passive: false });
     
-    document.getElementById('imageViewer').addEventListener('touchend', () => {
-        const m = document.getElementById('viewerImage').style.transform.match(/scale\(([\d.]+)\)/);
-        currentScale = m ? parseFloat(m[1]) : 1;
-    });
-    
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
-    
-    // ==================== Pull to Refresh ====================
-    document.addEventListener('touchstart', e => { pullStart = e.touches[0].clientY; }, { passive: true });
-    document.addEventListener('touchmove', e => {
-        if (e.touches[0].clientY - pullStart > 60 && window.scrollY < 10) document.getElementById('pullIndicator').classList.add('show');
-    }, { passive: true });
-    document.addEventListener('touchend', () => {
-        if (document.getElementById('pullIndicator').classList.contains('show')) {
-            document.getElementById('pullIndicator').classList.remove('show');
-            loadPosts();
-        }
-    });
     
     // ==================== Init ====================
     loadPosts();
