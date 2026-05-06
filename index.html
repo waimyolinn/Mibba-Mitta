@@ -20,8 +20,8 @@
             --bg: #fafafa;
             --card: #ffffff;
             --text: #1a1a1a;
-            --text-secondary: #666;
-            --text-muted: #999;
+            --sub: #666;
+            --muted: #999;
             --border: #eee;
             --accent: #8b5a2b;
             --accent-light: #f5efe6;
@@ -33,8 +33,8 @@
             --bg: #0d1117;
             --card: #161b22;
             --text: #e6edf3;
-            --text-secondary: #8b949e;
-            --text-muted: #6e7681;
+            --sub: #8b949e;
+            --muted: #6e7681;
             --border: #21262d;
             --accent: #d4a574;
             --accent-light: #1c2128;
@@ -64,17 +64,16 @@
         .topbar-brand { font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; }
         .topbar-brand span { color: var(--accent); }
         .topbar-links { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-        .topbar-links a {
+        .topbar-links a, .topbar-links button {
             font-size: 11px; font-weight: 600; padding: 7px 12px; border-radius: 50px;
             text-decoration: none; display: flex; align-items: center; gap: 4px;
-            transition: all 0.2s; white-space: nowrap;
+            transition: all 0.2s; white-space: nowrap; cursor: pointer;
         }
-        .btn-tg { background: #0088cc; color: #fff; }
-        .btn-vb { background: #7360f2; color: #fff; }
+        .btn-tg { background: #0088cc; color: #fff; border: none; }
+        .btn-vb { background: #7360f2; color: #fff; border: none; }
         .btn-dark {
-            background: var(--border); border: none; color: var(--text-secondary);
-            width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
-            font-size: 15px; display: flex; align-items: center; justify-content: center;
+            background: var(--border); border: none; color: var(--sub);
+            width: 34px; height: 34px; border-radius: 50%; font-size: 15px;
         }
         
         /* ========== ADMIN ========== */
@@ -99,23 +98,19 @@
         }
         .hero img { width: 70px; height: 70px; border-radius: 18px; object-fit: cover; margin-bottom: 10px; }
         .hero h1 { font-size: 26px; font-weight: 800; color: var(--text); letter-spacing: -1px; }
-        .hero p { font-size: 13px; color: var(--text-secondary); margin: 4px 0 12px; }
-        .hero-contact { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--text-muted); }
+        .hero p { font-size: 13px; color: var(--sub); margin: 4px 0 12px; }
+        .hero-contact { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
         .hero-contact i { color: var(--accent); margin-right: 4px; }
         
         /* ========== REFRESH ========== */
         .refresh-wrap { text-align: center; margin-bottom: 14px; }
         .refresh-wrap button {
-            background: var(--card); border: 1px solid var(--border); color: var(--text-secondary);
+            background: var(--card); border: 1px solid var(--border); color: var(--sub);
             padding: 8px 16px; border-radius: 50px; font-size: 11px; font-weight: 600; cursor: pointer;
-            transition: all 0.2s;
         }
-        .refresh-wrap button:active { background: var(--accent-light); }
         
         /* ========== GRID ========== */
-        .grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-        }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         @media (max-width: 400px) { .grid { gap: 8px; } }
         
         .card {
@@ -137,11 +132,8 @@
             overflow: hidden; font-weight: 500;
         }
         .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
-        .card-date { font-size: 10px; color: var(--text-muted); }
-        .card-share {
-            background: none; border: none; color: var(--text-muted);
-            cursor: pointer; font-size: 12px; padding: 2px 6px;
-        }
+        .card-date { font-size: 10px; color: var(--muted); }
+        .card-share { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 12px; padding: 2px 6px; }
         .card-del {
             position: absolute; top: 6px; right: 6px;
             background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
@@ -158,7 +150,7 @@
         .text-card p { font-size: 13px; line-height: 1.7; color: var(--text); }
         
         /* ========== STATUS ========== */
-        .status-wrap { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-muted); }
+        .status-wrap { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--muted); }
         .spinner { width: 26px; height: 26px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 10px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
@@ -244,14 +236,13 @@
     <div class="topbar-brand">မိဘမေတ္တာ <span>အထည်ဆိုင်</span></div>
     <div class="topbar-links">
         <a href="https://t.me/mibamittaa" class="btn-tg" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i> Telegram</a>
-        <a href="#" class="btn-vb" onclick="openViber(event)"><i class="fab fa-viber"></i> Viber</a>
+        <button class="btn-vb" onclick="openViber()"><i class="fab fa-viber"></i> Viber</button>
         <button class="btn-dark" onclick="toggleDark()"><span id="darkIcon">🌙</span></button>
     </div>
 </div>
 
 <!-- Main -->
 <div class="main-wrap">
-    <!-- Hero -->
     <div class="hero">
         <img src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo" id="adminLogo">
         <h1>မိဘမေတ္တာ</h1>
@@ -262,12 +253,10 @@
         </div>
     </div>
 
-    <!-- Refresh -->
     <div class="refresh-wrap">
         <button onclick="loadPosts()"><i class="fas fa-sync-alt"></i> ပြန်လည်စတင်ရန်</button>
     </div>
 
-    <!-- Grid -->
     <div class="grid" id="postGrid">
         <div class="status-wrap"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>
     </div>
@@ -312,7 +301,7 @@
         window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
     }
     
-    // ==================== DARK MODE ====================
+    // ==================== DARK ====================
     let dark = localStorage.getItem('darkMode') === 'true';
     function applyDark() {
         if (dark) {
@@ -333,25 +322,24 @@
         setTimeout(() => t.classList.remove('show'), 2500);
     }
     
-    // ==================== VIBER (Safe - No tab close) ====================
-    function openViber(e) {
-        e.preventDefault();
+    // ==================== VIBER (Website အလုပ်လုပ် | PWA နံပါတ် Copy) ====================
+    function openViber() {
         const phone = '09697455880';
-        // Try viber link
-        const a = document.createElement('a');
-        a.href = 'viber://chat?number=%2B959697455880';
-        a.style.display = 'none';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        // Copy fallback
-        setTimeout(() => {
+        const isPWA = window.matchMedia('(display-mode: standalone)').matches;
+        
+        if (isPWA) {
+            // PWA မှာဆိုရင် နံပါတ်ပဲ Copy လုပ်
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(phone).then(() => {
-                    toast('📞 ဖုန်းနံပါတ် ' + phone + ' ကူးပြီးပါပြီ');
+                    toast('📞 ' + phone + ' ကူးပြီးပါပြီ');
                 });
+            } else {
+                alert('📞 ဖုန်းနံပါတ် - ' + phone);
             }
-        }, 1500);
+        } else {
+            // Website မှာဆိုရင် Viber App ဖွင့်
+            window.location.href = 'viber://chat?number=%2B959697455880';
+        }
     }
     
     // ==================== ADMIN ====================
@@ -465,7 +453,6 @@
         document.body.style.overflow = '';
     }
     
-    // Pinch Zoom
     const viewer = document.getElementById('imageViewer');
     viewer.addEventListener('touchstart', function(e) {
         if (e.touches.length === 2) {
@@ -477,25 +464,13 @@
         if (e.touches.length === 2) {
             e.preventDefault();
             const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-            const scale = Math.min(Math.max(dist / initialDist, 1), 5);
-            document.getElementById('viewerImage').style.transform = 'scale(' + scale + ')';
+            document.getElementById('viewerImage').style.transform = 'scale(' + Math.min(Math.max(dist / initialDist, 1), 5) + ')';
         }
     }, { passive: false });
     
     viewer.addEventListener('touchend', function() {
         const match = document.getElementById('viewerImage').style.transform.match(/scale\(([\d.]+)\)/);
         currentScale = match ? parseFloat(match[1]) : 1;
-    });
-    
-    // Double tap zoom
-    document.getElementById('viewerImage').addEventListener('dblclick', function(e) {
-        e.preventDefault();
-        if (currentScale > 1.5) {
-            currentScale = 1;
-        } else {
-            currentScale = 2.5;
-        }
-        document.getElementById('viewerImage').style.transform = 'scale(' + currentScale + ')';
     });
     
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeViewer(); });
