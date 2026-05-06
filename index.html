@@ -6,577 +6,256 @@
     <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
     
     <meta name="google-site-verification" content="NLqyHByZ-OnqMIKZDidDeUzfNeXN8-SfJElHoPqbrY8" />
-    
     <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="မိဘမေတ္တာ">
     <link rel="apple-touch-icon" href="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png">
-    <meta name="theme-color" content="#1a1a2e">
-    <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင် - အရည်အသွေးမြင့် အထည်များ">
+    <meta name="theme-color" content="#0d1117">
+    <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင်">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root {
-            --bg: #f8f9fa;
+            --bg: #fafafa;
             --card: #ffffff;
-            --text: #1a1a2e;
-            --text-secondary: #5a6c7d;
-            --text-muted: #8b95a5;
-            --border: #e8ecf1;
-            --primary: #2c3e50;
-            --accent: #d4a574;
-            --accent-light: #e8d5c4;
-            --success: #27ae60;
-            --error: #e74c3c;
-            --warning: #f39c12;
-            --shadow: 0 2px 8px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
-            --shadow-lg: 0 8px 32px rgba(0,0,0,0.15);
-            --radius: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 20px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --text: #1a1a1a;
+            --text-secondary: #666;
+            --text-muted: #999;
+            --border: #eee;
+            --accent: #8b5a2b;
+            --accent-light: #f5efe6;
+            --shadow: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-lg: 0 4px 20px rgba(0,0,0,0.08);
+            --radius: 14px;
         }
-        
         [data-dark="true"] {
-            --bg: #0f1419;
-            --card: #1a2332;
-            --text: #f5f7fa;
-            --text-secondary: #b0bcc9;
-            --text-muted: #7a8a9a;
-            --border: #2a3a4a;
-            --primary: #f5f7fa;
+            --bg: #0d1117;
+            --card: #161b22;
+            --text: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --border: #21262d;
             --accent: #d4a574;
-            --accent-light: #4a3a2a;
-            --shadow: 0 2px 8px rgba(0,0,0,0.3);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
-            --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+            --accent-light: #1c2128;
+            --shadow: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-lg: 0 4px 20px rgba(0,0,0,0.5);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        html { scroll-behavior: smooth; }
-        
         body {
-            font-family: 'Inter', 'Myanmar Text', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', 'Myanmar Text', system-ui, sans-serif;
             background: var(--bg);
             min-height: 100vh;
             color: var(--text);
             transition: background 0.3s, color 0.3s;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            line-height: 1.6;
-        }
-        
-        /* ========== TOP NAV ========== */
-        .top-nav {
-            position: sticky; top: 0; z-index: 50;
-            background: var(--card);
-            border-bottom: 1px solid var(--border);
-            padding: 14px 16px;
-            display: flex; align-items: center; justify-content: space-between;
-            backdrop-filter: blur(12px);
-            box-shadow: var(--shadow);
-        }
-        .top-nav .logo-text {
-            font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -0.5px;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .top-nav .logo-text span { 
-            color: var(--accent); 
-            font-weight: 600;
-            padding: 4px 10px;
-            background: var(--accent-light);
-            border-radius: 50px;
-            font-size: 13px;
-        }
-        .top-nav-actions { display: flex; gap: 10px; align-items: center; }
-        .top-nav-actions a {
-            text-decoration: none; font-size: 12px; font-weight: 600;
-            padding: 8px 14px; border-radius: 50px;
-            transition: var(--transition);
-            display: flex; align-items: center; gap: 5px;
-            box-shadow: var(--shadow);
-        }
-        .top-nav-actions a:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        .nav-telegram { background: linear-gradient(135deg, #0088cc, #0066aa); color: #fff; }
-        .nav-viber { background: linear-gradient(135deg, #7360f2, #5a4fd9); color: #fff; }
-        .dark-toggle {
-            background: var(--bg); border: 1.5px solid var(--border);
-            width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
-            font-size: 16px; display: flex; align-items: center; justify-content: center;
-            color: var(--text-secondary);
-            transition: var(--transition);
-        }
-        .dark-toggle:hover {
-            background: var(--accent-light);
-            border-color: var(--accent);
-            transform: rotate(20deg);
-        }
-        
-        /* ========== ADMIN BAR ========== */
-        .admin-bar {
-            background: linear-gradient(135deg, #2c3e50, #34495e); 
-            color: #fff; text-align: center; padding: 10px;
-            font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
-            display: flex; align-items: center; justify-content: center; gap: 12px;
-            box-shadow: var(--shadow-md);
-        }
-        .admin-logout { 
-            background: rgba(255,255,255,0.15); 
-            border: 1px solid rgba(255,255,255,0.3); 
-            color: #fff; 
-            padding: 5px 12px; 
-            border-radius: 50px; 
-            font-size: 11px; 
-            cursor: pointer; 
-            transition: var(--transition);
-            font-weight: 600;
-        }
-        .admin-logout:hover {
-            background: rgba(255,255,255,0.25);
-            transform: translateY(-1px);
-        }
-        
-        /* ========== MAIN CONTAINER ========== */
-        .main-container { max-width: 640px; margin: 0 auto; padding: 20px; }
-        
-        /* ========== HERO ========== */
-        .hero-section {
-            text-align: center; padding: 32px 20px 24px;
-            background: linear-gradient(135deg, var(--card) 0%, var(--bg) 100%);
-            border-radius: var(--radius-lg);
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border);
-        }
-        .hero-logo {
-            width: 80px; height: 80px; border-radius: 24px; object-fit: cover;
-            margin-bottom: 16px; 
-            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
-            border: 3px solid var(--accent-light);
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-        .hero-title { 
-            font-size: 32px; font-weight: 800; color: var(--text); 
-            letter-spacing: -1px; 
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .hero-subtitle { 
-            font-size: 15px; color: var(--text-secondary); 
-            margin-bottom: 16px;
-            font-weight: 500;
-        }
-        .hero-contact {
-            display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-        }
-        .hero-contact span {
-            font-size: 13px; color: var(--text-secondary); 
-            display: flex; align-items: center; gap: 6px;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-        .hero-contact span i {
-            color: var(--accent);
-            font-size: 14px;
-        }
-        
-        /* ========== POSTS GRID ========== */
-        .posts-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
             padding-bottom: 40px;
         }
-        @media (max-width: 480px) {
-            .posts-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+        
+        /* ========== TOP BAR ========== */
+        .topbar {
+            position: sticky; top: 0; z-index: 50;
+            background: var(--card); border-bottom: 1px solid var(--border);
+            padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
+            gap: 8px; flex-wrap: wrap;
         }
-        @media (max-width: 360px) {
-            .posts-grid { grid-template-columns: 1fr; }
+        .topbar-brand { font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; }
+        .topbar-brand span { color: var(--accent); }
+        .topbar-links { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+        .topbar-links a {
+            font-size: 11px; font-weight: 600; padding: 7px 12px; border-radius: 50px;
+            text-decoration: none; display: flex; align-items: center; gap: 4px;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-tg { background: #0088cc; color: #fff; }
+        .btn-vb { background: #7360f2; color: #fff; }
+        .btn-dark {
+            background: var(--border); border: none; color: var(--text-secondary);
+            width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+            font-size: 15px; display: flex; align-items: center; justify-content: center;
         }
         
-        .post-card {
-            background: var(--card);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            cursor: pointer;
-            position: relative;
-            border: 1px solid var(--border);
+        /* ========== ADMIN ========== */
+        .admin-bar {
+            background: #1a1a2e; color: #fff; text-align: center; padding: 8px;
+            font-size: 11px; font-weight: 600; display: flex; justify-content: center;
+            align-items: center; gap: 10px;
         }
-        .post-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--accent-light);
+        .admin-bar button {
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; padding: 4px 10px; border-radius: 50px; font-size: 10px; cursor: pointer;
         }
-        .post-card:active { transform: scale(0.98); }
         
-        .post-image-wrap {
-            aspect-ratio: 3/4;
-            overflow: hidden;
-            background: linear-gradient(135deg, var(--bg), var(--border));
-            position: relative;
-        }
-        [data-dark="true"] .post-image-wrap { 
-            background: linear-gradient(135deg, #2a3a4a, #1a2a3a); 
-        }
-        .post-image-wrap img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .post-card:hover .post-image-wrap img { 
-            transform: scale(1.08); 
-        }
-        .post-image-wrap:active img { transform: scale(1.05); }
+        /* ========== MAIN ========== */
+        .main-wrap { max-width: 600px; margin: 0 auto; padding: 16px; }
         
-        .post-info {
-            padding: 14px 14px 16px;
-            background: var(--card);
+        /* ========== HERO ========== */
+        .hero {
+            text-align: center; padding: 28px 20px 20px;
+            background: var(--card); border-radius: var(--radius);
+            margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid var(--border);
         }
-        .post-caption {
-            font-size: 13px; color: var(--text); line-height: 1.5;
+        .hero img { width: 70px; height: 70px; border-radius: 18px; object-fit: cover; margin-bottom: 10px; }
+        .hero h1 { font-size: 26px; font-weight: 800; color: var(--text); letter-spacing: -1px; }
+        .hero p { font-size: 13px; color: var(--text-secondary); margin: 4px 0 12px; }
+        .hero-contact { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--text-muted); }
+        .hero-contact i { color: var(--accent); margin-right: 4px; }
+        
+        /* ========== REFRESH ========== */
+        .refresh-wrap { text-align: center; margin-bottom: 14px; }
+        .refresh-wrap button {
+            background: var(--card); border: 1px solid var(--border); color: var(--text-secondary);
+            padding: 8px 16px; border-radius: 50px; font-size: 11px; font-weight: 600; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .refresh-wrap button:active { background: var(--accent-light); }
+        
+        /* ========== GRID ========== */
+        .grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+        }
+        @media (max-width: 400px) { .grid { gap: 8px; } }
+        
+        .card {
+            background: var(--card); border-radius: var(--radius); overflow: hidden;
+            box-shadow: var(--shadow); border: 1px solid var(--border);
+            cursor: pointer; position: relative; transition: transform 0.2s;
+        }
+        .card:active { transform: scale(0.98); }
+        .card-img {
+            aspect-ratio: 3/4; overflow: hidden; background: #f5f5f5;
+            display: flex; align-items: center; justify-content: center;
+        }
+        [data-dark="true"] .card-img { background: #0d1117; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .card-body { padding: 10px 12px 12px; }
+        .card-caption {
+            font-size: 12px; color: var(--text); line-height: 1.5;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
             overflow: hidden; font-weight: 500;
-            margin-bottom: 8px;
         }
-        .post-meta {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid var(--border);
-        }
-        .post-date { 
-            font-size: 11px; color: var(--text-muted); 
-            font-weight: 500;
-        }
-        .share-btn {
+        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+        .card-date { font-size: 10px; color: var(--text-muted); }
+        .card-share {
             background: none; border: none; color: var(--text-muted);
-            cursor: pointer; font-size: 13px; padding: 4px 8px;
-            transition: var(--transition);
-            border-radius: 6px;
+            cursor: pointer; font-size: 12px; padding: 2px 6px;
         }
-        .share-btn:hover {
-            color: var(--accent);
-            background: var(--accent-light);
-        }
-        
-        .delete-btn {
-            position: absolute; top: 8px; right: 8px;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+        .card-del {
+            position: absolute; top: 6px; right: 6px;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
             color: #fff; border: none; border-radius: 50px;
-            padding: 6px 12px; font-size: 11px; font-weight: 600;
-            cursor: pointer; z-index: 10;
-            transition: var(--transition);
-            box-shadow: var(--shadow-md);
-        }
-        .delete-btn:hover {
-            background: rgba(231,76,60,0.8);
-            transform: scale(1.05);
+            padding: 4px 10px; font-size: 10px; font-weight: 600; cursor: pointer; z-index: 10;
         }
         
         /* Text Post */
-        .text-post-card {
-            background: var(--card); 
-            border-radius: var(--radius-lg); 
-            padding: 18px;
-            box-shadow: var(--shadow); 
-            position: relative;
-            border: 1px solid var(--border);
-            grid-column: 1 / -1;
-            transition: var(--transition);
+        .text-card {
+            background: var(--card); border-radius: var(--radius); padding: 16px;
+            box-shadow: var(--shadow); border: 1px solid var(--border);
+            grid-column: 1 / -1; position: relative;
         }
-        .text-post-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--accent-light);
-        }
-        .text-post-content { 
-            font-size: 14px; line-height: 1.8; color: var(--text); 
-            font-weight: 500;
-            word-break: break-word;
-        }
+        .text-card p { font-size: 13px; line-height: 1.7; color: var(--text); }
         
-        /* ========== FULL SCREEN VIEWER ========== */
-        .viewer-overlay {
+        /* ========== STATUS ========== */
+        .status-wrap { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-muted); }
+        .spinner { width: 26px; height: 26px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* ========== VIEWER (PINCH ZOOM) ========== */
+        .viewer {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.95); z-index: 2000; flex-direction: column;
+            background: #000; z-index: 2000; flex-direction: column;
             touch-action: pan-x pan-y pinch-zoom;
-            animation: fadeIn 0.3s ease-out;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .viewer-overlay.active { display: flex; }
-        .viewer-header {
+        .viewer.active { display: flex; }
+        .viewer-top {
             position: absolute; top: 0; left: 0; right: 0; z-index: 2001;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 16px;
+            padding: 12px 14px; display: flex; justify-content: space-between;
             background: linear-gradient(rgba(0,0,0,0.7), transparent);
         }
         .viewer-close {
-            background: rgba(255,255,255,0.15); 
-            border: 1px solid rgba(255,255,255,0.2); 
-            color: #fff;
-            width: 40px; height: 40px; border-radius: 50%; 
-            font-size: 24px;
-            cursor: pointer; 
-            display: flex; align-items: center; justify-content: center;
-            transition: var(--transition);
+            background: rgba(255,255,255,0.12); border: none; color: #fff;
+            width: 38px; height: 38px; border-radius: 50%; font-size: 24px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
-        .viewer-close:hover {
-            background: rgba(255,255,255,0.25);
-            transform: scale(1.1);
-        }
-        .viewer-image-wrap {
+        .viewer-img-wrap {
             flex: 1; display: flex; align-items: center; justify-content: center;
             overflow: auto; -webkit-overflow-scrolling: touch;
-            touch-action: pan-x pan-y pinch-zoom; padding: 60px 0 0;
+            touch-action: pan-x pan-y pinch-zoom; padding: 50px 0 0;
         }
-        .viewer-image-wrap img {
+        .viewer-img-wrap img {
             width: 100%; height: auto; max-height: none;
-            object-fit: contain; touch-action: pan-x pan-y pinch-zoom;
+            object-fit: contain; display: block;
+            touch-action: pan-x pan-y pinch-zoom;
             user-select: none; -webkit-user-select: none;
-            animation: zoomIn 0.3s ease-out;
+            -webkit-user-drag: none;
         }
-        @keyframes zoomIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .viewer-caption-bar {
+        .viewer-caption {
             position: absolute; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-            color: #fff; padding: 32px 16px 24px; font-size: 14px; line-height: 1.7;
-            text-align: center;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            color: #fff; padding: 28px 16px 20px; font-size: 13px;
+            text-align: center; line-height: 1.6;
         }
-        .viewer-zoom-hint {
-            position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%);
-            color: rgba(255,255,255,0.6); font-size: 11px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
+        .viewer-hint {
+            position: absolute; bottom: 90px; left: 50%; transform: translateX(-50%);
+            color: rgba(255,255,255,0.5); font-size: 10px; pointer-events: none;
         }
         
-        /* ========== STATUS ========== */
-        .status-card { 
-            text-align: center; padding: 48px 24px; color: var(--text-muted);
-            grid-column: 1 / -1;
-        }
-        .spinner { 
-            width: 32px; height: 32px; 
-            border: 3px solid var(--border); 
-            border-top-color: var(--accent); 
-            border-radius: 50%; 
-            animation: spin 0.8s linear infinite; 
-            margin: 0 auto 16px; 
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        /* ========== LOGIN MODAL ========== */
-        .login-overlay { 
-            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
-            background: rgba(0,0,0,0.85); z-index: 3000; 
-            align-items: center; justify-content: center;
-            animation: fadeIn 0.3s ease-out;
+        /* ========== LOGIN ========== */
+        .login-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85); z-index: 3000; align-items: center; justify-content: center;
         }
         .login-overlay.active { display: flex; }
-        .login-box { 
-            background: var(--card); 
-            border-radius: var(--radius-lg); 
-            padding: 32px 24px; 
-            width: 90%; max-width: 360px; 
-            text-align: center;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--border);
-            animation: slideUp 0.3s ease-out;
+        .login-box {
+            background: var(--card); border-radius: 16px; padding: 28px 22px;
+            width: 90%; max-width: 340px; text-align: center;
         }
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .login-box h3 { color: var(--text); font-size: 18px; margin-bottom: 4px; }
+        .login-box input {
+            width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px;
+            font-size: 15px; text-align: center; outline: none; background: var(--bg);
+            color: var(--text); margin: 14px 0;
         }
-        .login-box h3 { 
-            color: var(--text); font-size: 20px; 
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-        .login-box input { 
-            width: 100%; padding: 12px 14px; 
-            border: 2px solid var(--border); 
-            border-radius: 10px; 
-            font-size: 15px; 
-            text-align: center; 
-            outline: none; 
-            background: var(--bg); 
-            color: var(--text); 
-            margin: 16px 0; 
-            transition: var(--transition);
-            font-weight: 500;
-        }
-        .login-box input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
-        }
-        .login-box .btn-row { display: flex; gap: 10px; }
-        .btn-login { 
-            flex: 1; 
-            background: linear-gradient(135deg, var(--primary), var(--accent)); 
-            color: #fff; 
-            border: none; 
-            padding: 12px; 
-            border-radius: 50px; 
-            font-weight: 600; 
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 14px;
-        }
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        .btn-login:active {
-            transform: translateY(0);
-        }
-        .btn-cancel { 
-            flex: 1; 
-            background: var(--border); 
-            color: var(--text); 
-            border: none; 
-            padding: 12px; 
-            border-radius: 50px; 
-            font-weight: 600; 
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 14px;
-        }
-        .btn-cancel:hover {
-            background: var(--accent-light);
-            transform: translateY(-2px);
-        }
-        .login-error { 
-            color: var(--error); 
-            font-size: 12px; 
-            margin-top: 12px; 
-            display: none;
-            font-weight: 500;
-            animation: shake 0.3s ease-out;
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
+        .login-box .btn-row { display: flex; gap: 8px; }
+        .btn-login { flex: 1; background: var(--accent); color: #fff; border: none; padding: 10px; border-radius: 50px; font-weight: 600; cursor: pointer; }
+        .btn-cancel { flex: 1; background: var(--border); color: var(--text); border: none; padding: 10px; border-radius: 50px; font-weight: 600; cursor: pointer; }
+        .login-error { color: #e74c3c; font-size: 11px; margin-top: 8px; display: none; }
         
         /* Toast */
-        .toast { 
-            position: fixed;
-            bottom: 24px; left: 50%; transform: translateX(-50%);
-            background: var(--primary);
-            color: #fff;
-            padding: 14px 20px;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 600;
-            z-index: 4000;
-            opacity: 0;
-            transition: opacity 0.3s ease-out;
-            box-shadow: var(--shadow-lg);
-            max-width: 90%;
-            text-align: center;
+        .toast {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            background: #1a1a1a; color: #fff; padding: 10px 20px; border-radius: 50px;
+            font-size: 12px; font-weight: 600; z-index: 4000; opacity: 0;
+            transition: opacity 0.3s; pointer-events: none; max-width: 90%; text-align: center;
         }
+        [data-dark="true"] .toast { background: #fafafa; color: #1a1a1a; }
         .toast.show { opacity: 1; }
-        
-        /* Refresh */
-        .refresh-bar { 
-            text-align: center; 
-            padding: 12px 0 20px;
-            margin-bottom: 8px;
-        }
-        .refresh-btn { 
-            background: linear-gradient(135deg, var(--card), var(--bg));
-            border: 1.5px solid var(--border); 
-            color: var(--text-secondary); 
-            padding: 10px 18px; 
-            border-radius: 50px; 
-            font-size: 12px; 
-            font-weight: 600; 
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: var(--shadow);
-        }
-        .refresh-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        .refresh-btn i {
-            transition: transform 0.3s ease-out;
-        }
-        .refresh-btn:active i {
-            transform: rotate(180deg);
-        }
-        
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 480px) {
-            .main-container { padding: 16px; }
-            .hero-section { padding: 24px 16px 20px; margin-bottom: 20px; }
-            .hero-title { font-size: 28px; }
-            .hero-logo { width: 72px; height: 72px; }
-            .top-nav { padding: 12px 14px; }
-            .top-nav-actions a { font-size: 11px; padding: 6px 12px; }
-            .posts-grid { gap: 12px; }
-        }
-        
-        @media (max-width: 360px) {
-            .main-container { padding: 12px; }
-            .hero-section { padding: 20px 12px 16px; }
-            .hero-title { font-size: 24px; }
-            .top-nav-actions { gap: 6px; }
-            .top-nav-actions a { font-size: 10px; padding: 6px 10px; }
-        }
     </style>
 </head>
 <body>
 
-<!-- Admin Bar -->
+<!-- Admin -->
 <div id="adminBar"></div>
 
-<!-- Top Navigation -->
-<div class="top-nav">
-    <div class="logo-text">မိဘမေတ္တာ <span>အထည်ဆိုင်</span></div>
-    <div class="top-nav-actions">
-        <a href="https://t.me/mibamittaa" class="nav-telegram" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i> Telegram</a>
-        <a href="viber://chat?number=%2B959697455880" class="nav-viber" target="_blank" rel="noopener noreferrer"><i class="fab fa-viber"></i> Viber</a>
-        <button class="dark-toggle" onclick="toggleDarkMode()"><span id="darkIcon">🌙</span></button>
+<!-- Topbar -->
+<div class="topbar">
+    <div class="topbar-brand">မိဘမေတ္တာ <span>အထည်ဆိုင်</span></div>
+    <div class="topbar-links">
+        <a href="https://t.me/mibamittaa" class="btn-tg" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i> Telegram</a>
+        <a href="#" class="btn-vb" onclick="openViber(event)"><i class="fab fa-viber"></i> Viber</a>
+        <button class="btn-dark" onclick="toggleDark()"><span id="darkIcon">🌙</span></button>
     </div>
 </div>
 
-<!-- Main Content -->
-<div class="main-container">
+<!-- Main -->
+<div class="main-wrap">
     <!-- Hero -->
-    <div class="hero-section">
-        <img class="hero-logo" src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo" id="adminLogo">
-        <div class="hero-title">မိဘမေတ္တာ</div>
-        <div class="hero-subtitle">အရည်အသွေးမြင့် အထည်များ</div>
+    <div class="hero">
+        <img src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo" id="adminLogo">
+        <h1>မိဘမေတ္တာ</h1>
+        <p>အရည်အသွေးမြင့် အထည်များ</p>
         <div class="hero-contact">
             <span><i class="fas fa-phone"></i> 09697455880</span>
             <span><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
@@ -584,33 +263,33 @@
     </div>
 
     <!-- Refresh -->
-    <div class="refresh-bar">
-        <button class="refresh-btn" onclick="loadPosts()"><i class="fas fa-sync-alt"></i> ပြန်လည်စတင်ရန်</button>
+    <div class="refresh-wrap">
+        <button onclick="loadPosts()"><i class="fas fa-sync-alt"></i> ပြန်လည်စတင်ရန်</button>
     </div>
 
-    <!-- Posts -->
-    <div class="posts-grid" id="postGrid">
-        <div class="status-card" style="grid-column:1/-1;"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>
+    <!-- Grid -->
+    <div class="grid" id="postGrid">
+        <div class="status-wrap"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>
     </div>
 </div>
 
-<!-- Full Screen Viewer -->
-<div class="viewer-overlay" id="imageViewer">
-    <div class="viewer-header">
-        <span style="color:#fff;font-size:14px;font-weight:600;">မိဘမေတ္တာ</span>
+<!-- Viewer -->
+<div class="viewer" id="imageViewer">
+    <div class="viewer-top">
+        <span style="color:#fff;font-size:13px;font-weight:600;">မိဘမေတ္တာ</span>
         <button class="viewer-close" onclick="closeViewer()">&times;</button>
     </div>
-    <div class="viewer-image-wrap"><img id="viewerImage" src="" alt="ပုံအကြီး"></div>
-    <div class="viewer-caption-bar" id="viewerCaption"></div>
-    <div class="viewer-zoom-hint">👆 လက်နှစ်ချောင်းဖြင့် ချဲ့ကြည့်နိုင်ပါသည်</div>
+    <div class="viewer-img-wrap"><img id="viewerImage" src="" alt="ပုံ"></div>
+    <div class="viewer-caption" id="viewerCaption"></div>
+    <div class="viewer-hint">👆 လက်နှစ်ချောင်းဖြင့် ချဲ့ကြည့်နိုင်ပါသည်</div>
 </div>
 
-<!-- Login Modal -->
+<!-- Login -->
 <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
-        <div style="font-size:40px;margin-bottom:8px;">🔐</div>
+        <div style="font-size:36px;">🔐</div>
         <h3>Admin Login</h3>
-        <input type="password" id="loginPassword" placeholder="••••••••" onkeypress="if(event.key==='Enter')adminLogin()">
+        <input type="password" id="pinInput" placeholder="••••••••" onkeypress="if(event.key==='Enter')adminLogin()">
         <div class="btn-row">
             <button class="btn-login" onclick="adminLogin()">ဝင်ရောက်မည်</button>
             <button class="btn-cancel" onclick="closeLogin()">ပိတ်မည်</button>
@@ -622,61 +301,81 @@
 <div class="toast" id="toast"></div>
 
 <script>
-    const WORKER_URL = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
+    const API = "https://misty-scene-5b01.waimyolinnaoehtein.workers.dev";
     let adminToken = localStorage.getItem('adminToken') || null;
     let isAdmin = adminToken ? true : false;
     let currentScale = 1;
     let initialDist = 0;
     
-    // ==================== Service Worker ====================
+    // ==================== SW ====================
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
     }
     
-    // ==================== Dark Mode ====================
-    let darkMode = localStorage.getItem('darkMode') === 'true';
-    function applyDarkMode() {
-        if (darkMode) {
+    // ==================== DARK MODE ====================
+    let dark = localStorage.getItem('darkMode') === 'true';
+    function applyDark() {
+        if (dark) {
             document.documentElement.setAttribute('data-dark', 'true');
-            document.querySelector('meta[name="theme-color"]').content = '#0f1419';
+            document.querySelector('meta[name="theme-color"]').content = '#0d1117';
         } else {
             document.documentElement.removeAttribute('data-dark');
-            document.querySelector('meta[name="theme-color"]').content = '#1a1a2e';
+            document.querySelector('meta[name="theme-color"]').content = '#0d1117';
         }
-        document.getElementById('darkIcon').textContent = darkMode ? '☀️' : '🌙';
+        document.getElementById('darkIcon').textContent = dark ? '☀️' : '🌙';
     }
-    function toggleDarkMode() { darkMode = !darkMode; localStorage.setItem('darkMode', darkMode); applyDarkMode(); }
-    applyDarkMode();
+    function toggleDark() { dark = !dark; localStorage.setItem('darkMode', dark); applyDark(); }
+    applyDark();
     
-    // ==================== Toast ====================
-    function showToast(msg) {
+    // ==================== TOAST ====================
+    function toast(msg) {
         const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
         setTimeout(() => t.classList.remove('show'), 2500);
     }
     
-    // ==================== Admin ====================
-    if (isAdmin) showAdminBar();
+    // ==================== VIBER (Safe - No tab close) ====================
+    function openViber(e) {
+        e.preventDefault();
+        const phone = '09697455880';
+        // Try viber link
+        const a = document.createElement('a');
+        a.href = 'viber://chat?number=%2B959697455880';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        // Copy fallback
+        setTimeout(() => {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(phone).then(() => {
+                    toast('📞 ဖုန်းနံပါတ် ' + phone + ' ကူးပြီးပါပြီ');
+                });
+            }
+        }, 1500);
+    }
     
+    // ==================== ADMIN ====================
+    if (isAdmin) showAdminBar();
     const logo = document.getElementById('adminLogo');
-    let longPressTimer;
-    logo.addEventListener('touchstart', () => { if(!isAdmin) longPressTimer = setTimeout(showLogin, 3000); });
-    logo.addEventListener('touchend', () => clearTimeout(longPressTimer));
-    logo.addEventListener('touchmove', () => clearTimeout(longPressTimer));
+    let lpTimer;
+    logo.addEventListener('touchstart', () => { if(!isAdmin) lpTimer = setTimeout(showLogin, 3000); });
+    logo.addEventListener('touchend', () => clearTimeout(lpTimer));
+    logo.addEventListener('touchmove', () => clearTimeout(lpTimer));
     
     function showLogin() {
         document.getElementById('loginOverlay').classList.add('active');
-        document.getElementById('loginPassword').focus();
+        document.getElementById('pinInput').focus();
         document.getElementById('loginError').style.display = 'none';
-        document.getElementById('loginPassword').value = '';
+        document.getElementById('pinInput').value = '';
     }
     function closeLogin() { document.getElementById('loginOverlay').classList.remove('active'); }
     
     async function adminLogin() {
-        const pw = document.getElementById('loginPassword').value;
+        const pw = document.getElementById('pinInput').value;
         const err = document.getElementById('loginError');
         if (!pw) { err.style.display = 'block'; err.textContent = 'Password ထည့်ပါ'; return; }
         try {
-            const res = await fetch(WORKER_URL + '/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) });
+            const res = await fetch(API + '/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) });
             const data = await res.json();
             if (data.success) { adminToken = data.token; localStorage.setItem('adminToken', adminToken); isAdmin = true; closeLogin(); showAdminBar(); loadPosts(); }
             else { err.style.display = 'block'; err.textContent = '❌ Password မှားနေပါသည်'; }
@@ -684,77 +383,78 @@
     }
     
     function showAdminBar() {
-        document.getElementById('adminBar').innerHTML = '<div class="admin-bar">🔐 Admin Mode <button class="admin-logout" onclick="adminLogout()">ထွက်မည်</button></div>';
+        document.getElementById('adminBar').innerHTML = '<div class="admin-bar">🔐 Admin Mode <button onclick="adminLogout()">ထွက်မည်</button></div>';
     }
     function adminLogout() { adminToken = null; isAdmin = false; localStorage.removeItem('adminToken'); document.getElementById('adminBar').innerHTML = ''; loadPosts(); }
     
-    // ==================== Delete ====================
+    // ==================== DELETE ====================
     async function deletePost(postId) {
         if (!confirm("ဖျက်မှာလား?")) return;
         try {
-            const res = await fetch(WORKER_URL + '/post/' + postId, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + adminToken } });
+            const res = await fetch(API + '/post/' + postId, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + adminToken } });
             const data = await res.json();
-            if (data.success) { loadPosts(); showToast('✅ ဖျက်ပြီးပါပြီ'); }
+            if (data.success) { loadPosts(); toast('✅ ဖျက်ပြီးပါပြီ'); }
             else if (data.error?.includes('ခွင့်မပြု')) { alert("သက်တမ်းကုန်ပါပြီ။"); adminLogout(); }
         } catch(e) { alert("ချိတ်ဆက်မှု မအောင်မြင်ပါ"); }
     }
     
-    // ==================== Share ====================
+    // ==================== SHARE ====================
     function sharePost(post) {
         const text = post.type === 'photo' ? (post.caption || 'ပုံ') : (post.text || 'စာသား');
         if (navigator.share) navigator.share({ title: 'မိဘမေတ္တာ', text: text.substring(0, 100) });
-        else if (navigator.clipboard) { navigator.clipboard.writeText(text); showToast('📋 ကူးပြီးပါပြီ'); }
+        else if (navigator.clipboard) { navigator.clipboard.writeText(text); toast('📋 ကူးပြီးပါပြီ'); }
     }
     
-    // ==================== Format ====================
+    // ==================== FORMAT ====================
     function formatDate(ts) {
         if (!ts) return "";
         const d = new Date(ts * 1000);
         const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         return d.getDate() + ' ' + months[d.getMonth()] + ' \'' + d.getFullYear().toString().slice(2);
     }
-    function escapeHtml(t) {
+    function esc(t) {
         if (!t) return "";
         return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
     }
     
-    // ==================== Load Posts ====================
+    // ==================== LOAD ====================
     async function loadPosts() {
         const grid = document.getElementById('postGrid');
-        grid.innerHTML = '<div class="status-card" style="grid-column:1/-1;"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>';
+        grid.innerHTML = '<div class="status-wrap"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>';
         
         try {
-            const res = await fetch(WORKER_URL + '/posts');
+            const res = await fetch(API + '/posts');
             const data = await res.json();
             if (!data.success) throw new Error("API Error");
             
             const posts = data.posts || [];
-            if (!posts.length) { grid.innerHTML = '<div class="status-card" style="grid-column:1/-1;"><p>📭 ပို့စ်မရှိသေးပါ</p></div>'; return; }
+            if (!posts.length) { grid.innerHTML = '<div class="status-wrap"><p>📭 ပို့စ်မရှိသေးပါ</p></div>'; return; }
             
             let html = '';
             posts.forEach(function(post) {
                 const dateStr = formatDate(post.date);
-                const deleteBtn = isAdmin ? '<button class="delete-btn" onclick="event.stopPropagation();deletePost(' + post.id + ')"><i class="fas fa-trash"></i></button>' : '';
+                const delBtn = isAdmin ? '<button class="card-del" onclick="event.stopPropagation();deletePost(' + post.id + ')"><i class="fas fa-trash"></i></button>' : '';
                 const caption = post.caption || '';
-                const safeCaption = escapeHtml(caption);
+                const safeCaption = esc(caption);
                 
                 if (post.type === 'photo') {
-                    html += '<div class="post-card" onclick="openViewer(\'' + post.image_url + '\',\'' + safeCaption + '\')">' + deleteBtn + '<div class="post-image-wrap"><img src="' + post.image_url + '" alt="ပုံ" loading="lazy"></div><div class="post-info">' + (caption ? '<div class="post-caption">' + safeCaption + '</div>' : '') + '<div class="post-meta"><span class="post-date">' + dateStr + '</span><button class="share-btn" onclick="event.stopPropagation();sharePost({type:\'photo\',caption:\'' + safeCaption + '\'})"><i class="fas fa-share-alt"></i></button></div></div></div>';
+                    html += '<div class="card" onclick="openViewer(\'' + post.image_url + '\',\'' + safeCaption + '\')">' + delBtn + '<div class="card-img"><img src="' + post.image_url + '" alt="ပုံ" loading="lazy"></div><div class="card-body">' + (caption ? '<div class="card-caption">' + safeCaption + '</div>' : '') + '<div class="card-footer"><span class="card-date">' + dateStr + '</span><button class="card-share" onclick="event.stopPropagation();sharePost({type:\'photo\',caption:\'' + safeCaption + '\'})"><i class="fas fa-share-alt"></i></button></div></div></div>';
                 } else {
-                    html += '<div class="text-post-card" style="grid-column:1/-1;">' + deleteBtn + '<div class="text-post-content">' + escapeHtml(post.text || '') + '</div><div class="post-meta" style="margin-top:12px;"><span class="post-date">' + dateStr + '</span><button class="share-btn" onclick="event.stopPropagation();sharePost({type:\'text\',text:\'' + escapeHtml(post.text || '') + '\'})"><i class="fas fa-share-alt"></i></button></div></div>';
+                    html += '<div class="text-card">' + delBtn + '<p>' + esc(post.text || '') + '</p><div class="card-footer" style="margin-top:8px;"><span class="card-date">' + dateStr + '</span><button class="card-share" onclick="event.stopPropagation();sharePost({type:\'text\',text:\'' + esc(post.text || '') + '\'})"><i class="fas fa-share-alt"></i></button></div></div>';
                 }
             });
             grid.innerHTML = html;
         } catch(e) {
-            grid.innerHTML = '<div class="status-card" style="grid-column:1/-1;"><p>❌ ချို့ယွင်းနေပါသည်</p><small>အင်တာနက်စစ်ဆေးပါ</small><br><button class="refresh-btn" onclick="loadPosts()" style="margin-top:12px;"><i class="fas fa-redo"></i> ပြန်ကြိုးစားမည်</button></div>';
+            grid.innerHTML = '<div class="status-wrap"><p>❌ ချို့ယွင်းနေပါသည်</p><small>အင်တာနက်စစ်ဆေးပါ</small><br><button onclick="loadPosts()" style="margin-top:10px;padding:8px 16px;border-radius:50px;background:var(--accent);color:#fff;border:none;font-weight:600;cursor:pointer;"><i class="fas fa-redo"></i> ပြန်ကြိုးစားမည်</button></div>';
         }
     }
     
-    // ==================== Image Viewer ====================
+    // ==================== VIEWER ====================
     function openViewer(src, caption) {
         const v = document.getElementById('imageViewer');
-        document.getElementById('viewerImage').src = src;
-        document.getElementById('viewerImage').style.transform = 'scale(1)';
+        const img = document.getElementById('viewerImage');
+        img.src = src;
+        img.style.transform = 'scale(1)';
         currentScale = 1;
         document.getElementById('viewerCaption').textContent = caption || '';
         v.classList.add('active');
@@ -765,20 +465,42 @@
         document.body.style.overflow = '';
     }
     
-    document.getElementById('imageViewer').addEventListener('touchstart', e => {
-        if (e.touches.length === 2) initialDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    // Pinch Zoom
+    const viewer = document.getElementById('imageViewer');
+    viewer.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 2) {
+            initialDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+        }
     }, { passive: true });
-    document.getElementById('imageViewer').addEventListener('touchmove', e => {
+    
+    viewer.addEventListener('touchmove', function(e) {
         if (e.touches.length === 2) {
             e.preventDefault();
             const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-            document.getElementById('viewerImage').style.transform = 'scale(' + Math.min(Math.max(dist / initialDist, 1), 5) + ')';
+            const scale = Math.min(Math.max(dist / initialDist, 1), 5);
+            document.getElementById('viewerImage').style.transform = 'scale(' + scale + ')';
         }
     }, { passive: false });
     
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
+    viewer.addEventListener('touchend', function() {
+        const match = document.getElementById('viewerImage').style.transform.match(/scale\(([\d.]+)\)/);
+        currentScale = match ? parseFloat(match[1]) : 1;
+    });
     
-    // ==================== Init ====================
+    // Double tap zoom
+    document.getElementById('viewerImage').addEventListener('dblclick', function(e) {
+        e.preventDefault();
+        if (currentScale > 1.5) {
+            currentScale = 1;
+        } else {
+            currentScale = 2.5;
+        }
+        document.getElementById('viewerImage').style.transform = 'scale(' + currentScale + ')';
+    });
+    
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeViewer(); });
+    
+    // ==================== INIT ====================
     loadPosts();
 </script>
 
