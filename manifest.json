@@ -1,37 +1,16 @@
 {
   "name": "မိဘမေတ္တာ အထည်ဆိုင်",
   "short_name": "မိဘမေတ္တာ",
-  "description": "အရည်အသွေးမြင့် အထည်များ - အိုးထိန်းကျေးရွာ",
   "start_url": "/",
-  "scope": "/",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
-  "orientation": "portrait",
-  "theme_color": "#8b5a2b",
-  "background_color": "#fdf8f0",
-  "lang": "my",
-  "categories": ["shopping", "lifestyle"],
+  "theme_color": "#0d1117",
+  "background_color": "#fafafa",
   "icons": [
-    {
-      "src": "https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
     {
       "src": "https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "မိဘမေတ္တာ"
     }
   ]
 }
