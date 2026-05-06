@@ -43,7 +43,6 @@
             transition: background 0.3s, color 0.3s; padding-bottom: 40px;
         }
         
-        /* Top Bar */
         .topbar {
             position: sticky; top: 0; z-index: 50; background: var(--card);
             border-bottom: 1px solid var(--border); padding: 10px 14px;
@@ -60,7 +59,6 @@
         .btn-vb { background: #7360f2; color: #fff; }
         .btn-dark { background: var(--border); color: var(--sub); width: 30px; height: 30px; border-radius: 50%; font-size: 14px; justify-content: center; padding: 0; }
         
-        /* Admin */
         .admin-bar {
             background: #1a1a2e; color: #fff; text-align: center; padding: 6px;
             font-size: 10px; font-weight: 600; display: flex; justify-content: center; gap: 8px;
@@ -70,29 +68,26 @@
             color: #fff; padding: 3px 8px; border-radius: 50px; font-size: 9px; cursor: pointer;
         }
         
-        /* Main */
         .main-wrap { max-width: 600px; margin: 0 auto; padding: 12px; }
         
-        /* Hero */
         .hero {
             text-align: center; padding: 24px 16px; background: var(--card);
             border-radius: var(--radius); margin-bottom: 12px; box-shadow: var(--shadow);
             border: 1px solid var(--border);
         }
-        .hero img { width: 64px; height: 64px; border-radius: 16px; object-fit: cover; margin-bottom: 8px; }
+        .hero img { width: 90px; height: 90px; border-radius: 20px; object-fit: cover; margin-bottom: 10px; }
         .hero h1 { font-size: 24px; font-weight: 800; color: var(--text); }
+        .hero h1 small { font-size: 14px; font-weight: 500; color: var(--sub); display: block; }
         .hero p { font-size: 12px; color: var(--sub); margin: 4px 0 10px; }
         .hero-contact { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 11px; color: var(--muted); }
         .hero-contact i { color: var(--accent); margin-right: 3px; }
         
-        /* Refresh */
         .refresh-wrap { text-align: center; margin-bottom: 10px; }
         .refresh-wrap button {
             background: var(--card); border: 1px solid var(--border); color: var(--sub);
             padding: 6px 14px; border-radius: 50px; font-size: 11px; font-weight: 600; cursor: pointer;
         }
         
-        /* Grid */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         
         .card {
@@ -121,7 +116,6 @@
             padding: 3px 8px; font-size: 9px; font-weight: 600; cursor: pointer; z-index: 10;
         }
         
-        /* Text Post */
         .text-card {
             background: var(--card); border-radius: var(--radius); padding: 14px;
             box-shadow: var(--shadow); border: 1px solid var(--border);
@@ -129,12 +123,10 @@
         }
         .text-card p { font-size: 12px; line-height: 1.7; color: var(--text); }
         
-        /* Status */
         .status-wrap { grid-column: 1 / -1; text-align: center; padding: 40px 16px; color: var(--muted); }
         .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 8px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* Full Screen Viewer */
         .viewer {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: #000; z-index: 2000;
@@ -167,7 +159,6 @@
             text-align: center; line-height: 1.6;
         }
         
-        /* Login */
         .login-overlay {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.85); z-index: 3000; align-items: center; justify-content: center;
@@ -188,7 +179,6 @@
         .btn-cancel { flex: 1; background: var(--border); color: var(--text); border: none; padding: 8px; border-radius: 50px; font-weight: 600; cursor: pointer; font-size: 13px; }
         .login-error { color: #e74c3c; font-size: 10px; margin-top: 6px; display: none; }
         
-        /* Toast */
         .toast {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: #1a1a1a; color: #fff; padding: 8px 16px; border-radius: 50px;
@@ -215,7 +205,7 @@
 <div class="main-wrap">
     <div class="hero">
         <img src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo" id="adminLogo">
-        <h1>မိဘမေတ္တာ</h1>
+        <h1>မိဘမေတ္တာ <small>အထည်ဆိုင်</small></h1>
         <p>အရည်အသွေးမြင့် အထည်များ</p>
         <div class="hero-contact">
             <span><i class="fas fa-phone"></i> 09697455880</span>
@@ -232,7 +222,6 @@
     </div>
 </div>
 
-<!-- Full Screen Viewer -->
 <div class="viewer" id="imageViewer">
     <div class="viewer-top">
         <span style="color:#fff;font-size:12px;font-weight:600;">မိဘမေတ္တာ</span>
@@ -244,7 +233,6 @@
     <div class="viewer-caption" id="viewerCaption"></div>
 </div>
 
-<!-- Login -->
 <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
         <div style="font-size:32px;">🔐</div>
@@ -265,46 +253,36 @@
     let adminToken = localStorage.getItem('adminToken') || null;
     let isAdmin = adminToken ? true : false;
     
-    // ==================== SW ====================
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
     }
     
-    // ==================== DARK ====================
     let dark = localStorage.getItem('darkMode') === 'true';
     function applyDark() {
-        if (dark) {
-            document.documentElement.setAttribute('data-dark', 'true');
-        } else {
-            document.documentElement.removeAttribute('data-dark');
-        }
+        if (dark) { document.documentElement.setAttribute('data-dark', 'true'); }
+        else { document.documentElement.removeAttribute('data-dark'); }
         document.getElementById('darkIcon').textContent = dark ? '☀️' : '🌙';
     }
     function toggleDark() { dark = !dark; localStorage.setItem('darkMode', dark); applyDark(); }
     applyDark();
     
-    // ==================== TOAST ====================
     function toast(msg) {
         const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
         setTimeout(() => t.classList.remove('show'), 2500);
     }
     
-    // ==================== VIBER ====================
     function openViber() {
         const phone = '09697455880';
         const isPWA = window.matchMedia('(display-mode: standalone)').matches;
         if (isPWA) {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(phone).then(() => toast('📞 ' + phone + ' ကူးပြီးပါပြီ'));
-            } else {
-                alert('📞 ဖုန်းနံပါတ် - ' + phone);
-            }
+            } else { alert('📞 ဖုန်းနံပါတ် - ' + phone); }
         } else {
             window.location.href = 'viber://chat?number=%2B959697455880';
         }
     }
     
-    // ==================== ADMIN ====================
     if (isAdmin) showAdminBar();
     const logo = document.getElementById('adminLogo');
     let lpTimer;
@@ -337,7 +315,6 @@
     }
     function adminLogout() { adminToken = null; isAdmin = false; localStorage.removeItem('adminToken'); document.getElementById('adminBar').innerHTML = ''; loadPosts(); }
     
-    // ==================== DELETE ====================
     async function deletePost(postId) {
         if (!confirm("ဖျက်မှာလား?")) return;
         try {
@@ -348,14 +325,12 @@
         } catch(e) { alert("ချိတ်ဆက်မှု မအောင်မြင်ပါ"); }
     }
     
-    // ==================== SHARE ====================
     function sharePost(post) {
         const text = post.type === 'photo' ? (post.caption || 'ပုံ') : (post.text || 'စာသား');
         if (navigator.share) navigator.share({ title: 'မိဘမေတ္တာ', text: text.substring(0, 100) });
         else if (navigator.clipboard) { navigator.clipboard.writeText(text); toast('📋 ကူးပြီးပါပြီ'); }
     }
     
-    // ==================== FORMAT ====================
     function formatDate(ts) {
         if (!ts) return "";
         const d = new Date(ts * 1000);
@@ -367,7 +342,6 @@
         return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
     }
     
-    // ==================== LOAD ====================
     async function loadPosts() {
         const grid = document.getElementById('postGrid');
         grid.innerHTML = '<div class="status-wrap"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>';
@@ -399,7 +373,7 @@
         }
     }
     
-    // ==================== VIEWER (SIMPLE PINCH ZOOM) ====================
+    // ==================== VIEWER ====================
     let scale = 1;
     let startDist = 0;
     let startScale = 1;
@@ -413,6 +387,8 @@
         document.getElementById('viewerCaption').textContent = caption || '';
         v.classList.add('active');
         document.body.style.overflow = 'hidden';
+        // Push state for back button
+        history.pushState({viewer: 'open'}, '', window.location.href);
     }
     
     function closeViewer() {
@@ -445,15 +421,23 @@
         if (scale < 1) { scale = 1; viewerImg.style.transform = 'scale(1)'; }
     });
     
-    // Double tap to zoom
     viewerImg.addEventListener('dblclick', function(e) {
         e.preventDefault();
-        if (scale > 1.5) { scale = 1; }
-        else { scale = 2.5; }
+        if (scale > 1.5) { scale = 1; } else { scale = 2.5; }
         viewerImg.style.transform = 'scale(' + scale + ')';
     });
     
-    // Close with back button
+    // ==================== BACK BUTTON CLOSES VIEWER ====================
+    history.pushState(null, '', window.location.href);
+    
+    window.addEventListener('popstate', function(e) {
+        const viewer = document.getElementById('imageViewer');
+        if (viewer.classList.contains('active')) {
+            closeViewer();
+            history.pushState(null, '', window.location.href);
+        }
+    });
+    
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeViewer(); });
     
     // ==================== INIT ====================
