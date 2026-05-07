@@ -79,7 +79,17 @@
         .hero h1 { font-size: 24px; font-weight: 800; color: var(--text); }
         .hero h1 small { font-size: 14px; font-weight: 500; color: var(--sub); display: block; }
         .hero p { font-size: 12px; color: var(--sub); margin: 4px 0 10px; }
-        .hero-contact { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 11px; color: var(--muted); }
+        .hero-contact { 
+            display: flex; justify-content: space-between; align-items: center; 
+            flex-wrap: wrap; font-size: 11px; color: var(--muted); gap: 8px;
+            padding-top: 10px; border-top: 1px solid var(--border);
+        }
+        .hero-contact-left { display: flex; gap: 12px; flex-wrap: wrap; }
+        .hero-contact-right { display: flex; align-items: center; gap: 4px; }
+        .hero-contact-right a {
+            color: var(--accent); text-decoration: none; font-size: 11px; font-weight: 600;
+            display: flex; align-items: center; gap: 3px;
+        }
         .hero-contact i { color: var(--accent); margin-right: 3px; }
         
         .refresh-wrap { text-align: center; margin-bottom: 10px; }
@@ -206,10 +216,17 @@
     <div class="hero">
         <img src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo" id="adminLogo">
         <h1>မိဘမေတ္တာ <small>အထည်ဆိုင်</small></h1>
-        <p>အရည်အသွေးမြင့် အထည်များ</p>
+        <p>အရည်အသွေးမြင့် စိတ်ချယုံကြည်ရ ဈေးနှုန်းသက်သာ</p>
         <div class="hero-contact">
-            <span><i class="fas fa-phone"></i> 09697455880</span>
-            <span><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
+            <div class="hero-contact-left">
+                <span><i class="fas fa-phone"></i> 09697455880</span>
+                <span><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
+            </div>
+            <div class="hero-contact-right">
+                <a href="https://t.me/mibamyitta1" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-telegram-plane"></i> @mibamyitta1
+                </a>
+            </div>
         </div>
     </div>
 
@@ -387,7 +404,6 @@
         document.getElementById('viewerCaption').textContent = caption || '';
         v.classList.add('active');
         document.body.style.overflow = 'hidden';
-        // Push state for back button
         history.pushState({viewer: 'open'}, '', window.location.href);
     }
     
@@ -421,13 +437,7 @@
         if (scale < 1) { scale = 1; viewerImg.style.transform = 'scale(1)'; }
     });
     
-    viewerImg.addEventListener('dblclick', function(e) {
-        e.preventDefault();
-        if (scale > 1.5) { scale = 1; } else { scale = 2.5; }
-        viewerImg.style.transform = 'scale(' + scale + ')';
-    });
-    
-    // ==================== BACK BUTTON CLOSES VIEWER ====================
+    // ==================== BACK BUTTON CLOSES VIEWER (Not Exit App) ====================
     history.pushState(null, '', window.location.href);
     
     window.addEventListener('popstate', function(e) {
