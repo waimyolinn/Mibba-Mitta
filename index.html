@@ -216,10 +216,10 @@
     <div class="hero">
         <img src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo" id="adminLogo">
         <h1>မိဘမေတ္တာ <small>အထည်ဆိုင်</small></h1>
-        <p>အရည်အသွေးမြင့် စိတ်ချယုံကြည်ရ ဈေးနှုန်းသက်သာ</p>
+        <p>ဆိုင်ကို ကိုယ်တိုင်လာရောက် ကြည့်ရှု ဝယ်နိုင်ပါပြီ</p>
         <div class="hero-contact">
             <div class="hero-contact-left">
-                <span><i class="fas fa-phone"></i> 09697455880</span>
+                <span><i class="fas fa-phone"></i> 09697455880/09676827963</span>
                 <span><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
             </div>
             <div class="hero-contact-right">
@@ -235,7 +235,7 @@
     </div>
 
     <div class="grid" id="postGrid">
-        <div class="status-wrap"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>
+        <div class="status-wrap"><div class="spinner"></div><p>ပုံများ ယူနေပါသည်...</p></div>
     </div>
 </div>
 
@@ -369,7 +369,7 @@
             if (!data.success) throw new Error("API Error");
             
             const posts = data.posts || [];
-            if (!posts.length) { grid.innerHTML = '<div class="status-wrap"><p>📭 ပို့စ်မရှိသေးပါ</p></div>'; return; }
+            if (!posts.length) { grid.innerHTML = '<div class="status-wrap"><p>📭 ပုံများ မရှိသေးပါ</p></div>'; return; }
             
             let html = '';
             posts.forEach(function(post) {
