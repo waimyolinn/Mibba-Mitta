@@ -2,7 +2,7 @@
   "name": "မိဘမေတ္တာ အထည်ဆိုင်",
   "short_name": "မိဘမေတ္တာ",
   "start_url": "/",
-  "display": "standalone",
+  "display": "minimal-ui",
   "theme_color": "#0d1117",
   "background_color": "#fafafa",
   "icons": [
