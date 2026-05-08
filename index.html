@@ -79,18 +79,51 @@
         .hero h1 { font-size: 24px; font-weight: 800; color: var(--text); }
         .hero h1 small { font-size: 14px; font-weight: 500; color: var(--sub); display: block; }
         .hero p { font-size: 12px; color: var(--sub); margin: 4px 0 10px; }
+        
+        /* Contact row with proper alignment */
         .hero-contact { 
-            display: flex; justify-content: space-between; align-items: center; 
-            flex-wrap: wrap; font-size: 11px; color: var(--muted); gap: 8px;
-            padding-top: 10px; border-top: 1px solid var(--border);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 8px 12px;
+            padding-top: 10px; 
+            border-top: 1px solid var(--border);
+            font-size: 11px; 
+            color: var(--muted);
         }
-        .hero-contact-left { display: flex; gap: 12px; flex-wrap: wrap; }
-        .hero-contact-right { display: flex; align-items: center; gap: 4px; }
+        .hero-contact-left { 
+            display: flex; 
+            flex-wrap: wrap; 
+            align-items: center; 
+            gap: 10px;
+        }
+        .hero-contact-left span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .hero-contact-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
+        }
         .hero-contact-right a {
-            color: var(--accent); text-decoration: none; font-size: 11px; font-weight: 600;
-            display: flex; align-items: center; gap: 3px;
+            color: var(--accent); 
+            text-decoration: none; 
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 11px;
         }
-        .hero-contact i { color: var(--accent); margin-right: 3px; }
+        .hero-contact i { color: var(--accent); }
+        .vpn-note {
+            font-size: 10px;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 8px;
+        }
         
         .refresh-wrap { text-align: center; margin-bottom: 10px; }
         .refresh-wrap button {
@@ -216,10 +249,10 @@
     <div class="hero">
         <img src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo" id="adminLogo">
         <h1>မိဘမေတ္တာ <small>အထည်ဆိုင်</small></h1>
-        <p>ဆိုင်ကို ကိုယ်တိုင်လာရောက် ကြည့်ရှု ဝယ်နိုင်ပါပြီ</p>
+        <p>ဆိုင်ကို ကိုယ်တိုင်လာရောက် ကြည့်ရှု ဝယ်နိုင်ပါပြီ</p>
         <div class="hero-contact">
             <div class="hero-contact-left">
-                <span><i class="fas fa-phone"></i> 09697455880/09676827963</span>
+                <span><i class="fas fa-phone"></i> 09697455880 / 09676827963</span>
                 <span><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
             </div>
             <div class="hero-contact-right">
@@ -228,6 +261,7 @@
                 </a>
             </div>
         </div>
+        <p class="vpn-note">⚡ အင်တာနက် နှေးနေရင် VPN ခံပြီး သုံးကြည့်ပါ။</p>
     </div>
 
     <div class="refresh-wrap">
@@ -437,7 +471,7 @@
         if (scale < 1) { scale = 1; viewerImg.style.transform = 'scale(1)'; }
     });
     
-    // ==================== BACK BUTTON CLOSES VIEWER (Not Exit App) ====================
+    // ==================== BACK BUTTON CLOSES VIEWER ====================
     history.pushState(null, '', window.location.href);
     
     window.addEventListener('popstate', function(e) {
