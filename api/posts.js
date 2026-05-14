@@ -1,6 +1,4 @@
 // api/posts.js - GET all posts from Upstash Redis
-import { createClient } from '@vercel/kv';
-
 export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -9,11 +7,13 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const kv = createClient({ url: process.env.KV_REST_API_URL, token: process.env.KV_REST_API_TOKEN });
-    const postsList = await kv.get('posts_list') || [];
+    const { Redis } = await import('@upstash/redis');
+    const redis = Redis.fromEnv();
+    
+    const postsList = await redis.get('posts_list') || [];
     const posts = [];
     for (const id of postsList) {
-      const post = await kv.get(`post_${id}`);
+      const post = await redis.get(`post_${id}`);
       if (post) posts.push(post);
     }
     return res.status(200).json({ success: true, posts });
