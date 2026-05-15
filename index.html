@@ -2,13 +2,9 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
-    <meta name="google-site-verification" content="NLqyHByZ-OnqMIKZDidDeUzfNeXN8-SfJElHoPqbrY8" />
     <link rel="manifest" href="/manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="မိဘမေတ္တာ">
     <link rel="apple-touch-icon" href="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png">
     <meta name="theme-color" content="#0d1117">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -21,7 +17,6 @@
             --muted: #999;
             --border: #eee;
             --accent: #8b5a2b;
-            --shadow: 0 1px 3px rgba(0,0,0,0.05);
             --radius: 14px;
         }
         [data-dark="true"] {
@@ -32,148 +27,187 @@
             --muted: #6e7681;
             --border: #21262d;
             --accent: #d4a574;
-            --shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', 'Myanmar Text', system-ui, sans-serif;
-            background: var(--bg); min-height: 100vh; color: var(--text);
-            transition: background 0.3s, color 0.3s; padding-bottom: 40px;
+            font-family: system-ui, 'Myanmar Text', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: 40px;
         }
         .topbar {
-            position: sticky; top: 0; z-index: 50; background: var(--card);
-            border-bottom: 1px solid var(--border); padding: 10px 14px;
-            display: flex; align-items: center; justify-content: space-between; gap: 6px;
+            position: sticky;
+            top: 0;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 50;
         }
-        .topbar-brand { font-size: 16px; font-weight: 700; color: var(--text); }
+        .topbar-brand { font-size: 16px; font-weight: 700; }
         .topbar-brand span { color: var(--accent); }
-        .topbar-links { display: flex; gap: 5px; align-items: center; }
+        .topbar-links { display: flex; gap: 8px; }
         .topbar-links a, .topbar-links button {
-            font-size: 10px; font-weight: 600; padding: 6px 10px; border-radius: 50px;
-            text-decoration: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 3px;
+            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
         }
         .btn-tg { background: #0088cc; color: #fff; }
         .btn-vb { background: #7360f2; color: #fff; }
-        .btn-dark { background: var(--border); color: var(--sub); width: 30px; height: 30px; border-radius: 50%; font-size: 14px; justify-content: center; padding: 0; }
+        .btn-dark { background: var(--border); color: var(--sub); width: 32px; padding: 6px; }
         .admin-bar {
-            background: #1a1a2e; color: #fff; text-align: center; padding: 6px;
-            font-size: 10px; font-weight: 600; display: flex; justify-content: center; gap: 8px;
+            background: #1a1a2e;
+            color: #fff;
+            text-align: center;
+            padding: 6px;
+            font-size: 11px;
+            font-weight: 600;
         }
         .admin-bar button {
-            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
-            color: #fff; padding: 3px 8px; border-radius: 50px; font-size: 9px; cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 50px;
+            margin-left: 8px;
+            cursor: pointer;
         }
         .main-wrap { max-width: 600px; margin: 0 auto; padding: 12px; }
         .hero {
-            text-align: center; padding: 24px 16px; background: var(--card);
-            border-radius: var(--radius); margin-bottom: 12px; box-shadow: var(--shadow);
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 16px;
             border: 1px solid var(--border);
         }
-        .hero img { width: 90px; height: 90px; border-radius: 20px; object-fit: cover; margin-bottom: 10px; }
-        .hero h1 { font-size: 24px; font-weight: 800; color: var(--text); }
-        .hero h1 small { font-size: 14px; font-weight: 500; color: var(--sub); display: block; }
-        .hero p { font-size: 12px; color: var(--sub); margin: 4px 0 10px; }
-        .hero-contact { 
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 12px;
-            padding-top: 10px; border-top: 1px solid var(--border);
-            font-size: 11px; color: var(--muted);
-        }
-        .hero-contact-left { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-        .hero-contact-left span { display: flex; align-items: center; gap: 4px; }
-        .hero-contact-right { display: flex; align-items: center; gap: 4px; }
-        .hero-contact-right a { color: var(--accent); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 3px; font-size: 11px; }
-        .hero-contact i { color: var(--accent); }
-        .vpn-note { font-size: 10px; color: var(--muted); text-align: center; margin-top: 8px; }
-        .refresh-wrap { text-align: center; margin-bottom: 10px; }
+        .hero img { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 8px; }
+        .hero h1 { font-size: 20px; }
+        .hero h1 small { font-size: 13px; color: var(--sub); display: block; }
+        .refresh-wrap { text-align: center; margin-bottom: 16px; }
         .refresh-wrap button {
-            background: var(--card); border: 1px solid var(--border); color: var(--sub);
-            padding: 6px 14px; border-radius: 50px; font-size: 11px; font-weight: 600; cursor: pointer;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            cursor: pointer;
         }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card {
-            background: var(--card); border-radius: var(--radius); overflow: hidden;
-            box-shadow: var(--shadow); border: 1px solid var(--border);
-            cursor: pointer; position: relative;
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
         }
-        .card-img { aspect-ratio: 3/4; overflow: hidden; background: #f5f5f5; display: flex; align-items: center; justify-content: center; }
-        [data-dark="true"] .card-img { background: #0d1117; }
-        .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .card-body { padding: 8px 10px 10px; }
-        .card-caption { font-size: 11px; color: var(--text); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-weight: 500; }
-        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
-        .card-date { font-size: 9px; color: var(--muted); }
-        .card-share { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 11px; padding: 2px 4px; }
+        .card-img { aspect-ratio: 3/4; overflow: hidden; background: #f0f0f0; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .card-body { padding: 8px; }
+        .card-caption { font-size: 11px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .card-footer { display: flex; justify-content: space-between; margin-top: 6px; font-size: 9px; color: var(--muted); }
+        .card-share { background: none; border: none; color: var(--muted); cursor: pointer; }
         .card-del {
-            position: absolute; top: 4px; right: 4px;
-            background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 50px;
-            padding: 3px 8px; font-size: 9px; font-weight: 600; cursor: pointer; z-index: 10;
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 4px 10px;
+            font-size: 10px;
+            cursor: pointer;
+            z-index: 10;
         }
         .text-card {
-            background: var(--card); border-radius: var(--radius); padding: 14px;
-            box-shadow: var(--shadow); border: 1px solid var(--border);
-            grid-column: 1 / -1; position: relative;
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 14px;
+            border: 1px solid var(--border);
+            position: relative;
         }
-        .text-card p { font-size: 12px; line-height: 1.7; color: var(--text); }
-        .status-wrap { grid-column: 1 / -1; text-align: center; padding: 40px 16px; color: var(--muted); }
-        .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 8px; }
+        .status-wrap { grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted); }
+        .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.6s linear infinite; margin: 0 auto 8px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .viewer {
-            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: #000; z-index: 2000;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000;
+            z-index: 2000;
         }
         .viewer.active { display: flex; flex-direction: column; }
-        .viewer-top {
-            position: absolute; top: 0; left: 0; right: 0; z-index: 2001;
-            padding: 10px 12px; display: flex; justify-content: space-between;
-            background: linear-gradient(rgba(0,0,0,0.7), transparent);
-        }
-        .viewer-close {
-            background: rgba(255,255,255,0.12); border: none; color: #fff;
-            width: 36px; height: 36px; border-radius: 50%; font-size: 22px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-        }
-        .viewer-img-wrap {
-            flex: 1; display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-        }
-        .viewer-img-wrap img {
-            max-width: 100%; max-height: 100vh;
-            object-fit: contain; display: block;
-            transform-origin: center center;
-            transition: transform 0.1s ease-out;
-        }
-        .viewer-caption {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.85));
-            color: #fff; padding: 24px 14px 16px; font-size: 12px;
-            text-align: center; line-height: 1.6;
-        }
+        .viewer-top { position: absolute; top: 0; left: 0; right: 0; padding: 12px; display: flex; justify-content: flex-end; background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent); z-index: 10; }
+        .viewer-close { background: rgba(255,255,255,0.2); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 24px; cursor: pointer; }
+        .viewer-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
+        .viewer-img-wrap img { max-width: 100%; max-height: 100vh; object-fit: contain; transform-origin: center; transition: transform 0.1s ease-out; }
+        .viewer-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: #fff; padding: 24px 16px 16px; font-size: 13px; text-align: center; }
         .login-overlay {
-            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85); z-index: 3000; align-items: center; justify-content: center;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
         }
         .login-overlay.active { display: flex; }
         .login-box {
-            background: var(--card); border-radius: 16px; padding: 24px 18px;
-            width: 90%; max-width: 320px; text-align: center;
+            background: var(--card);
+            border-radius: 20px;
+            padding: 24px;
+            width: 280px;
+            text-align: center;
         }
-        .login-box h3 { color: var(--text); font-size: 16px; }
         .login-box input {
-            width: 100%; padding: 10px; border: 2px solid var(--border); border-radius: 8px;
-            font-size: 15px; text-align: center; outline: none; background: var(--bg);
-            color: var(--text); margin: 12px 0;
+            width: 100%;
+            padding: 10px;
+            margin: 12px 0;
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            background: var(--bg);
+            color: var(--text);
+            text-align: center;
         }
-        .login-box .btn-row { display: flex; gap: 6px; }
-        .btn-login { flex: 1; background: var(--accent); color: #fff; border: none; padding: 8px; border-radius: 50px; font-weight: 600; cursor: pointer; font-size: 13px; }
-        .btn-cancel { flex: 1; background: var(--border); color: var(--text); border: none; padding: 8px; border-radius: 50px; font-weight: 600; cursor: pointer; font-size: 13px; }
-        .login-error { color: #e74c3c; font-size: 10px; margin-top: 6px; display: none; }
+        .btn-login, .btn-cancel {
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-login { background: var(--accent); color: #fff; flex: 1; }
+        .btn-cancel { background: var(--border); color: var(--text); flex: 1; }
+        .btn-row { display: flex; gap: 8px; margin-top: 8px; }
         .toast {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: #1a1a1a; color: #fff; padding: 8px 16px; border-radius: 50px;
-            font-size: 11px; font-weight: 600; z-index: 4000; opacity: 0;
-            transition: opacity 0.3s; pointer-events: none; max-width: 90%; text-align: center;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a1a;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            z-index: 4000;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
         }
-        [data-dark="true"] .toast { background: #fafafa; color: #1a1a1a; }
         .toast.show { opacity: 1; }
     </style>
 </head>
@@ -184,7 +218,7 @@
     <div class="topbar-links">
         <a href="https://t.me/mibamittaa" class="btn-tg" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
         <button class="btn-vb" onclick="openViber()"><i class="fab fa-viber"></i> Viber</button>
-        <button class="btn-dark" onclick="toggleDark()"><span id="darkIcon">🌙</span></button>
+        <button class="btn-dark" onclick="toggleDark()">🌙</button>
     </div>
 </div>
 <div class="main-wrap">
@@ -192,140 +226,98 @@
         <img src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo" id="adminLogo">
         <h1>မိဘမေတ္တာ <small>အထည်ဆိုင်</small></h1>
         <p>ဆိုင်ကို ကိုယ်တိုင်လာရောက် ကြည့်ရှု ဝယ်နိုင်ပါပြီ</p>
-        <div class="hero-contact">
-            <div class="hero-contact-left">
-                <span><i class="fas fa-phone"></i> 09697455880 / 09676827963</span>
-                <span><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
-            </div>
-            <div class="hero-contact-right">
-                <a href="https://t.me/mibamyitta1" target="_blank"><i class="fab fa-telegram-plane"></i> @mibamyitta1</a>
-            </div>
-        </div>
-        <p class="vpn-note">⚡ အင်တာနက် နှေးနေရင် VPN ခံပြီး သုံးကြည့်ပါ။</p>
+        <div><i class="fas fa-phone"></i> 09697455880 / 09676827963 &nbsp;|&nbsp; <i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</div>
+        <div><a href="https://t.me/mibamyitta1" target="_blank">📱 @mibamyitta1</a></div>
     </div>
     <div class="refresh-wrap">
         <button onclick="loadPosts()"><i class="fas fa-sync-alt"></i> ပြန်လည်စတင်ရန်</button>
     </div>
-    <div class="grid" id="postGrid">
-        <div class="status-wrap"><div class="spinner"></div><p>ပုံများ ယူနေပါသည်...</p></div>
-    </div>
+    <div class="grid" id="postGrid"><div class="status-wrap"><div class="spinner"></div><p>ပုံများ ယူနေပါသည်...</p></div></div>
 </div>
 <div class="viewer" id="imageViewer">
-    <div class="viewer-top">
-        <span style="color:#fff;font-size:12px;font-weight:600;">မိဘမေတ္တာ</span>
-        <button class="viewer-close" onclick="closeViewer()">&times;</button>
-    </div>
-    <div class="viewer-img-wrap" id="viewerImgWrap">
-        <img id="viewerImage" src="" alt="ပုံ">
-    </div>
+    <div class="viewer-top"><button class="viewer-close" onclick="closeViewer()">&times;</button></div>
+    <div class="viewer-img-wrap"><img id="viewerImage" src=""></div>
     <div class="viewer-caption" id="viewerCaption"></div>
 </div>
 <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
-        <div style="font-size:32px;">🔐</div>
         <h3>Admin Login</h3>
-        <input type="password" id="pinInput" placeholder="••••••••" onkeypress="if(event.key==='Enter')adminLogin()">
+        <input type="password" id="pinInput" placeholder="Password" onkeypress="if(event.key==='Enter')adminLogin()">
         <div class="btn-row">
             <button class="btn-login" onclick="adminLogin()">ဝင်ရောက်မည်</button>
             <button class="btn-cancel" onclick="closeLogin()">ပိတ်မည်</button>
         </div>
-        <p class="login-error" id="loginError"></p>
+        <p class="login-error" id="loginError" style="display:none; color:red; font-size:11px; margin-top:8px;"></p>
     </div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
     const API = "/api";
     let adminToken = localStorage.getItem('adminToken') || null;
-    let isAdmin = adminToken ? true : false;
-    if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js')); }
-    let dark = localStorage.getItem('darkMode') === 'true';
-    function applyDark() { if (dark) { document.documentElement.setAttribute('data-dark', 'true'); } else { document.documentElement.removeAttribute('data-dark'); } document.getElementById('darkIcon').textContent = dark ? '☀️' : '🌙'; }
-    function toggleDark() { dark = !dark; localStorage.setItem('darkMode', dark); applyDark(); }
-    applyDark();
+    let isAdmin = !!adminToken;
+    
     function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
-    function openViber() { const phone = '09697455880'; const isPWA = window.matchMedia('(display-mode: standalone)').matches; if (isPWA) { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(phone).then(() => toast('📞 ' + phone + ' ကူးပြီးပါပြီ')); } else { alert('📞 ဖုန်းနံပါတ် - ' + phone); } } else { window.location.href = 'viber://chat?number=%2B959697455880'; } }
+    function openViber() { const phone = '09697455880'; if (window.matchMedia('(display-mode: standalone)').matches) { navigator.clipboard.writeText(phone); toast('📞 ' + phone + ' ကူးပြီးပါပြီ'); } else { window.location.href = 'viber://chat?number=%2B959697455880'; } }
+    function toggleDark() { let dark = localStorage.getItem('darkMode') === 'true'; dark = !dark; localStorage.setItem('darkMode', dark); if(dark) document.documentElement.setAttribute('data-dark','true'); else document.documentElement.removeAttribute('data-dark'); }
+    if(localStorage.getItem('darkMode') === 'true') document.documentElement.setAttribute('data-dark','true');
     function showAdminBar() { document.getElementById('adminBar').innerHTML = '<div class="admin-bar">🔐 Admin Mode <button onclick="adminLogout()">ထွက်မည်</button></div>'; }
-    function adminLogout() { adminToken = null; isAdmin = false; localStorage.removeItem('adminToken'); document.getElementById('adminBar').innerHTML = ''; loadPosts(); toast('🔓 Admin mode မှ ထွက်ပြီးပါပြီ'); }
-    if (isAdmin) showAdminBar();
-    const logo = document.getElementById('adminLogo');
-    let lpTimer;
-    logo.addEventListener('touchstart', () => { if(!isAdmin) lpTimer = setTimeout(showLogin, 3000); });
-    logo.addEventListener('touchend', () => clearTimeout(lpTimer));
-    logo.addEventListener('touchmove', () => clearTimeout(lpTimer));
-    function showLogin() { document.getElementById('loginOverlay').classList.add('active'); document.getElementById('pinInput').focus(); document.getElementById('loginError').style.display = 'none'; document.getElementById('pinInput').value = ''; }
+    function adminLogout() { adminToken = null; isAdmin = false; localStorage.removeItem('adminToken'); document.getElementById('adminBar').innerHTML = ''; loadPosts(); toast('🔓 ထွက်ပြီးပါပြီ'); }
+    if(isAdmin) showAdminBar();
+    document.getElementById('adminLogo').addEventListener('touchstart', () => { setTimeout(() => { document.getElementById('loginOverlay').classList.add('active'); }, 3000); });
     function closeLogin() { document.getElementById('loginOverlay').classList.remove('active'); }
     async function adminLogin() {
         const pw = document.getElementById('pinInput').value;
         const err = document.getElementById('loginError');
-        if (!pw) { err.style.display = 'block'; err.textContent = 'Password ထည့်ပါ'; return; }
+        if(!pw) { err.style.display = 'block'; err.textContent = 'Password ထည့်ပါ'; return; }
         try {
             const res = await fetch(API + '/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) });
             const data = await res.json();
-            if (data.success) { adminToken = data.token; localStorage.setItem('adminToken', adminToken); isAdmin = true; closeLogin(); showAdminBar(); loadPosts(); toast('✅ Admin login အောင်မြင်ပါပြီ'); }
-            else { err.style.display = 'block'; err.textContent = '❌ ' + (data.error || 'Password မှားနေပါသည်'); }
-        } catch(e) { console.error('Login error:', e); err.style.display = 'block'; err.textContent = '❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'; }
+            if(data.success) { adminToken = data.token; localStorage.setItem('adminToken', adminToken); isAdmin = true; closeLogin(); showAdminBar(); loadPosts(); toast('✅ Admin login အောင်မြင်ပါပြီ'); }
+            else { err.style.display = 'block'; err.textContent = '❌ Password မှားနေပါသည်'; }
+        } catch(e) { err.style.display = 'block'; err.textContent = '❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'; }
     }
-    async function deletePost(postId) {
-        console.log("===== DELETE BUTTON CLICKED =====");
-        console.log("Post ID:", postId);
-        if (!confirm("ဖျက်မှာလား?")) { console.log("User cancelled"); return; }
-        const token = localStorage.getItem('adminToken');
-        console.log("Token:", token);
-        if (!token) { toast('❌ Admin login ဝင်ရန်လိုပါသည်'); return; }
-        const url = `/api/post/${postId}`;
-        console.log("Fetching URL:", url);
+    window.deletePost = async function(postId) {
+        console.log("Delete clicked:", postId);
+        if(!confirm("ဖျက်မှာလား?")) return;
+        if(!adminToken) { toast('Admin login ဝင်ပါ'); return; }
         try {
-            const res = await fetch(url, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
-            console.log("Response status:", res.status);
-            const text = await res.text();
-            console.log("Response text:", text);
-            let data;
-            try { data = JSON.parse(text); } catch(e) { console.error("JSON parse error:", e); toast('❌ Server response error'); return; }
-            if (data.success) { loadPosts(); toast('✅ ဖျက်ပြီးပါပြီ'); }
-            else { toast('❌ ဖျက်မရပါ: ' + (data.error || 'Unknown error')); }
-        } catch(e) { console.error("Fetch error:", e); toast('❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'); }
-    }
-    function sharePost(post) {
-        const text = post.type === 'photo' ? (post.caption || 'ပုံ') : (post.text || 'စာသား');
-        if (navigator.share) navigator.share({ title: 'မိဘမေတ္တာ', text: text.substring(0, 100) });
-        else if (navigator.clipboard) { navigator.clipboard.writeText(text); toast('📋 ကူးပြီးပါပြီ'); }
-    }
-    function formatDate(ts) { if (!ts) return ""; const d = new Date(ts * 1000); const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return d.getDate() + ' ' + months[d.getMonth()] + ' \'' + d.getFullYear().toString().slice(2); }
-    function esc(t) { if (!t) return ""; return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+            const res = await fetch(`/api/post/${postId}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + adminToken } });
+            const data = await res.json();
+            if(data.success) { loadPosts(); toast('✅ ဖျက်ပြီးပါပြီ'); }
+            else { toast('❌ ' + (data.error || 'ဖျက်မရပါ')); }
+        } catch(e) { toast('❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'); }
+    };
+    function formatDate(ts) { if(!ts) return ''; const d = new Date(ts*1000); return d.getDate() + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()] + ' ' + d.getFullYear(); }
+    function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
     async function loadPosts() {
         const grid = document.getElementById('postGrid');
         grid.innerHTML = '<div class="status-wrap"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>';
         try {
             const res = await fetch(API + '/posts');
             const data = await res.json();
-            if (!data.success) throw new Error(data.error || "API Error");
+            if(!data.success) throw new Error('API Error');
             const posts = data.posts || [];
-            if (!posts.length) { grid.innerHTML = '<div class="status-wrap"><p>📭 ပုံများ မရှိသေးပါ</p></div>'; return; }
+            if(posts.length === 0) { grid.innerHTML = '<div class="status-wrap"><p>📭 ပုံများ မရှိသေးပါ</p></div>'; return; }
             let html = '';
-            posts.forEach(function(post) {
-                const dateStr = formatDate(post.date);
-                const delBtn = isAdmin ? '<button class="card-del" onclick="event.stopPropagation();deletePost(' + post.id + ')"><i class="fas fa-trash"></i></button>' : '';
-                const caption = post.caption || '';
-                const safeCaption = esc(caption);
-                if (post.type === 'photo') {
-                    html += '<div class="card" onclick="openViewer(\'' + post.image_url + '\',\'' + safeCaption + '\')">' + delBtn + '<div class="card-img"><img src="' + post.image_url + '" alt="ပုံ" loading="lazy" onerror="this.src=\'https://placehold.co/400x500?text=Image+Not+Available\'"></div><div class="card-body">' + (caption ? '<div class="card-caption">' + safeCaption + '</div>' : '') + '<div class="card-footer"><span class="card-date">' + dateStr + '</span><button class="card-share" onclick="event.stopPropagation();sharePost({type:\'photo\',caption:\'' + safeCaption + '\'})"><i class="fas fa-share-alt"></i></button></div></div></div>';
+            for(let post of posts) {
+                const delBtn = isAdmin ? `<button class="card-del" onclick="window.deletePost(${post.id})"><i class="fas fa-trash"></i> ဖျက်</button>` : '';
+                if(post.type === 'photo') {
+                    html += `<div class="card" onclick="openViewer('${post.image_url}','${esc(post.caption || '')}')">${delBtn}<div class="card-img"><img src="${post.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div><div class="card-body"><div class="card-caption">${esc(post.caption || '')}</div><div class="card-footer"><span>${formatDate(post.date)}</span><button class="card-share" onclick="event.stopPropagation();sharePost('photo','${esc(post.caption || '')}')"><i class="fas fa-share-alt"></i></button></div></div></div>`;
                 } else {
-                    html += '<div class="text-card">' + delBtn + '<p>' + esc(post.text || '') + '</p><div class="card-footer" style="margin-top:6px;"><span class="card-date">' + dateStr + '</span><button class="card-share" onclick="event.stopPropagation();sharePost({type:\'text\',text:\'' + esc(post.text || '') + '\'})"><i class="fas fa-share-alt"></i></button></div></div>';
+                    html += `<div class="text-card">${delBtn}<p>${esc(post.text || '')}</p><div class="card-footer"><span>${formatDate(post.date)}</span><button class="card-share" onclick="event.stopPropagation();sharePost('text','${esc(post.text || '')}')"><i class="fas fa-share-alt"></i></button></div></div>`;
                 }
-            });
+            }
             grid.innerHTML = html;
-        } catch(e) { console.error('Load posts error:', e); grid.innerHTML = '<div class="status-wrap"><p>❌ ချို့ယွင်းနေပါသည်: ' + e.message + '</p><small>အင်တာနက်စစ်ဆေးပါ</small><br><button onclick="loadPosts()" style="margin-top:10px;padding:8px 16px;border-radius:50px;background:var(--accent);color:#fff;border:none;font-weight:600;cursor:pointer;"><i class="fas fa-redo"></i> ပြန်ကြိုးစားမည်</button></div>'; }
+        } catch(e) { grid.innerHTML = '<div class="status-wrap"><p>❌ ချို့ယွင်းနေပါသည်</p><button onclick="loadPosts()" style="margin-top:12px;padding:8px 16px;border-radius:50px;background:var(--accent);color:#fff;border:none;">ပြန်ကြိုးစားမည်</button></div>'; }
     }
+    function sharePost(type, text) { if(navigator.share) navigator.share({ title: 'မိဘမေတ္တာ', text: text }); else if(navigator.clipboard) { navigator.clipboard.writeText(text); toast('📋 ကူးပြီးပါပြီ'); } }
     let scale = 1, startDist = 0, startScale = 1;
-    function openViewer(src, caption) { const v = document.getElementById('imageViewer'); const img = document.getElementById('viewerImage'); img.src = src; img.style.transform = 'scale(1)'; scale = 1; document.getElementById('viewerCaption').textContent = caption || ''; v.classList.add('active'); document.body.style.overflow = 'hidden'; history.pushState({viewer: 'open'}, '', window.location.href); }
-    function closeViewer() { document.getElementById('imageViewer').classList.remove('active'); document.body.style.overflow = ''; scale = 1; document.getElementById('viewerImage').style.transform = 'scale(1)'; }
-    const viewerImg = document.getElementById('viewerImage');
-    viewerImg.addEventListener('touchstart', function(e) { if (e.touches.length === 2) { e.preventDefault(); startDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); startScale = scale; } });
-    viewerImg.addEventListener('touchmove', function(e) { if (e.touches.length === 2) { e.preventDefault(); const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); scale = Math.min(Math.max(startScale * (dist / startDist), 1), 5); viewerImg.style.transform = 'scale(' + scale + ')'; } });
-    viewerImg.addEventListener('touchend', function() { if (scale < 1) { scale = 1; viewerImg.style.transform = 'scale(1)'; } });
-    history.pushState(null, '', window.location.href);
-    window.addEventListener('popstate', function(e) { const viewer = document.getElementById('imageViewer'); if (viewer.classList.contains('active')) { closeViewer(); history.pushState(null, '', window.location.href); } });
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeViewer(); });
+    function openViewer(src, cap) { const v = document.getElementById('imageViewer'); document.getElementById('viewerImage').src = src; document.getElementById('viewerCaption').innerHTML = cap; scale = 1; document.getElementById('viewerImage').style.transform = 'scale(1)'; v.classList.add('active'); document.body.style.overflow = 'hidden'; history.pushState({viewer:true},'',window.location.href); }
+    window.closeViewer = function() { document.getElementById('imageViewer').classList.remove('active'); document.body.style.overflow = ''; scale = 1; };
+    const vimg = document.getElementById('viewerImage');
+    vimg.addEventListener('touchstart', (e) => { if(e.touches.length===2) { e.preventDefault(); startDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); startScale = scale; } });
+    vimg.addEventListener('touchmove', (e) => { if(e.touches.length===2) { e.preventDefault(); const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); scale = Math.min(Math.max(startScale * (dist / startDist), 1), 4); vimg.style.transform = `scale(${scale})`; } });
+    window.addEventListener('popstate', () => { if(document.getElementById('imageViewer').classList.contains('active')) window.closeViewer(); });
     loadPosts();
 </script>
 </body>
