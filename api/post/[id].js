@@ -1,6 +1,6 @@
-// api/post/[id].js
+// api/post/[id].js - Temporary version without Redis for testing
 export default async function handler(req, res) {
-  // Enable CORS
+  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
@@ -16,36 +16,25 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Get token from Authorization header
+    // Get token from header
     const authHeader = req.headers.authorization || '';
     const token = authHeader.replace('Bearer ', '');
     
-    // Simple token check (any non-empty token works for testing)
+    // For testing: accept any non-empty token
     if (!token || token === 'null' || token === 'undefined') {
-      return res.status(403).json({ success: false, error: 'ခွင့်မပြုပါ - Token မရှိ' });
+      return res.status(200).json({ success: false, error: 'No token provided' });
     }
     
-    // Get post ID from URL
     const { id } = req.query;
     if (!id) {
-      return res.status(400).json({ success: false, error: 'Missing post id' });
+      return res.status(200).json({ success: false, error: 'Missing post id' });
     }
     
-    // Import Redis dynamically
-    const { Redis } = await import('@upstash/redis');
-    const redis = Redis.fromEnv();
+    // Return success without actually deleting (for testing)
+    return res.status(200).json({ success: true, message: 'Test delete successful for id: ' + id });
     
-    // Delete the post from Redis
-    await redis.del(`post_${id}`);
-    
-    // Update posts list
-    let postsList = await redis.get('posts_list') || [];
-    postsList = postsList.filter(pid => pid != id);
-    await redis.set('posts_list', JSON.stringify(postsList));
-    
-    return res.status(200).json({ success: true });
   } catch (err) {
     console.error('Delete error:', err);
-    return res.status(500).json({ success: false, error: err.message });
+    return res.status(200).json({ success: false, error: err.message });
   }
 }
