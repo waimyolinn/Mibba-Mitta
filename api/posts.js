@@ -1,34 +1,31 @@
 export default async function handler(req, res) {
+  // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
-  if (req.method === 'OPTIONS') return res.status(204).end();
-  if (req.method !== 'DELETE') return res.status(405).json({ error: 'Method not allowed' });
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+  
+  // ✅ Allow only GET (case sensitive)
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed. Use GET.' });
+  }
 
   try {
     const { Redis } = await import('@upstash/redis');
     const redis = Redis.fromEnv();
     
-    const authHeader = req.headers.authorization || '';
-    const token = authHeader.replace('Bearer ', '');
-    if (!token) {
-      return res.status(403).json({ success: false, error: 'ခွင့်မပြုပါ' });
+    const postsList = await redis.get('posts_list') || [];
+    const posts = [];
+    for (const id of postsList) {
+      const post = await redis.get(`post_${id}`);
+      if (post) posts.push(post);
     }
-    
-    const isValid = await redis.get(`admin_token_${token}`);
-    if (!isValid) {
-      return res.status(403).json({ success: false, error: 'ခွင့်မပြုပါ' });
-    }
-
-    const { id } = req.query;
-    if (!id) return res.status(400).json({ success: false, error: 'Missing id' });
-
-    await redis.del(`post_${id}`);
-    let postsList = await redis.get('posts_list') || [];
-    postsList = postsList.filter(pid => pid != id);
-    await redis.set('posts_list', JSON.stringify(postsList));
-    
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, posts });
   } catch (err) {
-    console.error('delete error:', err);
+    console.error('posts error:', err);
     return res.status(500).json({ success: false, error: err.message });
   }
 }
