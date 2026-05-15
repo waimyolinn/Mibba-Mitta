@@ -276,26 +276,38 @@
             else { err.style.display = 'block'; err.textContent = '❌ Password မှားနေပါသည်'; }
         } catch(e) { err.style.display = 'block'; err.textContent = '❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'; }
     }
-    // ✅ FIXED deletePost function - handles empty response properly
     window.deletePost = async function(postId) {
         console.log("Delete clicked:", postId);
         if(!confirm("ဖျက်မှာလား?")) return;
-        if(!adminToken) { toast('Admin login ဝင်ပါ'); return; }
+        const token = localStorage.getItem('adminToken');
+        if(!token) { toast('❌ Admin login ဝင်ရန်လိုပါသည်'); return; }
         try {
-            const res = await fetch(`/api/post/${postId}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + adminToken } });
-            // ✅ First check if response has content
-            const text = await res.text();
+            const res = await fetch(`/api/post/${postId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const contentType = res.headers.get('content-type');
             let data = {};
-            if(text) {
-                try { data = JSON.parse(text); } catch(e) { console.warn("Response not JSON:", text); }
+            if(contentType && contentType.includes('application/json')) {
+                data = await res.json();
+            } else {
+                const text = await res.text();
+                if(res.ok && (text === '' || text === 'OK')) {
+                    data = { success: true };
+                } else {
+                    data = { success: false, error: text || 'Unknown error' };
+                }
             }
-            if(res.ok || data.success === true) { 
-                loadPosts(); 
-                toast('✅ ဖျက်ပြီးပါပြီ'); 
-            } else { 
-                toast('❌ ဖျက်မရပါ: ' + (data.error || 'Unknown error')); 
+            if(data.success === true) {
+                loadPosts();
+                toast('✅ ဖျက်ပြီးပါပြီ');
+            } else {
+                toast('❌ ဖျက်မရပါ: ' + (data.error || 'Unknown error'));
             }
-        } catch(e) { console.error(e); toast('❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'); }
+        } catch(err) {
+            console.error('Delete fetch error:', err);
+            toast('❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ');
+        }
     };
     function formatDate(ts) { if(!ts) return ''; const d = new Date(ts*1000); return d.getDate() + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()] + ' ' + d.getFullYear(); }
     function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
