@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
+    <title>MIBA MYITTA - အထည်ဆိုင်</title>
     <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင် - အရည်အသွေးမြင့် အထည်များ">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#fff4ef">
@@ -11,11 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', 'Myanmar Text', system-ui, sans-serif;
@@ -24,7 +20,6 @@
             padding-bottom: 2rem;
         }
 
-        /* Dark mode */
         body.dark {
             background: #0f0f0f;
             color: #e0e0e0;
@@ -36,12 +31,9 @@
             background: #1c1c1c;
             border-color: #2e2e2e;
         }
-        body.dark .price-badge {
-            background: #2e2520;
-            color: #e6896e;
-        }
-        body.dark .contact-info {
-            color: #bdbdbd;
+        body.dark .caption-text {
+            background: #2a2522;
+            color: #f5d5c4;
         }
 
         .topbar {
@@ -66,9 +58,9 @@
             align-items: baseline;
         }
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.3px;
         }
         .logo span {
             color: #c4532f;
@@ -130,25 +122,26 @@
             border-color: #2e2e2e;
         }
         .hero img {
-            width: 68px;
-            height: 68px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #c4532f;
             margin-bottom: 0.5rem;
         }
-        .hero h1 {
-            font-size: 1.4rem;
+        .hero .shop-name {
+            font-size: 1.35rem;
             font-weight: 700;
             letter-spacing: -0.3px;
+            color: #2c2c2c;
         }
-        .hero h1 span {
+        body.dark .hero .shop-name {
+            color: #f0e0d6;
+        }
+        .hero .sub-name {
+            font-size: 0.8rem;
             color: #c4532f;
-        }
-        .shop-name {
-            font-size: 0.85rem;
-            color: #8f6a5a;
-            margin-top: -2px;
+            font-weight: 500;
             margin-bottom: 8px;
         }
         .contact-info {
@@ -224,34 +217,36 @@
         .card-info {
             padding: 0.7rem;
         }
-        .product-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            line-height: 1.35;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .price-badge {
-            background: #fdece5;
-            color: #c4532f;
-            font-weight: 700;
-            font-size: 0.7rem;
-            padding: 0.2rem 0.6rem;
-            border-radius: 30px;
+        .caption-text {
+            font-size: 0.75rem;
+            font-weight: 500;
+            line-height: 1.4;
+            color: #2e2e2e;
+            background: #fff2ea;
+            padding: 6px 8px;
+            border-radius: 20px;
             display: inline-block;
+            width: 100%;
+            background: linear-gradient(135deg, #fff0e8 0%, #ffe6dc 100%);
+            color: #a14424;
+            font-weight: 600;
+            text-shadow: 0 0 2px rgba(255,255,200,0.3);
         }
+        body.dark .caption-text {
+            background: linear-gradient(135deg, #362922, #241e1a);
+            color: #f0bc9e;
+        }
+
         .card-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 0.6rem;
+            margin-top: 0.5rem;
         }
         .share-icon {
             background: none;
             border: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             color: #b28b78;
         }
@@ -263,6 +258,18 @@
             padding: 1rem;
             border: 1px solid #f5e4db;
             position: relative;
+        }
+        .text-card p {
+            font-size: 0.85rem;
+            background: #fff7f0;
+            padding: 8px 12px;
+            border-radius: 24px;
+            color: #9b4b2c;
+            font-weight: 500;
+        }
+        body.dark .text-card p {
+            background: #2a241f;
+            color: #f0bc9e;
         }
 
         .delete-btn {
@@ -276,7 +283,6 @@
             color: white;
             font-size: 0.6rem;
             padding: 3px 10px;
-            font-weight: 500;
             cursor: pointer;
             z-index: 22;
         }
@@ -399,7 +405,7 @@
 <div id="adminBar"></div>
 <div class="topbar">
     <div class="topbar-inner">
-        <div class="logo">MIBA<span>MITTA</span></div>
+        <div class="logo"><span>MIBA</span> MYITTA</div>
         <div class="nav-icons">
             <a href="https://t.me/mibamittaa" target="_blank"><i class="fab fa-telegram-plane"></i></a>
             <button onclick="openViber()"><i class="fab fa-viber"></i></button>
@@ -410,8 +416,7 @@
 <div class="container">
     <div class="hero">
         <img src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="logo" id="adminLogo">
-        <h1>MIBA <span>MITTA</span></h1>
-        <div class="shop-name">မိဘမေတ္တာ အထည်ဆိုင်</div>
+        <div class="shop-name">မိဘမေတ္တာ<br><span class="sub-name">အထည်ဆိုင်</span></div>
         <div class="contact-info">
             <span><i class="fas fa-phone"></i> 09697455880 / 09676827963</span>
             <span><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
@@ -447,7 +452,6 @@
         <p id="loginError" style="color:#c4532f; font-size:12px;"></p>
     </div>
 </div>
-
 <div id="toast" class="toast"></div>
 
 <script>
@@ -455,9 +459,8 @@
     let adminToken = localStorage.getItem('adminToken') || null;
     let isAdmin = !!adminToken;
 
-    // PWA service worker registration
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').then(reg => console.log('SW registered', reg)).catch(err => console.log('SW error', err));
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
     }
 
     function toast(msg) {
@@ -516,7 +519,7 @@
                 closeLogin();
                 showAdminBar();
                 loadPosts();
-                toast('✅ အက်ဒမင်အကောင့် ဝင်ပြီးပါပြီ');
+                toast('✅ အက်ဒမင် ဝင်ပြီးပါပြီ');
             } else {
                 err.innerText = '❌ စကားဝှက်မှားနေသည်';
             }
@@ -566,15 +569,15 @@
                                 ${delBtn}
                                 <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div>
                                 <div class="card-info">
-                                    <div class="product-title">${escapeHtml(p.caption || 'အထည်')}</div>
+                                    <div class="caption-text">${escapeHtml(p.caption || 'ပုံ')}</div>
                                     <div class="card-meta">
-                                        <span class="price-badge"><i class="fas fa-tag"></i> အထည်</span>
+                                        <span class="date">${formatDate(p.date)}</span>
                                         <button class="share-icon" onclick="event.stopPropagation(); sharePost('${escapeHtml(p.caption || '')}')"><i class="fas fa-share-alt"></i></button>
                                     </div>
                                 </div>
                             </div>`;
                 } else {
-                    html += `<div class="text-card">${delBtn}<p>${escapeHtml(p.text || '')}</p><div class="card-meta"><span class="price-badge">${formatDate(p.date)}</span><button class="share-icon" onclick="event.stopPropagation(); sharePost('${escapeHtml(p.text || '')}')"><i class="fas fa-share-alt"></i></button></div></div>`;
+                    html += `<div class="text-card">${delBtn}<p>📄 ${escapeHtml(p.text || '')}</p><div class="card-meta"><span class="date">${formatDate(p.date)}</span><button class="share-icon" onclick="event.stopPropagation(); sharePost('${escapeHtml(p.text || '')}')"><i class="fas fa-share-alt"></i></button></div></div>`;
                 }
             });
             grid.innerHTML = html;
