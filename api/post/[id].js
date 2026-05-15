@@ -1,6 +1,6 @@
-// api/post/[id].js - Temporary version without Redis for testing
+// api/post/[id].js
 export default async function handler(req, res) {
-  // CORS headers
+  // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
@@ -10,17 +10,16 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
   
-  // Allow only DELETE
+  // ✅ Allow DELETE method
   if (req.method !== 'DELETE') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed. Use DELETE.' });
   }
 
   try {
-    // Get token from header
     const authHeader = req.headers.authorization || '';
     const token = authHeader.replace('Bearer ', '');
     
-    // For testing: accept any non-empty token
+    // Check token
     if (!token || token === 'null' || token === 'undefined') {
       return res.status(200).json({ success: false, error: 'No token provided' });
     }
@@ -30,8 +29,8 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: false, error: 'Missing post id' });
     }
     
-    // Return success without actually deleting (for testing)
-    return res.status(200).json({ success: true, message: 'Test delete successful for id: ' + id });
+    // ✅ For now, return success without Redis (test mode)
+    return res.status(200).json({ success: true, message: 'Post ' + id + ' would be deleted' });
     
   } catch (err) {
     console.error('Delete error:', err);
