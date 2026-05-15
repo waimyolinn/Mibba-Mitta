@@ -1,46 +1,25 @@
 // api/post/[id].js
 export default async function handler(req, res) {
-  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-
-  // Handle preflight
+  res.setHeader('Access-Control-Allow-Headers', 'Authorization');
+  
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
-
-  // Allow only DELETE
+  
   if (req.method !== 'DELETE') {
-    return res.status(405).json({ error: 'Method not allowed. Use DELETE.' });
+    // ❌ 405 မပြန်တော့ဘူး – 200 ပြန်မယ်
+    return res.status(200).json({ success: false, error: 'Method not DELETE' });
   }
 
-  try {
-    const token = req.headers.authorization?.replace('Bearer ', '');
-    const { id } = req.query;
-
-    if (!token) {
-      return res.status(401).json({ success: false, error: 'No token provided' });
-    }
-    if (!id) {
-      return res.status(400).json({ success: false, error: 'Missing post id' });
-    }
-
-    // Import Upstash Redis
-    const { Redis } = await import('@upstash/redis');
-    const redis = Redis.fromEnv();
-
-    // Delete from Redis
-    await redis.del(`post_${id}`);
-
-    // Update posts list
-    let postsList = await redis.get('posts_list') || [];
-    postsList = postsList.filter(pid => pid != id);
-    await redis.set('posts_list', JSON.stringify(postsList));
-
-    return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error('Delete error:', err);
-    return res.status(500).json({ success: false, error: err.message });
-  }
+  const token = req.headers.authorization?.replace('Bearer ', '');
+  const { id } = req.query;
+  
+  return res.status(200).json({ 
+    success: true, 
+    message: 'Test delete', 
+    token_received: !!token,
+    id_received: id
+  });
 }
