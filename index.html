@@ -2,333 +2,570 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
+    <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင် - အရည်အသွေးမြင့် အထည်များကို အိမ်ရောက်ဝယ်ယူနိုင်ပါပြီ။">
     <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#f8f6f2">
     <link rel="apple-touch-icon" href="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png">
-    <meta name="theme-color" content="#0d1117">
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root {
-            --bg: #fafafa;
-            --card: #ffffff;
-            --text: #1a1a1a;
-            --sub: #666;
-            --muted: #999;
-            --border: #eee;
-            --accent: #8b5a2b;
-            --radius: 14px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        [data-dark="true"] {
-            --bg: #0d1117;
-            --card: #161b22;
-            --text: #e6edf3;
-            --sub: #8b949e;
-            --muted: #6e7681;
-            --border: #21262d;
-            --accent: #d4a574;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: system-ui, 'Myanmar Text', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            padding-bottom: 40px;
+            font-family: 'Inter', 'Myanmar Text', system-ui, -apple-system, sans-serif;
+            background: #f8f6f2;  /* Soft off-white */
+            color: #1a1a1a;
+            line-height: 1.4;
+            padding-bottom: 2rem;
         }
+
+        /* Dark Mode (အလွယ်တကူပြောင်းနိုင်ရန်) */
+        body.dark {
+            background: #121212;
+            color: #e0e0e0;
+        }
+        body.dark .card,
+        body.dark .hero,
+        body.dark .topbar,
+        body.dark .login-box {
+            background: #1e1e1e;
+            border-color: #2c2c2c;
+        }
+        body.dark .card-caption,
+        body.dark .card-date {
+            color: #b0b0b0;
+        }
+        body.dark .btn-dark {
+            background: #2c2c2c;
+            color: #ddd;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Top Bar */
         .topbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e8e6e1;
+            padding: 0.75rem 1rem;
             position: sticky;
             top: 0;
-            background: var(--card);
-            border-bottom: 1px solid var(--border);
-            padding: 10px 14px;
+            z-index: 100;
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.92);
+        }
+        body.dark .topbar {
+            background: rgba(30, 30, 30, 0.92);
+            border-bottom-color: #2c2c2c;
+        }
+        .topbar-inner {
+            max-width: 640px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 50;
         }
-        .topbar-brand { font-size: 16px; font-weight: 700; }
-        .topbar-brand span { color: var(--accent); }
-        .topbar-links { display: flex; gap: 8px; }
-        .topbar-links a, .topbar-links button {
-            font-size: 11px;
-            padding: 6px 12px;
-            border-radius: 50px;
-            text-decoration: none;
+        .logo-area {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.3px;
+        }
+        .logo-area span {
+            color: #c17b4c; /* Warm accent */
+        }
+        .nav-icons {
+            display: flex;
+            gap: 0.75rem;
+        }
+        .nav-icons a, .nav-icons button {
+            background: none;
             border: none;
+            font-size: 1.2rem;
             cursor: pointer;
-            font-weight: 600;
+            color: #2c2c2c;
+            transition: 0.2s;
         }
-        .btn-tg { background: #0088cc; color: #fff; }
-        .btn-vb { background: #7360f2; color: #fff; }
-        .btn-dark { background: var(--border); color: var(--sub); width: 32px; padding: 6px; }
+        body.dark .nav-icons a, body.dark .nav-icons button {
+            color: #e0e0e0;
+        }
         .admin-bar {
-            background: #1a1a2e;
-            color: #fff;
+            background: #2c2c2c;
+            color: white;
+            font-size: 0.75rem;
             text-align: center;
-            padding: 6px;
-            font-size: 11px;
-            font-weight: 600;
+            padding: 0.4rem;
+            font-weight: 500;
         }
         .admin-bar button {
-            background: rgba(255,255,255,0.2);
+            background: #c17b4c;
             border: none;
-            color: #fff;
-            padding: 2px 10px;
-            border-radius: 50px;
-            margin-left: 8px;
-            cursor: pointer;
-        }
-        .main-wrap { max-width: 600px; margin: 0 auto; padding: 12px; }
-        .hero {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 16px;
-            border: 1px solid var(--border);
-        }
-        .hero img { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 8px; }
-        .hero h1 { font-size: 20px; }
-        .hero h1 small { font-size: 13px; color: var(--sub); display: block; }
-        .refresh-wrap { text-align: center; margin-bottom: 16px; }
-        .refresh-wrap button {
-            background: var(--card);
-            border: 1px solid var(--border);
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .card {
-            background: var(--card);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            overflow: hidden;
-            cursor: pointer;
-            position: relative;
-        }
-        .card-img { aspect-ratio: 3/4; overflow: hidden; background: #f0f0f0; }
-        .card-img img { width: 100%; height: 100%; object-fit: cover; }
-        .card-body { padding: 8px; }
-        .card-caption { font-size: 11px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .card-footer { display: flex; justify-content: space-between; margin-top: 6px; font-size: 9px; color: var(--muted); }
-        .card-share { background: none; border: none; color: var(--muted); cursor: pointer; }
-        .card-del {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            background: rgba(0,0,0,0.6);
             color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 4px 10px;
-            font-size: 10px;
+            border-radius: 20px;
+            padding: 0.2rem 0.8rem;
+            margin-left: 0.6rem;
             cursor: pointer;
-            z-index: 10;
+            font-size: 0.7rem;
         }
-        .text-card {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 14px;
-            border: 1px solid var(--border);
+
+        /* Hero Section */
+        .hero {
+            background: white;
+            margin: 1rem 0 1.5rem 0;
+            padding: 1.5rem 1rem;
+            border-radius: 28px;
+            text-align: center;
+            border: 1px solid #efede8;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+        .hero img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 0.75rem;
+            border: 2px solid #c17b4c;
+        }
+        .hero h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+        .hero h1 small {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: #6b6b6b;
+        }
+        .contact-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            font-size: 0.8rem;
+            margin: 0.8rem 0;
+            color: #4a4a4a;
+        }
+        .contact-row i {
+            color: #c17b4c;
+            width: 1.2rem;
+        }
+        .telegram-link {
+            background: #2aabee10;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            display: inline-block;
+            font-size: 0.8rem;
+        }
+        /* Refresh Button */
+        .refresh-btn {
+            text-align: right;
+            margin-bottom: 0.8rem;
+        }
+        .refresh-btn button {
+            background: transparent;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            padding: 0.3rem 0.9rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            color: inherit;
+        }
+
+        /* Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Card (inspired by minimal Pinterest style) */
+        .card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid #f0ede8;
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            cursor: pointer;
             position: relative;
         }
-        .status-wrap { grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted); }
-        .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.6s linear infinite; margin: 0 auto 8px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.15);
+        }
+        .card-img {
+            aspect-ratio: 4 / 5;
+            width: 100%;
+            background: #f3f1ed;
+        }
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .card-info {
+            padding: 0.75rem;
+        }
+        .card-caption {
+            font-size: 0.75rem;
+            font-weight: 500;
+            line-height: 1.35;
+            color: #2c2c2c;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            font-size: 0.65rem;
+            color: #8b8b8b;
+        }
+        .share-btn {
+            background: none;
+            border: none;
+            font-size: 0.75rem;
+            cursor: pointer;
+            color: #8b8b8b;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(2px);
+            border: none;
+            border-radius: 40px;
+            color: white;
+            font-size: 0.65rem;
+            padding: 4px 10px;
+            font-weight: 500;
+            cursor: pointer;
+            z-index: 12;
+        }
+
+        /* Text post card */
+        .text-card {
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: 24px;
+            padding: 1rem;
+            border: 1px solid #f0ede8;
+            position: relative;
+        }
+        .text-card p {
+            font-size: 0.85rem;
+            line-height: 1.45;
+        }
+
+        /* Loading */
+        .skeleton-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .skeleton-card {
+            background: #eae7e2;
+            border-radius: 24px;
+            aspect-ratio: 4/5;
+            animation: pulse 1.2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Viewer Modal */
         .viewer {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: #000;
-            z-index: 2000;
-        }
-        .viewer.active { display: flex; flex-direction: column; }
-        .viewer-top { position: absolute; top: 0; left: 0; right: 0; padding: 12px; display: flex; justify-content: flex-end; background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent); z-index: 10; }
-        .viewer-close { background: rgba(255,255,255,0.2); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 24px; cursor: pointer; }
-        .viewer-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
-        .viewer-img-wrap img { max-width: 100%; max-height: 100vh; object-fit: contain; transform-origin: center; transition: transform 0.1s ease-out; }
-        .viewer-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: #fff; padding: 24px 16px 16px; font-size: 13px; text-align: center; }
-        .login-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.85);
-            z-index: 3000;
+            z-index: 1000;
             align-items: center;
             justify-content: center;
         }
-        .login-overlay.active { display: flex; }
-        .login-box {
-            background: var(--card);
-            border-radius: 20px;
-            padding: 24px;
-            width: 280px;
-            text-align: center;
+        .viewer.active {
+            display: flex;
         }
-        .login-box input {
-            width: 100%;
-            padding: 10px;
-            margin: 12px 0;
-            border: 2px solid var(--border);
-            border-radius: 50px;
-            background: var(--bg);
-            color: var(--text);
-            text-align: center;
+        .viewer-content {
+            position: relative;
+            max-width: 100%;
+            max-height: 100%;
         }
-        .btn-login, .btn-cancel {
-            padding: 8px 16px;
-            border-radius: 50px;
+        .viewer-content img {
+            max-width: 100vw;
+            max-height: 100vh;
+            object-fit: contain;
+        }
+        .viewer-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
             border: none;
-            font-weight: 600;
+            color: white;
+            font-size: 1.5rem;
             cursor: pointer;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
         }
-        .btn-login { background: var(--accent); color: #fff; flex: 1; }
-        .btn-cancel { background: var(--border); color: var(--text); flex: 1; }
-        .btn-row { display: flex; gap: 8px; margin-top: 8px; }
+        .viewer-caption {
+            position: absolute;
+            bottom: 0;
+            background: linear-gradient(transparent, black);
+            width: 100%;
+            text-align: center;
+            padding: 2rem 1rem 1rem;
+            color: white;
+            font-size: 0.85rem;
+        }
         .toast {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1a1a1a;
-            color: #fff;
-            padding: 8px 16px;
+            background: #1f1f1f;
+            color: white;
+            padding: 8px 20px;
             border-radius: 50px;
-            font-size: 12px;
-            z-index: 4000;
+            font-size: 0.8rem;
+            z-index: 1100;
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: 0.2s;
             pointer-events: none;
         }
-        .toast.show { opacity: 1; }
     </style>
 </head>
 <body>
 <div id="adminBar"></div>
 <div class="topbar">
-    <div class="topbar-brand">မိဘမေတ္တာ <span>အထည်ဆိုင်</span></div>
-    <div class="topbar-links">
-        <a href="https://t.me/mibamittaa" class="btn-tg" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
-        <button class="btn-vb" onclick="openViber()"><i class="fab fa-viber"></i> Viber</button>
-        <button class="btn-dark" onclick="toggleDark()">🌙</button>
+    <div class="topbar-inner">
+        <div class="logo-area">Mi Bba <span>Mitta</span></div>
+        <div class="nav-icons">
+            <a href="https://t.me/mibamittaa" target="_blank" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+            <button onclick="openViber()" aria-label="Viber"><i class="fab fa-viber"></i></button>
+            <button onclick="toggleDarkMode()" class="btn-dark" aria-label="Dark mode"><i class="fas fa-moon"></i></button>
+        </div>
     </div>
 </div>
-<div class="main-wrap">
+<div class="container">
     <div class="hero">
         <img src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo" id="adminLogo">
         <h1>မိဘမေတ္တာ <small>အထည်ဆိုင်</small></h1>
-        <p>ဆိုင်ကို ကိုယ်တိုင်လာရောက် ကြည့်ရှု ဝယ်နိုင်ပါပြီ</p>
-        <div><i class="fas fa-phone"></i> 09697455880 / 09676827963 &nbsp;|&nbsp; <i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</div>
-        <div><a href="https://t.me/mibamyitta1" target="_blank">📱 @mibamyitta1</a></div>
+        <p class="contact-row">
+            <span><i class="fas fa-phone"></i> 09697455880 / 09676827963</span>
+            <span><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
+        </p>
+        <div class="telegram-link">
+            <i class="fab fa-telegram"></i> <a href="https://t.me/mibamyitta1" target="_blank" style="text-decoration: none;">@mibamyitta1</a>
+        </div>
+        <p style="font-size: 0.7rem; margin-top: 8px;">⚡ အင်တာနက်နှေးရင် VPN ခံသုံးပါ။</p>
     </div>
-    <div class="refresh-wrap">
+
+    <div class="refresh-btn">
         <button onclick="loadPosts()"><i class="fas fa-sync-alt"></i> ပြန်လည်စတင်ရန်</button>
     </div>
-    <div class="grid" id="postGrid"><div class="status-wrap"><div class="spinner"></div><p>ပုံများ ယူနေပါသည်...</p></div></div>
+
+    <div id="postGrid" class="product-grid">
+        <div class="skeleton-grid"><div class="skeleton-card"></div><div class="skeleton-card"></div></div>
+    </div>
 </div>
-<div class="viewer" id="imageViewer">
-    <div class="viewer-top"><button class="viewer-close" onclick="closeViewer()">&times;</button></div>
-    <div class="viewer-img-wrap"><img id="viewerImage" src=""></div>
-    <div class="viewer-caption" id="viewerCaption"></div>
+
+<!-- Viewer Modal -->
+<div id="imageViewer" class="viewer">
+    <div class="viewer-content">
+        <button class="viewer-close" onclick="closeViewer()">✕</button>
+        <img id="viewerImage" src="">
+        <div id="viewerCaption" class="viewer-caption"></div>
+    </div>
 </div>
-<div class="login-overlay" id="loginOverlay">
-    <div class="login-box">
-        <h3>Admin Login</h3>
-        <input type="password" id="pinInput" placeholder="Password" onkeypress="if(event.key==='Enter')adminLogin()">
-        <div class="btn-row">
+
+<!-- Admin Login Modal -->
+<div id="loginOverlay" class="login-overlay" style="display: none; position: fixed; inset:0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 2000;">
+    <div class="login-box" style="background: white; padding: 1.5rem; border-radius: 32px; width: 280px;">
+        <h3 style="margin-bottom: 0.5rem;">🔐 Admin Login</h3>
+        <input type="password" id="pinInput" placeholder="စကားဝှက်" style="width:100%; padding:8px; margin:12px 0; border-radius: 40px; border:1px solid #ccc;">
+        <div style="display: flex; gap: 8px;">
             <button class="btn-login" onclick="adminLogin()">ဝင်ရောက်မည်</button>
             <button class="btn-cancel" onclick="closeLogin()">ပိတ်မည်</button>
         </div>
-        <p class="login-error" id="loginError" style="display:none; color:red; font-size:11px; margin-top:8px;"></p>
+        <p id="loginError" style="color:red; font-size:12px; margin-top:8px;"></p>
     </div>
 </div>
-<div class="toast" id="toast"></div>
+
+<div id="toast" class="toast"></div>
+
 <script>
     const API = "/api";
     let adminToken = localStorage.getItem('adminToken') || null;
     let isAdmin = !!adminToken;
-    
-    function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
-    function openViber() { const phone = '09697455880'; if (window.matchMedia('(display-mode: standalone)').matches) { navigator.clipboard.writeText(phone); toast('📞 ' + phone + ' ကူးပြီးပါပြီ'); } else { window.location.href = 'viber://chat?number=%2B959697455880'; } }
-    function toggleDark() { let dark = localStorage.getItem('darkMode') === 'true'; dark = !dark; localStorage.setItem('darkMode', dark); if(dark) document.documentElement.setAttribute('data-dark','true'); else document.documentElement.removeAttribute('data-dark'); }
-    if(localStorage.getItem('darkMode') === 'true') document.documentElement.setAttribute('data-dark','true');
-    function showAdminBar() { document.getElementById('adminBar').innerHTML = '<div class="admin-bar">🔐 Admin Mode <button onclick="adminLogout()">ထွက်မည်</button></div>'; }
-    function adminLogout() { adminToken = null; isAdmin = false; localStorage.removeItem('adminToken'); document.getElementById('adminBar').innerHTML = ''; loadPosts(); toast('🔓 ထွက်ပြီးပါပြီ'); }
-    if(isAdmin) showAdminBar();
-    document.getElementById('adminLogo').addEventListener('touchstart', () => { setTimeout(() => { document.getElementById('loginOverlay').classList.add('active'); }, 3000); });
-    function closeLogin() { document.getElementById('loginOverlay').classList.remove('active'); }
+
+    function toast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.style.opacity = '1';
+        setTimeout(() => t.style.opacity = '0', 2500);
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark');
+        localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+    }
+    if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark');
+
+    function openViber() {
+        const phone = '09697455880';
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            navigator.clipboard.writeText(phone);
+            toast('📞 နံပါတ်ကူးပြီးပါပြီ');
+        } else {
+            window.location.href = 'viber://chat?number=%2B959697455880';
+        }
+    }
+
+    function showAdminBar() {
+        document.getElementById('adminBar').innerHTML = '<div class="admin-bar">🔐 Admin Mode <button onclick="adminLogout()">ထွက်မည်</button></div>';
+    }
+    function adminLogout() {
+        adminToken = null; isAdmin = false;
+        localStorage.removeItem('adminToken');
+        document.getElementById('adminBar').innerHTML = '';
+        loadPosts();
+        toast('🔓 ထွက်ပြီးပါပြီ');
+    }
+    if (isAdmin) showAdminBar();
+
+    // Login Long-press logo
+    const logo = document.getElementById('adminLogo');
+    let timer;
+    logo.addEventListener('touchstart', () => { if(!isAdmin) timer = setTimeout(() => { document.getElementById('loginOverlay').style.display = 'flex'; }, 2000); });
+    logo.addEventListener('touchend', () => clearTimeout(timer));
+
+    function closeLogin() { document.getElementById('loginOverlay').style.display = 'none'; }
     async function adminLogin() {
         const pw = document.getElementById('pinInput').value;
         const err = document.getElementById('loginError');
-        if(!pw) { err.style.display = 'block'; err.textContent = 'Password ထည့်ပါ'; return; }
+        if (!pw) { err.innerText = 'Password ထည့်ပါ'; return; }
         try {
             const res = await fetch(API + '/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) });
             const data = await res.json();
-            if(data.success) { adminToken = data.token; localStorage.setItem('adminToken', adminToken); isAdmin = true; closeLogin(); showAdminBar(); loadPosts(); toast('✅ Admin login အောင်မြင်ပါပြီ'); }
-            else { err.style.display = 'block'; err.textContent = '❌ Password မှားနေပါသည်'; }
-        } catch(e) { err.style.display = 'block'; err.textContent = '❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'; }
-    }
-    window.deletePost = async function(postId) {
-        console.log("Delete clicked:", postId);
-        if(!confirm("ဖျက်မှာလား?")) return;
-        const token = localStorage.getItem('adminToken');
-        if(!token) { toast('❌ Admin login ဝင်ရန်လိုပါသည်'); return; }
-        try {
-            const res = await fetch(`/api/delete?id=${postId}`, {
-                method: 'DELETE',
-                headers: { 'Authorization': 'Bearer ' + token }
-            });
-            const data = await res.json();
-            if(data.success) {
+            if (data.success) {
+                adminToken = data.token;
+                localStorage.setItem('adminToken', adminToken);
+                isAdmin = true;
+                closeLogin();
+                showAdminBar();
                 loadPosts();
-                toast('✅ ဖျက်ပြီးပါပြီ');
+                toast('✅ အက်ဒမင်ဝင်ပြီ');
             } else {
-                toast('❌ ဖျက်မရပါ: ' + (data.error || 'Unknown error'));
+                err.innerText = '❌ စကားဝှက်မှားနေသည်';
             }
-        } catch(err) {
-            console.error('Delete error:', err);
-            toast('❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ');
-        }
+        } catch(e) { err.innerText = '❌ ချိတ်ဆက်မှုအမှား'; }
+    }
+
+    // delete via /api/delete?id= (static, reliable)
+    window.deletePost = async function(postId) {
+        if (!confirm("ဖျက်မှာလား?")) return;
+        if (!adminToken) { toast('Admin login ဝင်ပါ'); return; }
+        try {
+            const res = await fetch(`/api/delete?id=${postId}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + adminToken } });
+            const data = await res.json();
+            if (data.success) { loadPosts(); toast('✅ ဖျက်ပြီးပါပြီ'); }
+            else { toast('❌ ဖျက်မရပါ: ' + (data.error || '')); }
+        } catch(e) { toast('❌ ချိတ်ဆက်မှုမအောင်မြင်ပါ'); }
     };
-    function formatDate(ts) { if(!ts) return ''; const d = new Date(ts*1000); return d.getDate() + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()] + ' ' + d.getFullYear(); }
-    function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
+
+    function sharePost(caption) {
+        if (navigator.share) navigator.share({ title: 'မိဘမေတ္တာ', text: caption });
+        else if (navigator.clipboard) { navigator.clipboard.writeText(caption); toast('📋 ကူးပြီးပါပြီ'); }
+    }
+
+    function formatDate(ts) { if (!ts) return ''; const d = new Date(ts*1000); return `${d.getDate()} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]} ${d.getFullYear()}`; }
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+
     async function loadPosts() {
         const grid = document.getElementById('postGrid');
-        grid.innerHTML = '<div class="status-wrap"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>';
+        grid.innerHTML = '<div class="skeleton-grid"><div class="skeleton-card"></div><div class="skeleton-card"></div></div>';
         try {
             const res = await fetch(API + '/posts');
             const data = await res.json();
-            if(!data.success) throw new Error('API Error');
+            if (!data.success) throw new Error('API error');
             const posts = data.posts || [];
-            if(posts.length === 0) { grid.innerHTML = '<div class="status-wrap"><p>📭 ပုံများ မရှိသေးပါ</p></div>'; return; }
+            if (posts.length === 0) { grid.innerHTML = '<div style="text-align:center; padding:2rem;">📭 ပုံများမရှိသေးပါ</div>'; return; }
             let html = '';
-            for(let post of posts) {
-                const delBtn = isAdmin ? `<button class="card-del" onclick="window.deletePost(${post.id})"><i class="fas fa-trash"></i> ဖျက်</button>` : '';
-                if(post.type === 'photo') {
-                    html += `<div class="card" onclick="openViewer('${post.image_url}','${esc(post.caption || '')}')">${delBtn}<div class="card-img"><img src="${post.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div><div class="card-body"><div class="card-caption">${esc(post.caption || '')}</div><div class="card-footer"><span>${formatDate(post.date)}</span><button class="card-share" onclick="event.stopPropagation();sharePost('photo','${esc(post.caption || '')}')"><i class="fas fa-share-alt"></i></button></div></div></div>`;
+            posts.forEach(p => {
+                const delBtn = isAdmin ? `<button class="delete-btn" onclick="event.stopPropagation(); window.deletePost(${p.id})"><i class="fas fa-trash"></i> ဖျက်</button>` : '';
+                if (p.type === 'photo') {
+                    html += `<div class="card" onclick="openViewer('${p.image_url}', '${escapeHtml(p.caption || '')}')">
+                                ${delBtn}
+                                <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=+Error'"></div>
+                                <div class="card-info">
+                                    <div class="card-caption">${escapeHtml(p.caption || '')}</div>
+                                    <div class="card-meta"><span>${formatDate(p.date)}</span><button class="share-btn" onclick="event.stopPropagation(); sharePost('${escapeHtml(p.caption || 'ပုံ')}')"><i class="fas fa-share-alt"></i></button></div>
+                                </div>
+                            </div>`;
                 } else {
-                    html += `<div class="text-card">${delBtn}<p>${esc(post.text || '')}</p><div class="card-footer"><span>${formatDate(post.date)}</span><button class="card-share" onclick="event.stopPropagation();sharePost('text','${esc(post.text || '')}')"><i class="fas fa-share-alt"></i></button></div></div>`;
+                    html += `<div class="text-card">${delBtn}<p>${escapeHtml(p.text || '')}</p><div class="card-meta"><span>${formatDate(p.date)}</span><button class="share-btn" onclick="event.stopPropagation(); sharePost('${escapeHtml(p.text || '')}')"><i class="fas fa-share-alt"></i></button></div></div>`;
                 }
-            }
+            });
             grid.innerHTML = html;
-        } catch(e) { grid.innerHTML = '<div class="status-wrap"><p>❌ ချို့ယွင်းနေပါသည်</p><button onclick="loadPosts()" style="margin-top:12px;padding:8px 16px;border-radius:50px;background:var(--accent);color:#fff;border:none;">ပြန်ကြိုးစားမည်</button></div>'; }
+        } catch(e) { grid.innerHTML = '<div style="text-align:center; padding:2rem;">❌ ချို့ယွင်းနေပါသည်<br><button onclick="loadPosts()" style="margin-top:12px;">ပြန်ကြိုးစားမည်</button></div>'; }
     }
-    function sharePost(type, text) { if(navigator.share) navigator.share({ title: 'မိဘမေတ္တာ', text: text }); else if(navigator.clipboard) { navigator.clipboard.writeText(text); toast('📋 ကူးပြီးပါပြီ'); } }
-    let scale = 1, startDist = 0, startScale = 1;
-    function openViewer(src, cap) { const v = document.getElementById('imageViewer'); document.getElementById('viewerImage').src = src; document.getElementById('viewerCaption').innerHTML = cap; scale = 1; document.getElementById('viewerImage').style.transform = 'scale(1)'; v.classList.add('active'); document.body.style.overflow = 'hidden'; history.pushState({viewer:true},'',window.location.href); }
-    window.closeViewer = function() { document.getElementById('imageViewer').classList.remove('active'); document.body.style.overflow = ''; scale = 1; };
-    const vimg = document.getElementById('viewerImage');
-    vimg.addEventListener('touchstart', (e) => { if(e.touches.length===2) { e.preventDefault(); startDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); startScale = scale; } });
-    vimg.addEventListener('touchmove', (e) => { if(e.touches.length===2) { e.preventDefault(); const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); scale = Math.min(Math.max(startScale * (dist / startDist), 1), 4); vimg.style.transform = `scale(${scale})`; } });
-    window.addEventListener('popstate', () => { if(document.getElementById('imageViewer').classList.contains('active')) window.closeViewer(); });
+
+    // Viewer with pinch zoom (simple)
+    let currentScale = 1;
+    let initialDistance = 0;
+    function openViewer(src, cap) {
+        const v = document.getElementById('imageViewer');
+        const img = document.getElementById('viewerImage');
+        img.src = src;
+        img.style.transform = 'scale(1)';
+        currentScale = 1;
+        document.getElementById('viewerCaption').innerText = cap;
+        v.style.display = 'flex';
+        history.pushState({ viewer: true }, '');
+    }
+    window.closeViewer = function() {
+        document.getElementById('imageViewer').style.display = 'none';
+    };
+    const viewerImg = document.getElementById('viewerImage');
+    viewerImg.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            e.preventDefault();
+            const dx = e.touches[0].clientX - e.touches[1].clientX;
+            const dy = e.touches[0].clientY - e.touches[1].clientY;
+            initialDistance = Math.hypot(dx, dy);
+        }
+    });
+    viewerImg.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2 && initialDistance > 0) {
+            e.preventDefault();
+            const dx = e.touches[0].clientX - e.touches[1].clientX;
+            const dy = e.touches[0].clientY - e.touches[1].clientY;
+            const newDist = Math.hypot(dx, dy);
+            let scale = currentScale * (newDist / initialDistance);
+            scale = Math.min(Math.max(scale, 1), 4);
+            viewerImg.style.transform = `scale(${scale})`;
+        }
+    });
+    viewerImg.addEventListener('touchend', () => { initialDistance = 0; currentScale = parseFloat(viewerImg.style.transform.replace('scale(', '') || 1); });
+    window.addEventListener('popstate', () => { if (document.getElementById('imageViewer').style.display === 'flex') closeViewer(); });
     loadPosts();
 </script>
 </body>
