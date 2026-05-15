@@ -1,22 +1,33 @@
+// api/admin/login.js
 export default async function handler(req, res) {
+  // CORS headers (ဘယ် domain ကမဆို ခေါ်လို့ရအောင်)
   res.setHeader('Access-Control-Allow-Origin', '*');
-  if (req.method === 'OPTIONS') return res.status(204).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  // OPTIONS request (preflight) အတွက်
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  
+  // POST မဟုတ်ရင် တားမယ်
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
   try {
-    const { Redis } = await import('@upstash/redis');
-    const redis = Redis.fromEnv();
     const { password } = req.body;
-
-    if (password !== process.env.ADMIN_PASSWORD) {
+    
+    // Password စစ်ဆေးခြင်း
+    if (password !== 'yawm257830') {
       return res.status(401).json({ success: false, error: 'Password မှားနေပါသည်' });
     }
 
-    const token = crypto.randomUUID();
-    await redis.set(`admin_token_${token}`, 'valid', { ex: 86400 });
+    // Token ထုတ်ခြင်း (Redis မပါဘဲ ရိုးရိုး)
+    const token = 'admin-token-' + Date.now();
+    
     return res.status(200).json({ success: true, token });
   } catch (err) {
-    console.error('login error:', err);
     return res.status(500).json({ success: false, error: err.message });
   }
 }
