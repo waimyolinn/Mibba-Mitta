@@ -266,14 +266,24 @@
         } catch(e) { console.error('Login error:', e); err.style.display = 'block'; err.textContent = '❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'; }
     }
     async function deletePost(postId) {
-        if (!confirm("ဖျက်မှာလား?")) return;
-        if (!adminToken) { toast('❌ Admin login ဝင်ရန်လိုပါသည်'); return; }
+        console.log("===== DELETE BUTTON CLICKED =====");
+        console.log("Post ID:", postId);
+        if (!confirm("ဖျက်မှာလား?")) { console.log("User cancelled"); return; }
+        const token = localStorage.getItem('adminToken');
+        console.log("Token:", token);
+        if (!token) { toast('❌ Admin login ဝင်ရန်လိုပါသည်'); return; }
+        const url = `/api/post/${postId}`;
+        console.log("Fetching URL:", url);
         try {
-            const res = await fetch(`/api/post/${postId}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + adminToken } });
-            const data = await res.json();
+            const res = await fetch(url, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+            console.log("Response status:", res.status);
+            const text = await res.text();
+            console.log("Response text:", text);
+            let data;
+            try { data = JSON.parse(text); } catch(e) { console.error("JSON parse error:", e); toast('❌ Server response error'); return; }
             if (data.success) { loadPosts(); toast('✅ ဖျက်ပြီးပါပြီ'); }
             else { toast('❌ ဖျက်မရပါ: ' + (data.error || 'Unknown error')); }
-        } catch(e) { console.error('Delete error:', e); toast('❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'); }
+        } catch(e) { console.error("Fetch error:", e); toast('❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'); }
     }
     function sharePost(post) {
         const text = post.type === 'photo' ? (post.caption || 'ပုံ') : (post.text || 'စာသား');
