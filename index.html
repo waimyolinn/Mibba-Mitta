@@ -282,30 +282,19 @@
         const token = localStorage.getItem('adminToken');
         if(!token) { toast('❌ Admin login ဝင်ရန်လိုပါသည်'); return; }
         try {
-            const res = await fetch(`/api/post/${postId}`, {
+            const res = await fetch(`/api/delete?id=${postId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': 'Bearer ' + token }
             });
-            const contentType = res.headers.get('content-type');
-            let data = {};
-            if(contentType && contentType.includes('application/json')) {
-                data = await res.json();
-            } else {
-                const text = await res.text();
-                if(res.ok && (text === '' || text === 'OK')) {
-                    data = { success: true };
-                } else {
-                    data = { success: false, error: text || 'Unknown error' };
-                }
-            }
-            if(data.success === true) {
+            const data = await res.json();
+            if(data.success) {
                 loadPosts();
                 toast('✅ ဖျက်ပြီးပါပြီ');
             } else {
                 toast('❌ ဖျက်မရပါ: ' + (data.error || 'Unknown error'));
             }
         } catch(err) {
-            console.error('Delete fetch error:', err);
+            console.error('Delete error:', err);
             toast('❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ');
         }
     };
