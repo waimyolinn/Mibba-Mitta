@@ -306,6 +306,7 @@
         localStorage.removeItem('adminToken'); 
         document.getElementById('adminBar').innerHTML = ''; 
         loadPosts(); 
+        toast('🔓 Admin mode မှ ထွက်ပြီးပါပြီ');
     }
     
     if (isAdmin) showAdminBar();
@@ -333,12 +334,14 @@
             return; 
         }
         try {
+            console.log('Logging in with password...');
             const res = await fetch(API + '/admin/login', { 
                 method: 'POST', 
                 headers: { 'Content-Type': 'application/json' }, 
                 body: JSON.stringify({ password: pw }) 
             });
             const data = await res.json();
+            console.log('Login response:', data);
             if (data.success) { 
                 adminToken = data.token; 
                 localStorage.setItem('adminToken', adminToken); 
@@ -346,6 +349,7 @@
                 closeLogin(); 
                 showAdminBar(); 
                 loadPosts(); 
+                toast('✅ Admin login အောင်မြင်ပါပြီ');
             } else { 
                 err.style.display = 'block'; 
                 err.textContent = '❌ ' + (data.error || 'Password မှားနေပါသည်'); 
@@ -357,31 +361,51 @@
         }
     }
     
+    // ✅ Delete post function with detailed logging
     async function deletePost(postId) {
-        if (!confirm("ဖျက်မှာလား?")) return;
+        console.log('=== DELETE POST START ===');
+        console.log('Post ID:', postId);
+        console.log('Admin Token:', adminToken);
+        console.log('API URL:', API + '/post/' + postId);
+        
+        if (!confirm("ဖျက်မှာလား?")) {
+            console.log('User cancelled deletion');
+            return;
+        }
+        
         if (!adminToken) {
+            console.log('ERROR: No admin token found');
             toast('❌ Admin login ဝင်ရန်လိုပါသည်');
             return;
         }
+        
         try {
+            console.log('Sending DELETE request...');
             const res = await fetch(API + '/post/' + postId, { 
                 method: 'DELETE', 
-                headers: { 'Authorization': 'Bearer ' + adminToken } 
+                headers: { 
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                } 
             });
+            
+            console.log('Response status:', res.status);
             const data = await res.json();
+            console.log('Response data:', data);
+            
             if (data.success) { 
+                console.log('Delete successful!');
                 loadPosts(); 
                 toast('✅ ဖျက်ပြီးပါပြီ'); 
-            } else if (data.error?.includes('ခွင့်မပြု')) { 
-                alert("သက်တမ်းကုန်ပါပြီ။"); 
-                adminLogout(); 
             } else { 
+                console.log('Delete failed:', data.error);
                 toast('❌ ဖျက်မရပါ: ' + (data.error || 'Unknown error')); 
             }
         } catch(e) { 
             console.error('Delete error:', e);
             toast('❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'); 
         }
+        console.log('=== DELETE POST END ===');
     }
     
     function sharePost(post) {
@@ -407,8 +431,11 @@
         grid.innerHTML = '<div class="status-wrap"><div class="spinner"></div><p>ပို့စ်များ ယူနေပါသည်...</p></div>';
         
         try {
+            console.log('Loading posts from:', API + '/posts');
             const res = await fetch(API + '/posts');
             const data = await res.json();
+            console.log('Posts response:', data);
+            
             if (!data.success) throw new Error(data.error || "API Error");
             
             const posts = data.posts || [];
@@ -498,6 +525,7 @@
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeViewer(); });
     
     // ==================== INIT ====================
+    console.log('Initializing app with API:', API);
     loadPosts();
 </script>
 
