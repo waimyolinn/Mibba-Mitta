@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
-    <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင် - အရည်အသွေးမြင့် အထည်များကို အိမ်ရောက်ဝယ်ယူနိုင်ပါပြီ။">
+    <title>MIBA MITTA – အထည်ဆိုင်</title>
+    <meta name="description" content="MIBA MITTA - အရည်အသွေးမြင့် အထည်များ">
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#f8f6f2">
+    <meta name="theme-color" content="#fefaf5">
     <link rel="apple-touch-icon" href="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png">
-    <!-- Google Fonts & Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -19,14 +18,13 @@
         }
 
         body {
-            font-family: 'Inter', 'Myanmar Text', system-ui, -apple-system, sans-serif;
-            background: #f8f6f2;  /* Soft off-white */
-            color: #1a1a1a;
-            line-height: 1.4;
+            font-family: 'Inter', 'Myanmar Text', sans-serif;
+            background: #fefaf5;
+            color: #1c1c1c;
             padding-bottom: 2rem;
         }
 
-        /* Dark Mode (အလွယ်တကူပြောင်းနိုင်ရန်) */
+        /* Dark mode (optional) */
         body.dark {
             background: #121212;
             color: #e0e0e0;
@@ -38,35 +36,22 @@
             background: #1e1e1e;
             border-color: #2c2c2c;
         }
-        body.dark .card-caption,
-        body.dark .card-date {
-            color: #b0b0b0;
-        }
-        body.dark .btn-dark {
-            background: #2c2c2c;
-            color: #ddd;
+        body.dark .product-price {
+            color: #d4a574;
         }
 
-        /* Layout */
-        .container {
-            max-width: 640px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        /* Top Bar */
         .topbar {
             background: #ffffff;
-            border-bottom: 1px solid #e8e6e1;
-            padding: 0.75rem 1rem;
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #f0e5d8;
             position: sticky;
             top: 0;
-            z-index: 100;
-            backdrop-filter: blur(8px);
-            background: rgba(255, 255, 255, 0.92);
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(4px);
         }
         body.dark .topbar {
-            background: rgba(30, 30, 30, 0.92);
+            background: rgba(30, 30, 30, 0.96);
             border-bottom-color: #2c2c2c;
         }
         .topbar-inner {
@@ -74,138 +59,112 @@
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: baseline;
         }
-        .logo-area {
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: -0.3px;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
-        .logo-area span {
-            color: #c17b4c; /* Warm accent */
+        .logo span {
+            color: #c17b4c;
         }
         .nav-icons {
             display: flex;
-            gap: 0.75rem;
+            gap: 1rem;
         }
-        .nav-icons a, .nav-icons button {
+        .nav-icons button, .nav-icons a {
             background: none;
             border: none;
             font-size: 1.2rem;
             cursor: pointer;
             color: #2c2c2c;
-            transition: 0.2s;
         }
-        body.dark .nav-icons a, body.dark .nav-icons button {
-            color: #e0e0e0;
+        body.dark .nav-icons button, body.dark .nav-icons a {
+            color: #ddd;
         }
+
         .admin-bar {
             background: #2c2c2c;
             color: white;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-align: center;
-            padding: 0.4rem;
-            font-weight: 500;
+            padding: 0.3rem;
         }
         .admin-bar button {
             background: #c17b4c;
             border: none;
             color: white;
             border-radius: 20px;
-            padding: 0.2rem 0.8rem;
-            margin-left: 0.6rem;
+            padding: 2px 12px;
+            margin-left: 8px;
             cursor: pointer;
-            font-size: 0.7rem;
         }
 
-        /* Hero Section */
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Hero / welcome */
         .hero {
-            background: white;
-            margin: 1rem 0 1.5rem 0;
-            padding: 1.5rem 1rem;
-            border-radius: 28px;
-            text-align: center;
-            border: 1px solid #efede8;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            margin: 1rem 0 1.2rem;
         }
-        .hero img {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 0.75rem;
-            border: 2px solid #c17b4c;
-        }
-        .hero h1 {
+        .hero h2 {
             font-size: 1.6rem;
-            font-weight: 600;
-            letter-spacing: -0.5px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
-        .hero h1 small {
-            font-size: 0.85rem;
-            font-weight: 400;
-            color: #6b6b6b;
-        }
-        .contact-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.8rem;
-            font-size: 0.8rem;
-            margin: 0.8rem 0;
-            color: #4a4a4a;
-        }
-        .contact-row i {
+        .hero h2 span {
             color: #c17b4c;
-            width: 1.2rem;
         }
-        .telegram-link {
-            background: #2aabee10;
-            padding: 0.3rem 1rem;
-            border-radius: 40px;
-            display: inline-block;
+        .hero p {
+            color: #6e6e6e;
             font-size: 0.8rem;
+            margin-top: 0.2rem;
         }
-        /* Refresh Button */
+
+        /* refresh */
+        .action-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+        }
         .refresh-btn {
-            text-align: right;
-            margin-bottom: 0.8rem;
-        }
-        .refresh-btn button {
             background: transparent;
             border: 1px solid #ddd;
-            border-radius: 30px;
+            border-radius: 40px;
             padding: 0.3rem 0.9rem;
             font-size: 0.7rem;
             cursor: pointer;
-            color: inherit;
         }
 
-        /* Grid */
+        /* product grid (2 columns) */
         .product-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
         }
 
-        /* Card (inspired by minimal Pinterest style) */
         .card {
             background: white;
             border-radius: 24px;
             overflow: hidden;
-            border: 1px solid #f0ede8;
-            transition: transform 0.2s ease, box-shadow 0.2s;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02), 0 2px 4px rgba(0, 0, 0, 0.03);
+            transition: all 0.2s ease;
+            border: 1px solid #f1ede8;
             cursor: pointer;
             position: relative;
         }
         .card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
         }
         .card-img {
             aspect-ratio: 4 / 5;
             width: 100%;
-            background: #f3f1ed;
+            background: #f2eee9;
         }
         .card-img img {
             width: 100%;
@@ -214,74 +173,77 @@
             display: block;
         }
         .card-info {
-            padding: 0.75rem;
+            padding: 0.75rem 0.7rem 0.9rem;
         }
-        .card-caption {
-            font-size: 0.75rem;
-            font-weight: 500;
-            line-height: 1.35;
-            color: #2c2c2c;
+        .product-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            line-height: 1.3;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        .card-meta {
+        .product-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-top: 0.5rem;
-            font-size: 0.65rem;
-            color: #8b8b8b;
         }
-        .share-btn {
+        .product-price {
+            font-weight: 700;
+            font-size: 0.85rem;
+            background: #f3eee9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            color: #c17b4c;
+        }
+        body.dark .product-price {
+            background: #2c2c2c;
+        }
+        .action-icon {
             background: none;
             border: none;
-            font-size: 0.75rem;
+            font-size: 1rem;
             cursor: pointer;
-            color: #8b8b8b;
-        }
-        .delete-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: rgba(0,0,0,0.55);
-            backdrop-filter: blur(2px);
-            border: none;
-            border-radius: 40px;
-            color: white;
-            font-size: 0.65rem;
-            padding: 4px 10px;
-            font-weight: 500;
-            cursor: pointer;
-            z-index: 12;
+            color: #8f8f8f;
         }
 
-        /* Text post card */
+        /* text post card */
         .text-card {
             grid-column: 1 / -1;
             background: white;
             border-radius: 24px;
             padding: 1rem;
-            border: 1px solid #f0ede8;
+            border: 1px solid #f1ede8;
             position: relative;
         }
-        .text-card p {
-            font-size: 0.85rem;
-            line-height: 1.45;
+
+        .delete-btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(2px);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            padding: 2px 8px;
+            font-size: 0.6rem;
+            cursor: pointer;
+            z-index: 12;
         }
 
-        /* Loading */
         .skeleton-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
         }
         .skeleton-card {
-            background: #eae7e2;
+            background: #eae5df;
             border-radius: 24px;
             aspect-ratio: 4/5;
-            animation: pulse 1.2s infinite;
+            animation: pulse 1s infinite;
         }
         @keyframes pulse {
             0% { opacity: 0.6; }
@@ -289,23 +251,21 @@
             100% { opacity: 0.6; }
         }
 
-        /* Viewer Modal */
+        /* Modal (image viewer) */
         .viewer {
             display: none;
             position: fixed;
             inset: 0;
             background: #000;
-            z-index: 1000;
+            z-index: 2000;
             align-items: center;
             justify-content: center;
         }
-        .viewer.active {
-            display: flex;
-        }
+        .viewer.active { display: flex; }
         .viewer-content {
             position: relative;
-            max-width: 100%;
-            max-height: 100%;
+            max-width: 100vw;
+            max-height: 100vh;
         }
         .viewer-content img {
             max-width: 100vw;
@@ -320,10 +280,10 @@
             border: none;
             color: white;
             font-size: 1.5rem;
-            cursor: pointer;
             border-radius: 50%;
             width: 40px;
             height: 40px;
+            cursor: pointer;
         }
         .viewer-caption {
             position: absolute;
@@ -333,53 +293,82 @@
             text-align: center;
             padding: 2rem 1rem 1rem;
             color: white;
-            font-size: 0.85rem;
         }
+
         .toast {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1f1f1f;
+            background: #2c2c2c;
             color: white;
-            padding: 8px 20px;
+            padding: 6px 18px;
             border-radius: 50px;
-            font-size: 0.8rem;
-            z-index: 1100;
+            font-size: 0.75rem;
+            z-index: 2100;
             opacity: 0;
             transition: 0.2s;
             pointer-events: none;
         }
+
+        .login-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+        .login-box {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 32px;
+            width: 280px;
+            text-align: center;
+        }
+        body.dark .login-box {
+            background: #1e1e1e;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 40px;
+            border: 1px solid #ccc;
+            margin: 12px 0;
+        }
+        .btn-login, .btn-cancel {
+            flex: 1;
+            padding: 8px;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-login { background: #c17b4c; color: white; }
+        .btn-cancel { background: #ddd; }
     </style>
 </head>
 <body>
 <div id="adminBar"></div>
 <div class="topbar">
     <div class="topbar-inner">
-        <div class="logo-area">Mi Bba <span>Mitta</span></div>
+        <div class="logo">MIBA<span>MITTA</span></div>
         <div class="nav-icons">
-            <a href="https://t.me/mibamittaa" target="_blank" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
-            <button onclick="openViber()" aria-label="Viber"><i class="fab fa-viber"></i></button>
-            <button onclick="toggleDarkMode()" class="btn-dark" aria-label="Dark mode"><i class="fas fa-moon"></i></button>
+            <a href="https://t.me/mibamittaa" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+            <button onclick="openViber()"><i class="fab fa-viber"></i></button>
+            <button onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
         </div>
     </div>
 </div>
 <div class="container">
     <div class="hero">
-        <img src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="Logo" id="adminLogo">
-        <h1>မိဘမေတ္တာ <small>အထည်ဆိုင်</small></h1>
-        <p class="contact-row">
-            <span><i class="fas fa-phone"></i> 09697455880 / 09676827963</span>
-            <span><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
-        </p>
-        <div class="telegram-link">
-            <i class="fab fa-telegram"></i> <a href="https://t.me/mibamyitta1" target="_blank" style="text-decoration: none;">@mibamyitta1</a>
-        </div>
-        <p style="font-size: 0.7rem; margin-top: 8px;">⚡ အင်တာနက်နှေးရင် VPN ခံသုံးပါ။</p>
+        <h2> <span>အထည်များ</span</h>
+        <p>သင်နှစ်သက်ရာကို ရွေးပါ</p>
     </div>
 
-    <div class="refresh-btn">
-        <button onclick="loadPosts()"><i class="fas fa-sync-alt"></i> ပြန်လည်စတင်ရန်</button>
+    <div class="action-row">
+        <button class="refresh-btn" onclick="loadPosts()"><i class="fas fa-arrow-rotate-right"></i> ပြန်လည်စတင်ရန်</button>
     </div>
 
     <div id="postGrid" class="product-grid">
@@ -387,7 +376,7 @@
     </div>
 </div>
 
-<!-- Viewer Modal -->
+<!-- viewer modal -->
 <div id="imageViewer" class="viewer">
     <div class="viewer-content">
         <button class="viewer-close" onclick="closeViewer()">✕</button>
@@ -396,19 +385,18 @@
     </div>
 </div>
 
-<!-- Admin Login Modal -->
-<div id="loginOverlay" class="login-overlay" style="display: none; position: fixed; inset:0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 2000;">
-    <div class="login-box" style="background: white; padding: 1.5rem; border-radius: 32px; width: 280px;">
-        <h3 style="margin-bottom: 0.5rem;">🔐 Admin Login</h3>
-        <input type="password" id="pinInput" placeholder="စကားဝှက်" style="width:100%; padding:8px; margin:12px 0; border-radius: 40px; border:1px solid #ccc;">
+<!-- admin login -->
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-box">
+        <h3>🔐 Admin Login</h3>
+        <input type="password" id="pinInput" placeholder="စကားဝှက်">
         <div style="display: flex; gap: 8px;">
             <button class="btn-login" onclick="adminLogin()">ဝင်ရောက်မည်</button>
             <button class="btn-cancel" onclick="closeLogin()">ပိတ်မည်</button>
         </div>
-        <p id="loginError" style="color:red; font-size:12px; margin-top:8px;"></p>
+        <p id="loginError" style="color:red; font-size:12px;"></p>
     </div>
 </div>
-
 <div id="toast" class="toast"></div>
 
 <script>
@@ -417,10 +405,10 @@
     let isAdmin = !!adminToken;
 
     function toast(msg) {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.style.opacity = '1';
-        setTimeout(() => t.style.opacity = '0', 2500);
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.style.opacity = '1';
+        setTimeout(() => el.style.opacity = '0', 2000);
     }
 
     function toggleDarkMode() {
@@ -433,7 +421,7 @@
         const phone = '09697455880';
         if (window.matchMedia('(display-mode: standalone)').matches) {
             navigator.clipboard.writeText(phone);
-            toast('📞 နံပါတ်ကူးပြီးပါပြီ');
+            toast('📞 နံပါတ်ကူးပြီး');
         } else {
             window.location.href = 'viber://chat?number=%2B959697455880';
         }
@@ -451,17 +439,16 @@
     }
     if (isAdmin) showAdminBar();
 
-    // Login Long-press logo
-    const logo = document.getElementById('adminLogo');
+    const logo = document.getElementById('adminLogo') || (() => { const img = document.querySelector('.hero img'); img.id = 'adminLogo'; return img; })();
     let timer;
-    logo.addEventListener('touchstart', () => { if(!isAdmin) timer = setTimeout(() => { document.getElementById('loginOverlay').style.display = 'flex'; }, 2000); });
+    logo.addEventListener('touchstart', () => { if (!isAdmin) timer = setTimeout(() => { document.getElementById('loginOverlay').style.display = 'flex'; }, 1000); });
     logo.addEventListener('touchend', () => clearTimeout(timer));
 
     function closeLogin() { document.getElementById('loginOverlay').style.display = 'none'; }
     async function adminLogin() {
         const pw = document.getElementById('pinInput').value;
         const err = document.getElementById('loginError');
-        if (!pw) { err.innerText = 'Password ထည့်ပါ'; return; }
+        if (!pw) { err.innerText = 'စကားဝှက် ထည့်ပါ'; return; }
         try {
             const res = await fetch(API + '/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) });
             const data = await res.json();
@@ -474,12 +461,11 @@
                 loadPosts();
                 toast('✅ အက်ဒမင်ဝင်ပြီ');
             } else {
-                err.innerText = '❌ စကားဝှက်မှားနေသည်';
+                err.innerText = '❌ စကားဝှက်မှားသည်';
             }
-        } catch(e) { err.innerText = '❌ ချိတ်ဆက်မှုအမှား'; }
+        } catch(e) { err.innerText = '❌ ချိတ်ဆက်မှု အမှား'; }
     }
 
-    // delete via /api/delete?id= (static, reliable)
     window.deletePost = async function(postId) {
         if (!confirm("ဖျက်မှာလား?")) return;
         if (!adminToken) { toast('Admin login ဝင်ပါ'); return; }
@@ -488,16 +474,23 @@
             const data = await res.json();
             if (data.success) { loadPosts(); toast('✅ ဖျက်ပြီးပါပြီ'); }
             else { toast('❌ ဖျက်မရပါ: ' + (data.error || '')); }
-        } catch(e) { toast('❌ ချိတ်ဆက်မှုမအောင်မြင်ပါ'); }
+        } catch(e) { toast('❌ ချိတ်ဆက်မှု မရ'); }
     };
 
-    function sharePost(caption) {
-        if (navigator.share) navigator.share({ title: 'မိဘမေတ္တာ', text: caption });
-        else if (navigator.clipboard) { navigator.clipboard.writeText(caption); toast('📋 ကူးပြီးပါပြီ'); }
+    function sharePost(text) {
+        if (navigator.share) navigator.share({ title: 'MIBA MITTA', text: text });
+        else if (navigator.clipboard) { navigator.clipboard.writeText(text); toast('📋 မိတ္တူကူးပြီး'); }
     }
 
-    function formatDate(ts) { if (!ts) return ''; const d = new Date(ts*1000); return `${d.getDate()} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]} ${d.getFullYear()}`; }
-    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+    function formatDate(ts) {
+        if (!ts) return '';
+        const d = new Date(ts*1000);
+        return `${d.getDate()} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]} ${d.getFullYear()}`;
+    }
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, (m) => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
+    }
 
     async function loadPosts() {
         const grid = document.getElementById('postGrid');
@@ -511,61 +504,67 @@
             let html = '';
             posts.forEach(p => {
                 const delBtn = isAdmin ? `<button class="delete-btn" onclick="event.stopPropagation(); window.deletePost(${p.id})"><i class="fas fa-trash"></i> ဖျက်</button>` : '';
+                const caption = p.caption || 'အထည်';
                 if (p.type === 'photo') {
-                    html += `<div class="card" onclick="openViewer('${p.image_url}', '${escapeHtml(p.caption || '')}')">
+                    html += `<div class="card" onclick="openViewer('${p.image_url}', '${escapeHtml(caption)}')">
                                 ${delBtn}
-                                <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=+Error'"></div>
+                                <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div>
                                 <div class="card-info">
-                                    <div class="card-caption">${escapeHtml(p.caption || '')}</div>
-                                    <div class="card-meta"><span>${formatDate(p.date)}</span><button class="share-btn" onclick="event.stopPropagation(); sharePost('${escapeHtml(p.caption || 'ပုံ')}')"><i class="fas fa-share-alt"></i></button></div>
+                                    <div class="product-title">${escapeHtml(caption.substring(0, 70))}</div>
+                                    <div class="product-meta">
+                                        <span class="product-price">အထည်</span>
+                                        <button class="action-icon" onclick="event.stopPropagation(); sharePost('${escapeHtml(caption)}')"><i class="fas fa-share-alt"></i></button>
+                                    </div>
                                 </div>
                             </div>`;
                 } else {
-                    html += `<div class="text-card">${delBtn}<p>${escapeHtml(p.text || '')}</p><div class="card-meta"><span>${formatDate(p.date)}</span><button class="share-btn" onclick="event.stopPropagation(); sharePost('${escapeHtml(p.text || '')}')"><i class="fas fa-share-alt"></i></button></div></div>`;
+                    html += `<div class="text-card">${delBtn}<p>${escapeHtml(p.text || '')}</p><div class="product-meta"><span>${formatDate(p.date)}</span><button class="action-icon" onclick="event.stopPropagation(); sharePost('${escapeHtml(p.text || '')}')"><i class="fas fa-share-alt"></i></button></div></div>`;
                 }
             });
             grid.innerHTML = html;
-        } catch(e) { grid.innerHTML = '<div style="text-align:center; padding:2rem;">❌ ချို့ယွင်းနေပါသည်<br><button onclick="loadPosts()" style="margin-top:12px;">ပြန်ကြိုးစားမည်</button></div>'; }
+        } catch(e) {
+            grid.innerHTML = '<div style="text-align:center; padding:2rem;">❌ ချို့ယွင်းနေပါသည်<br><button onclick="loadPosts()" style="margin-top:12px;">ပြန်ကြိုးစားမည်</button></div>';
+        }
     }
 
-    // Viewer with pinch zoom (simple)
-    let currentScale = 1;
-    let initialDistance = 0;
+    // image viewer + zoom
+    let currentScale = 1, initialDist = 0;
     function openViewer(src, cap) {
-        const v = document.getElementById('imageViewer');
+        const modal = document.getElementById('imageViewer');
         const img = document.getElementById('viewerImage');
         img.src = src;
         img.style.transform = 'scale(1)';
         currentScale = 1;
         document.getElementById('viewerCaption').innerText = cap;
-        v.style.display = 'flex';
+        modal.style.display = 'flex';
         history.pushState({ viewer: true }, '');
     }
     window.closeViewer = function() {
         document.getElementById('imageViewer').style.display = 'none';
     };
-    const viewerImg = document.getElementById('viewerImage');
-    viewerImg.addEventListener('touchstart', (e) => {
+    const vimg = document.getElementById('viewerImage');
+    vimg.addEventListener('touchstart', (e) => {
         if (e.touches.length === 2) {
             e.preventDefault();
             const dx = e.touches[0].clientX - e.touches[1].clientX;
             const dy = e.touches[0].clientY - e.touches[1].clientY;
-            initialDistance = Math.hypot(dx, dy);
+            initialDist = Math.hypot(dx, dy);
         }
     });
-    viewerImg.addEventListener('touchmove', (e) => {
-        if (e.touches.length === 2 && initialDistance > 0) {
+    vimg.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2 && initialDist > 0) {
             e.preventDefault();
             const dx = e.touches[0].clientX - e.touches[1].clientX;
             const dy = e.touches[0].clientY - e.touches[1].clientY;
             const newDist = Math.hypot(dx, dy);
-            let scale = currentScale * (newDist / initialDistance);
+            let scale = currentScale * (newDist / initialDist);
             scale = Math.min(Math.max(scale, 1), 4);
-            viewerImg.style.transform = `scale(${scale})`;
+            vimg.style.transform = `scale(${scale})`;
         }
     });
-    viewerImg.addEventListener('touchend', () => { initialDistance = 0; currentScale = parseFloat(viewerImg.style.transform.replace('scale(', '') || 1); });
+    vimg.addEventListener('touchend', () => { initialDist = 0; currentScale = parseFloat(vimg.style.transform.replace('scale(', '') || 1); });
     window.addEventListener('popstate', () => { if (document.getElementById('imageViewer').style.display === 'flex') closeViewer(); });
+
     loadPosts();
 </script>
 </body>
