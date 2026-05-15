@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>MIBA MITTA – အထည်ဆိုင်</title>
-    <meta name="description" content="MIBA MITTA - အရည်အသွေးမြင့် အထည်များ">
+    <title>မိဘမေတ္တာ - အထည်ဆိုင်</title>
+    <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင် - အရည်အသွေးမြင့် အထည်များ">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#fff4ef">
     <link rel="apple-touch-icon" href="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png">
@@ -44,7 +44,6 @@
             color: #bdbdbd;
         }
 
-        /* Topbar */
         .topbar {
             background: #ffffff;
             padding: 0.8rem 1rem;
@@ -117,7 +116,6 @@
             padding: 0 1rem;
         }
 
-        /* Hero / brand + contact */
         .hero {
             background: #ffffff;
             margin: 1rem 0 1.2rem;
@@ -140,12 +138,18 @@
             margin-bottom: 0.5rem;
         }
         .hero h1 {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: 700;
             letter-spacing: -0.3px;
         }
         .hero h1 span {
             color: #c4532f;
+        }
+        .shop-name {
+            font-size: 0.85rem;
+            color: #8f6a5a;
+            margin-top: -2px;
+            margin-bottom: 8px;
         }
         .contact-info {
             display: flex;
@@ -171,7 +175,6 @@
             background: #2a2a2a;
         }
 
-        /* refresh */
         .action-row {
             display: flex;
             justify-content: flex-end;
@@ -187,7 +190,6 @@
             color: inherit;
         }
 
-        /* product grid */
         .product-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -263,7 +265,6 @@
             position: relative;
         }
 
-        /* delete button */
         .delete-btn {
             position: absolute;
             top: 8px;
@@ -280,7 +281,6 @@
             z-index: 22;
         }
 
-        /* skeleton */
         .skeleton-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -298,7 +298,6 @@
             100% { opacity: 0.6; }
         }
 
-        /* image viewer */
         .viewer {
             display: none;
             position: fixed;
@@ -345,7 +344,6 @@
             font-size: 0.85rem;
         }
 
-        /* login modal */
         .login-overlay {
             display: none;
             position: fixed;
@@ -413,6 +411,7 @@
     <div class="hero">
         <img src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" alt="logo" id="adminLogo">
         <h1>MIBA <span>MITTA</span></h1>
+        <div class="shop-name">မိဘမေတ္တာ အထည်ဆိုင်</div>
         <div class="contact-info">
             <span><i class="fas fa-phone"></i> 09697455880 / 09676827963</span>
             <span><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
@@ -429,7 +428,6 @@
     </div>
 </div>
 
-<!-- viewer modal -->
 <div id="imageViewer" class="viewer">
     <div class="viewer-content">
         <button class="viewer-close" onclick="closeViewer()">✕</button>
@@ -438,7 +436,6 @@
     </div>
 </div>
 
-<!-- admin login -->
 <div id="loginOverlay" class="login-overlay">
     <div class="login-box">
         <h3>🔐 Admin Login</h3>
@@ -457,6 +454,11 @@
     const API = "/api";
     let adminToken = localStorage.getItem('adminToken') || null;
     let isAdmin = !!adminToken;
+
+    // PWA service worker registration
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').then(reg => console.log('SW registered', reg)).catch(err => console.log('SW error', err));
+    }
 
     function toast(msg) {
         const el = document.getElementById('toast');
@@ -533,7 +535,7 @@
     };
 
     function sharePost(text) {
-        if (navigator.share) navigator.share({ title: 'MIBA MITTA', text: text });
+        if (navigator.share) navigator.share({ title: 'မိဘမေတ္တာ', text: text });
         else if (navigator.clipboard) { navigator.clipboard.writeText(text); toast('📋 စာသားကူးပြီးပါပြီ'); }
     }
 
@@ -579,7 +581,6 @@
         } catch(e) { grid.innerHTML = '<div style="text-align:center; padding:2rem;">❌ ချို့ယွင်းနေပါသည်<br><button onclick="loadPosts()" style="margin-top:12px;">ပြန်ကြိုးစားမည်</button></div>'; }
     }
 
-    // Image Viewer + Pinch Zoom
     let currentScale = 1, startDist = 0, startScale = 1;
     function openViewer(src, cap) {
         const modal = document.getElementById('imageViewer');
