@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
 
-  // OPTIONS preflight
+  // Handle preflight
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     const { Redis } = await import('@upstash/redis');
     const redis = Redis.fromEnv();
 
-    // Delete the post
+    // Delete from Redis
     await redis.del(`post_${id}`);
 
     // Update posts list
