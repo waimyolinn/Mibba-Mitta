@@ -1,55 +1,39 @@
-// api/post/[id].js - Cloudflare Worker style
+import { Redis } from '@upstash/redis';
+
+const redis = Redis.fromEnv();
+
 export default async function handler(req, res) {
-  // CORS headers (Cloudflare ကအတိုင်း)
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  };
-  
-  // OPTIONS request (preflight)
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
   if (req.method === 'OPTIONS') {
-    return res.status(204).setHeaders(headers).end();
+    return res.status(204).end();
   }
   
-  // Allow only DELETE
   if (req.method !== 'DELETE') {
-    return res.status(405).setHeaders(headers).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    // Get token from Authorization header
-    const authHeader = req.headers.authorization || '';
-    const token = authHeader.replace('Bearer ', '');
-    
-    // Simple token check (Cloudflare လိုမျိုး)
-    if (!token) {
-      return res.status(403).setHeaders(headers).json({ success: false, error: 'ခွင့်မပြုပါ' });
+    const postId = req.query.id;
+    if (!postId) {
+      return res.status(400).json({ success: false, error: 'Missing id' });
     }
-    
-    // Get post ID from URL
-    const { id } = req.query;
-    if (!id) {
-      return res.status(400).setHeaders(headers).json({ success: false, error: 'Missing id' });
-    }
-    
-    // Import Redis
-    const { Redis } = await import('@upstash/redis');
-    const redis = Redis.fromEnv();
-    
+
     // Delete post
-    await redis.del(`post_${id}`);
+    await redis.del(`post_${postId}`);
     
-    // Update posts list
-    let postsList = await redis.get('posts_list') || [];
-    postsList = postsList.filter(pid => pid != id);
+    // Remove from list
+    let rawList = await redis.get('posts_list');
+    let postsList = rawList ? JSON.parse(rawList) : [];
+    postsList = postsList.filter(pid => pid != postId);
     await redis.set('posts_list', JSON.stringify(postsList));
-    
-    // Return success (Cloudflare လိုမျိုး)
-    return res.status(200).setHeaders(headers).json({ success: true });
-    
+
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error('Delete error:', err);
-    return res.status(500).setHeaders(headers).json({ success: false, error: err.message });
+    return res.status(500).json({ success: false, error: err.message });
   }
 }
