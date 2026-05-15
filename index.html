@@ -260,8 +260,8 @@
 <div class="toast" id="toast"></div>
 
 <script>
-    // ✅ Vercel API endpoint (မှန်ကန်စွာ သတ်မှတ်ပြီး)
-    const API = "https://mibba-mitta.vercel.app/api";
+    // ✅ API endpoint - relative path (တူညီတဲ့ domain ကနေ ခေါ်မယ်)
+    const API = "/api";
     
     let adminToken = localStorage.getItem('adminToken') || null;
     let isAdmin = adminToken ? true : false;
@@ -296,7 +296,20 @@
         }
     }
     
+    function showAdminBar() {
+        document.getElementById('adminBar').innerHTML = '<div class="admin-bar">🔐 Admin Mode <button onclick="adminLogout()">ထွက်မည်</button></div>';
+    }
+    
+    function adminLogout() { 
+        adminToken = null; 
+        isAdmin = false; 
+        localStorage.removeItem('adminToken'); 
+        document.getElementById('adminBar').innerHTML = ''; 
+        loadPosts(); 
+    }
+    
     if (isAdmin) showAdminBar();
+    
     const logo = document.getElementById('adminLogo');
     let lpTimer;
     logo.addEventListener('touchstart', () => { if(!isAdmin) lpTimer = setTimeout(showLogin, 3000); });
@@ -314,28 +327,57 @@
     async function adminLogin() {
         const pw = document.getElementById('pinInput').value;
         const err = document.getElementById('loginError');
-        if (!pw) { err.style.display = 'block'; err.textContent = 'Password ထည့်ပါ'; return; }
+        if (!pw) { 
+            err.style.display = 'block'; 
+            err.textContent = 'Password ထည့်ပါ'; 
+            return; 
+        }
         try {
-            const res = await fetch(API + '/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) });
+            const res = await fetch(API + '/admin/login', { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ password: pw }) 
+            });
             const data = await res.json();
-            if (data.success) { adminToken = data.token; localStorage.setItem('adminToken', adminToken); isAdmin = true; closeLogin(); showAdminBar(); loadPosts(); }
-            else { err.style.display = 'block'; err.textContent = '❌ Password မှားနေပါသည်'; }
-        } catch(e) { err.style.display = 'block'; err.textContent = '❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'; }
+            if (data.success) { 
+                adminToken = data.token; 
+                localStorage.setItem('adminToken', adminToken); 
+                isAdmin = true; 
+                closeLogin(); 
+                showAdminBar(); 
+                loadPosts(); 
+            } else { 
+                err.style.display = 'block'; 
+                err.textContent = '❌ ' + (data.error || 'Password မှားနေပါသည်'); 
+            }
+        } catch(e) { 
+            console.error('Login error:', e);
+            err.style.display = 'block'; 
+            err.textContent = '❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'; 
+        }
     }
-    
-    function showAdminBar() {
-        document.getElementById('adminBar').innerHTML = '<div class="admin-bar">🔐 Admin Mode <button onclick="adminLogout()">ထွက်မည်</button></div>';
-    }
-    function adminLogout() { adminToken = null; isAdmin = false; localStorage.removeItem('adminToken'); document.getElementById('adminBar').innerHTML = ''; loadPosts(); }
     
     async function deletePost(postId) {
         if (!confirm("ဖျက်မှာလား?")) return;
+        if (!adminToken) {
+            toast('❌ Admin login ဝင်ရန်လိုပါသည်');
+            return;
+        }
         try {
-            const res = await fetch(API + '/post/' + postId, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + adminToken } });
+            const res = await fetch(API + '/post/' + postId, { 
+                method: 'DELETE', 
+                headers: { 'Authorization': 'Bearer ' + adminToken } 
+            });
             const data = await res.json();
-            if (data.success) { loadPosts(); toast('✅ ဖျက်ပြီးပါပြီ'); }
-            else if (data.error?.includes('ခွင့်မပြု')) { alert("သက်တမ်းကုန်ပါပြီ။"); adminLogout(); }
-            else { toast('❌ ဖျက်မရပါ: ' + (data.error || 'Unknown error')); }
+            if (data.success) { 
+                loadPosts(); 
+                toast('✅ ဖျက်ပြီးပါပြီ'); 
+            } else if (data.error?.includes('ခွင့်မပြု')) { 
+                alert("သက်တမ်းကုန်ပါပြီ။"); 
+                adminLogout(); 
+            } else { 
+                toast('❌ ဖျက်မရပါ: ' + (data.error || 'Unknown error')); 
+            }
         } catch(e) { 
             console.error('Delete error:', e);
             toast('❌ ချိတ်ဆက်မှု မအောင်မြင်ပါ'); 
@@ -354,6 +396,7 @@
         const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         return d.getDate() + ' ' + months[d.getMonth()] + ' \'' + d.getFullYear().toString().slice(2);
     }
+    
     function esc(t) {
         if (!t) return "";
         return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
@@ -366,10 +409,13 @@
         try {
             const res = await fetch(API + '/posts');
             const data = await res.json();
-            if (!data.success) throw new Error("API Error");
+            if (!data.success) throw new Error(data.error || "API Error");
             
             const posts = data.posts || [];
-            if (!posts.length) { grid.innerHTML = '<div class="status-wrap"><p>📭 ပုံများ မရှိသေးပါ</p></div>'; return; }
+            if (!posts.length) { 
+                grid.innerHTML = '<div class="status-wrap"><p>📭 ပုံများ မရှိသေးပါ</p></div>'; 
+                return; 
+            }
             
             let html = '';
             posts.forEach(function(post) {
@@ -379,7 +425,7 @@
                 const safeCaption = esc(caption);
                 
                 if (post.type === 'photo') {
-                    html += '<div class="card" onclick="openViewer(\'' + post.image_url + '\',\'' + safeCaption + '\')">' + delBtn + '<div class="card-img"><img src="' + post.image_url + '" alt="ပုံ" loading="lazy"></div><div class="card-body">' + (caption ? '<div class="card-caption">' + safeCaption + '</div>' : '') + '<div class="card-footer"><span class="card-date">' + dateStr + '</span><button class="card-share" onclick="event.stopPropagation();sharePost({type:\'photo\',caption:\'' + safeCaption + '\'})"><i class="fas fa-share-alt"></i></button></div></div></div>';
+                    html += '<div class="card" onclick="openViewer(\'' + post.image_url + '\',\'' + safeCaption + '\')">' + delBtn + '<div class="card-img"><img src="' + post.image_url + '" alt="ပုံ" loading="lazy" onerror="this.src=\'https://placehold.co/400x500?text=Image+Not+Available\'"></div><div class="card-body">' + (caption ? '<div class="card-caption">' + safeCaption + '</div>' : '') + '<div class="card-footer"><span class="card-date">' + dateStr + '</span><button class="card-share" onclick="event.stopPropagation();sharePost({type:\'photo\',caption:\'' + safeCaption + '\'})"><i class="fas fa-share-alt"></i></button></div></div></div>';
                 } else {
                     html += '<div class="text-card">' + delBtn + '<p>' + esc(post.text || '') + '</p><div class="card-footer" style="margin-top:6px;"><span class="card-date">' + dateStr + '</span><button class="card-share" onclick="event.stopPropagation();sharePost({type:\'text\',text:\'' + esc(post.text || '') + '\'})"><i class="fas fa-share-alt"></i></button></div></div>';
                 }
@@ -387,7 +433,7 @@
             grid.innerHTML = html;
         } catch(e) {
             console.error('Load posts error:', e);
-            grid.innerHTML = '<div class="status-wrap"><p>❌ ချို့ယွင်းနေပါသည်</p><small>အင်တာနက်စစ်ဆေးပါ</small><br><button onclick="loadPosts()" style="margin-top:10px;padding:8px 16px;border-radius:50px;background:var(--accent);color:#fff;border:none;font-weight:600;cursor:pointer;"><i class="fas fa-redo"></i> ပြန်ကြိုးစားမည်</button></div>';
+            grid.innerHTML = '<div class="status-wrap"><p>❌ ချို့ယွင်းနေပါသည်: ' + e.message + '</p><small>အင်တာနက်စစ်ဆေးပါ</small><br><button onclick="loadPosts()" style="margin-top:10px;padding:8px 16px;border-radius:50px;background:var(--accent);color:#fff;border:none;font-weight:600;cursor:pointer;"><i class="fas fa-redo"></i> ပြန်ကြိုးစားမည်</button></div>';
         }
     }
     
