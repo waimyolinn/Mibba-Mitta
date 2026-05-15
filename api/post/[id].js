@@ -1,26 +1,20 @@
 export default async function handler(req, res) {
+  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'DELETE, GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
   
+  // Handle preflight
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
   
-  if (req.method !== 'DELETE') {
-    return res.status(200).json({ success: false, error: 'Use DELETE method' });
-  }
-
-  const token = req.headers.authorization?.replace('Bearer ', '');
-  const { id } = req.query;
-  
-  if (!token) {
-    return res.status(200).json({ success: false, error: 'No token provided' });
-  }
-  
-  if (!id) {
-    return res.status(200).json({ success: false, error: 'No post id provided' });
-  }
-  
-  return res.status(200).json({ success: true, message: 'Post ' + id + ' would be deleted', token_received: !!token });
+  // For testing - always return success
+  return res.status(200).json({
+    success: true,
+    message: 'Delete endpoint working',
+    method: req.method,
+    id: req.query.id,
+    token: req.headers.authorization || 'none'
+  });
 }
