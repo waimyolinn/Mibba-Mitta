@@ -11,30 +11,44 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* default dark mode */
         body {
-            font-family: 'Inter', 'Myanmar Text', system-ui, sans-serif;
+            font-family: 'Inter', 'Myanmar Text', sans-serif;
             background: #0a0a0f;
             color: #eef0f5;
             padding-bottom: 2rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        /* light mode (class .light) */
+        body.light {
+            background: #fefaf5;
+            color: #1e1a1c;
+        }
+        body.light .card,
+        body.light .hero,
+        body.light .topbar,
+        body.light .login-box {
+            background: #ffffff;
+            border-color: #e0cfc6;
+            color: #1e1a1c;
+        }
+        body.light .card-footer,
+        body.light .contact-info span {
+            background: #f7f2ec;
+            color: #4a3b33;
+        }
+        body.light .menu-dots {
+            background: #e8ddd4;
+            color: #84102d;
+        }
+        body.light .logo {
+            background: linear-gradient(135deg, #84102d, #5c2a3b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        /* color palette */
-        :root {
-            --deep-purple: #2d1b2e;
-            --grey-black: #1e1a1c;
-            --accent-red: #84102d;
-            --warm-beige: #b5ac8a;
-            --text-glow: #f0e6d0;
-        }
-
-        /* glass / card style */
-        .glass-card {
-            background: rgba(30, 26, 28, 0.65);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(132, 16, 45, 0.4);
-            border-radius: 2rem;
-        }
-
+        /* shared components */
         .topbar {
             padding: 0.8rem 1rem;
             position: sticky;
@@ -43,6 +57,10 @@
             background: rgba(10, 10, 15, 0.85);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid #84102d;
+        }
+        body.light .topbar {
+            background: rgba(255, 255, 245, 0.92);
+            border-bottom-color: #e0cfc6;
         }
         .topbar-inner {
             max-width: 640px;
@@ -58,7 +76,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 6px rgba(132,16,45,0.3);
         }
         .nav-icons {
             display: flex;
@@ -73,6 +90,11 @@
             color: #b5ac8a;
             cursor: pointer;
         }
+        body.light .nav-icons a, body.light .nav-icons button {
+            background: #f3ede8;
+            border-color: #d6c8bd;
+            color: #84102d;
+        }
         .admin-bar {
             background: #1e1a1c;
             text-align: center;
@@ -80,13 +102,17 @@
             font-size: 0.7rem;
             border-bottom: 1px solid #84102d;
         }
+        body.light .admin-bar {
+            background: #f0e7e0;
+            color: #2c241f;
+            border-bottom-color: #d6c8bd;
+        }
         .admin-bar button {
             background: #84102d;
             border: none;
             border-radius: 30px;
             padding: 0.1rem 0.6rem;
             color: white;
-            margin-left: 6px;
         }
 
         .container {
@@ -94,7 +120,6 @@
             margin: 0 auto;
             padding: 0 1rem;
         }
-
         .hero {
             margin: 1.2rem 0;
             padding: 1.2rem;
@@ -104,16 +129,20 @@
             border: 1px solid rgba(132,16,45,0.5);
             text-align: center;
         }
+        body.light .hero {
+            background: #fffef8;
+            border-color: #e6d9cf;
+        }
         .hero img {
             width: 80px;
             height: 80px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #84102d;
-            box-shadow: 0 0 18px rgba(132,16,45,0.5);
+            box-shadow: 0 0 18px rgba(132,16,45,0.3);
         }
         .hero h1 {
-            font-size: 1.7rem;
+            font-size: 1.6rem;
             font-weight: 800;
             background: linear-gradient(135deg, #f5e6d3, #b5ac8a);
             -webkit-background-clip: text;
@@ -134,8 +163,10 @@
             margin: 0.8rem 0;
             font-size: 0.7rem;
         }
-        .telegram-link {
-            margin-top: 0.2rem;
+        .contact-info span {
+            background: rgba(255,255,240,0.05);
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
         }
         .telegram-link a {
             color: #b5ac8a;
@@ -155,7 +186,6 @@
             font-size: 0.7rem;
             cursor: pointer;
         }
-
         .product-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -171,9 +201,17 @@
             cursor: pointer;
             position: relative;
         }
-        .card:hover { transform: translateY(-3px); border-color: #84102d; box-shadow: 0 8px 20px rgba(132,16,45,0.2); }
-        .card-img { aspect-ratio: 4/5; width: 100%; background: #111; }
-        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .card-img {
+            aspect-ratio: 4/5;
+            width: 100%;
+            background: #1a1a20;
+        }
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
         .card-footer {
             padding: 0.6rem;
             display: flex;
@@ -182,7 +220,6 @@
             border-top: 1px solid rgba(132,16,45,0.5);
             font-size: 0.65rem;
         }
-        /* three dots menu button */
         .menu-dots {
             background: rgba(132,16,45,0.3);
             border: none;
@@ -223,8 +260,11 @@
             justify-content: center;
         }
         .viewer.active { display: flex; }
-        .viewer-content { position: relative; max-width: 100vw; }
-        .viewer-content img { max-width: 100vw; max-height: 100vh; object-fit: contain; }
+        .viewer-content img {
+            max-width: 100vw;
+            max-height: 100vh;
+            object-fit: contain;
+        }
         .viewer-close {
             position: absolute;
             top: 20px;
@@ -244,7 +284,6 @@
             width: 100%;
             text-align: center;
             padding: 1rem;
-            color: white;
         }
         .login-overlay {
             display: none;
@@ -271,7 +310,14 @@
             background: #2a2528;
             color: white;
         }
-        .btn-login, .btn-cancel { flex:1; padding: 6px; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; }
+        .btn-login, .btn-cancel {
+            flex:1;
+            padding: 6px;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
         .btn-login { background: #84102d; color: white; }
         .btn-cancel { background: #333; color: white; }
         .toast {
@@ -299,7 +345,7 @@
             aspect-ratio: 4/5;
             animation: pulse 1s infinite;
         }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 0.9; } 100% { opacity: 0.5; } }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 0.8; } 100% { opacity: 0.5; } }
     </style>
 </head>
 <body>
@@ -310,7 +356,7 @@
         <div class="nav-icons">
             <a href="https://t.me/mibamittaa" target="_blank"><i class="fab fa-telegram-plane"></i></a>
             <button onclick="openViber()"><i class="fab fa-viber"></i></button>
-            <button onclick="toggleDarkMode()"><i class="fas fa-adjust"></i></button>
+            <button onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
         </div>
     </div>
 </div>
@@ -355,20 +401,30 @@
     const API = "/api";
     let adminToken = localStorage.getItem('adminToken') || null;
     let isAdmin = !!adminToken;
+
+    // Theme toggle (light/dark) without affecting image colors
+    function toggleTheme() {
+        document.body.classList.toggle('light');
+        localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+    }
+    if (localStorage.getItem('theme') === 'light') document.body.classList.add('light');
+
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 
     function toast(msg) { const t=document.getElementById('toast'); t.innerText=msg; t.style.opacity='1'; setTimeout(()=>t.style.opacity='0',2000); }
     function openViber() { const phone='09697455880'; if(window.matchMedia('(display-mode: standalone)').matches) { navigator.clipboard.writeText(phone); toast('📞 ဖုန်းနံပါတ်ကူးပြီး'); } else window.location.href='viber://chat?number=%2B959697455880'; }
-    function toggleDarkMode() { document.body.style.filter = document.body.style.filter === 'invert(1)' ? 'none' : 'invert(1)'; }
 
     function showAdminBar() { document.getElementById('adminBar').innerHTML='<div class="admin-bar">🔐 Admin Mode <button onclick="adminLogout()">ထွက်မည်</button></div>'; }
     function adminLogout() { adminToken=null; isAdmin=false; localStorage.removeItem('adminToken'); document.getElementById('adminBar').innerHTML=''; loadPosts(); toast('🔓 ထွက်ပြီး'); }
     if(isAdmin) showAdminBar();
 
-    const logo=document.getElementById('adminLogo');
+    // 10 seconds long press for admin login
+    const logo = document.getElementById('adminLogo');
     let loginTimer;
-    logo?.addEventListener('touchstart',()=>{ if(!isAdmin) loginTimer=setTimeout(()=>document.getElementById('loginOverlay').style.display='flex',1000); });
-    logo?.addEventListener('touchend',()=>clearTimeout(loginTimer));
+    logo?.addEventListener('touchstart', () => { if(!isAdmin) loginTimer = setTimeout(() => document.getElementById('loginOverlay').style.display='flex', 10000); });
+    logo?.addEventListener('touchend', () => clearTimeout(loginTimer));
+    logo?.addEventListener('touchmove', () => clearTimeout(loginTimer));
+
     function closeLogin() { document.getElementById('loginOverlay').style.display='none'; }
     async function adminLogin() {
         const pw=document.getElementById('pinInput').value, err=document.getElementById('loginError');
@@ -391,7 +447,6 @@
         }catch(e){ toast('❌ ချိတ်ဆက်မှုမရ'); }
     };
 
-    // share via three dots
     window.shareViaDots = async function(text) {
         try {
             if (navigator.share) await navigator.share({ title: 'မိဘမေတ္တာ', text: text });
