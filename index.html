@@ -1,364 +1,540 @@
 <!DOCTYPE html>
 <html lang="my">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>MIBA MYITTA – NEON</title>
+    <meta name="description" content="မိဘမေတ္တာ အထည်ဆိုင်">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<title>MIBA MYITTA</title>
+        :root {
+            --bg: #09090f;
+            --card: rgba(20,20,35,0.85);
+            --pink: #ff2ea6;
+            --purple: #7a5cff;
+            --cyan: #3cf2ff;
+            --text: #fff;
+            --muted: #a9a9c7;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        body {
+            font-family: 'Inter', 'Myanmar Text', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(122,92,255,0.2), transparent 40%),
+                radial-gradient(circle at top right, rgba(255,46,166,0.15), transparent 30%),
+                linear-gradient(180deg, #09090f 0%, #12121d 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 2rem;
+        }
 
-<style>
+        /* dark mode alternative (light mode not needed) */
+        body.light {
+            background: #f2f0f5;
+            color: #111;
+            --muted: #5a5a6e;
+        }
+        body.light .card,
+        body.light .hero,
+        body.light .topbar {
+            background: rgba(245, 240, 250, 0.8);
+            border-color: rgba(0,0,0,0.1);
+        }
+        body.light .contact-info span {
+            background: #fff;
+            color: #222;
+        }
 
-/* ===================== BASE ===================== */
-
-*{margin:0;padding:0;box-sizing:border-box;}
-
-:root{
---pink:#ff2ea6;
---purple:#7a5cff;
---cyan:#3cf2ff;
---bg:#0a0a12;
---text:#fff;
---muted:#a9a9c7;
-}
-
-body{
-font-family:'Inter','Myanmar Text',sans-serif;
-background:
-radial-gradient(circle at top left,rgba(122,92,255,.25),transparent 30%),
-radial-gradient(circle at top right,rgba(255,46,166,.18),transparent 30%),
-linear-gradient(180deg,#09090f 0%,#12121d 100%);
-color:var(--text);
-min-height:100vh;
-padding-bottom:4rem;
-}
-
-/* ===================== TOP ===================== */
-
-.topbar{
-position:sticky;
-top:0;
-z-index:999;
-padding:1rem;
-backdrop-filter:blur(16px);
-background:rgba(10,10,20,.6);
-border-bottom:1px solid rgba(255,255,255,.06);
-}
-
-.topbar-inner{
-max-width:900px;
-margin:auto;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.logo{
-font-size:1.4rem;
-font-weight:800;
-}
-
-.logo span{
-background:linear-gradient(90deg,var(--pink),var(--cyan));
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.nav-icons{
-display:flex;
-gap:.6rem;
-}
-
-.nav-icons button,
-.nav-icons a{
-width:40px;height:40px;
-border-radius:50%;
-border:none;
-background:rgba(255,255,255,.06);
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-}
-
-/* ===================== HERO ===================== */
-
-.container{max-width:900px;margin:auto;padding:1rem;}
-
-.hero{
-text-align:center;
-padding:2rem 1rem;
-border-radius:28px;
-background:rgba(20,20,40,.6);
-border:1px solid rgba(255,255,255,.08);
-}
-
-.hero img{
-width:80px;height:80px;
-border-radius:50%;
-border:2px solid var(--pink);
-}
-
-.shop-name{font-size:1.6rem;font-weight:800;margin-top:1rem;}
-.sub-name{color:var(--cyan);font-size:.9rem;}
-
-.search-box{
-margin:1rem 0;
-display:flex;
-gap:.5rem;
-}
-
-.search-box input{
-flex:1;
-padding:.7rem;
-border-radius:12px;
-border:none;
-outline:none;
-}
-
-.filter{
-padding:.7rem;
-border-radius:12px;
-border:none;
-}
-
-/* ===================== GRID ===================== */
-
-.product-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:1rem;
-margin-top:1rem;
-}
-
-.card{
-background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.08);
-border-radius:20px;
-overflow:hidden;
-cursor:pointer;
-position:relative;
-}
-
-.card img{
-width:100%;
-height:200px;
-object-fit:cover;
-}
-
-.card-body{padding:.8rem;}
-
-.price{
-color:var(--cyan);
-font-weight:700;
-margin-top:.3rem;
-}
-
-.discount{
-position:absolute;
-top:10px;
-left:10px;
-background:var(--pink);
-padding:.2rem .5rem;
-border-radius:10px;
-font-size:.7rem;
-}
-
-.heart{
-position:absolute;
-top:10px;
-right:10px;
-cursor:pointer;
-}
-
-/* ===================== MODAL ===================== */
-
-.modal{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.9);
-display:none;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-}
-
-.modal img{
-max-width:90%;
-max-height:70%;
-}
-
-.modal .box{
-background:#111;
-padding:1rem;
-border-radius:15px;
-margin-top:1rem;
-}
-
-/* ===================== FLOAT ===================== */
-
-.float{
-position:fixed;
-bottom:20px;
-right:20px;
-background:linear-gradient(90deg,var(--pink),var(--purple));
-width:55px;height:55px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-}
-
-/* ===================== TOAST ===================== */
-
-.toast{
-position:fixed;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-background:#111;
-padding:.7rem 1rem;
-border-radius:20px;
-opacity:0;
-transition:.3s;
-}
-
-</style>
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            padding: 0.8rem 1rem;
+            backdrop-filter: blur(16px);
+            background: rgba(10, 10, 20, 0.7);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .topbar-inner {
+            max-width: 760px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+        .logo span {
+            background: linear-gradient(90deg, var(--pink), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-icons {
+            display: flex;
+            gap: 0.8rem;
+        }
+        .nav-icons button, .nav-icons a {
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        body.light .nav-icons button, body.light .nav-icons a {
+            background: #fff;
+            color: #222;
+        }
+        .admin-bar {
+            background: #0a0a12;
+            border-bottom: 1px solid #ff2ea6;
+            text-align: center;
+            padding: 0.3rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .admin-bar button {
+            background: #ff2ea6;
+            border: none;
+            border-radius: 30px;
+            padding: 0.1rem 0.7rem;
+            margin-left: 6px;
+            color: black;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        .hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 32px;
+            padding: 1.5rem 1rem;
+            background: linear-gradient(145deg, rgba(25,25,40,0.9), rgba(10,10,20,0.95));
+            border: 1px solid rgba(255,255,255,0.08);
+            text-align: center;
+            box-shadow: 0 0 40px rgba(122,92,255,0.1);
+        }
+        body.light .hero {
+            background: rgba(245,240,250,0.9);
+        }
+        .hero img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 20px rgba(255,46,166,0.4);
+        }
+        .shop-name {
+            margin-top: 0.8rem;
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+        .sub-name {
+            font-size: 0.8rem;
+            color: var(--cyan);
+            letter-spacing: 2px;
+        }
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+        .contact-info span {
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            background: rgba(255,255,255,0.05);
+            font-size: 0.7rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .telegram-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            margin-top: 1rem;
+            border-radius: 50px;
+            background: rgba(255,46,166,0.15);
+        }
+        .action-row {
+            display: flex;
+            justify-content: flex-end;
+            margin: 1rem 0 0.5rem;
+        }
+        .refresh-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 40px;
+            padding: 0.3rem 1rem;
+            color: white;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 0.8rem;
+        }
+        .card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            background: linear-gradient(145deg, rgba(25,25,40,0.92), rgba(12,12,20,0.95));
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: 0.25s;
+            cursor: pointer;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 0 20px rgba(255,46,166,0.2); }
+        .card-img {
+            aspect-ratio: 4/5;
+            overflow: hidden;
+        }
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.3s;
+        }
+        .card:hover .card-img img { transform: scale(1.02); }
+        .card-info {
+            padding: 0.8rem;
+        }
+        .caption-text {
+            font-size: 0.75rem;
+            line-height: 1.4;
+            color: #ddd;
+            background: rgba(255,255,255,0.04);
+            padding: 0.4rem;
+            border-radius: 20px;
+        }
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            font-size: 0.65rem;
+            color: var(--muted);
+        }
+        .share-icon {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            color: white;
+            cursor: pointer;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            border: none;
+            border-radius: 30px;
+            font-size: 0.6rem;
+            padding: 2px 8px;
+            color: white;
+            z-index: 22;
+            cursor: pointer;
+        }
+        .text-card {
+            grid-column: 1/-1;
+            padding: 1rem;
+            border-radius: 28px;
+            background: linear-gradient(145deg, rgba(25,25,40,0.92), rgba(12,12,20,0.95));
+            position: relative;
+        }
+        .viewer {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.96);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+        .viewer.active { display: flex; }
+        .viewer-content {
+            position: relative;
+            max-width: 100vw;
+        }
+        .viewer-content img {
+            max-width: 100vw;
+            max-height: 100vh;
+            object-fit: contain;
+        }
+        .viewer-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+        .viewer-caption {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 2rem 1rem 1rem;
+            background: linear-gradient(transparent, black);
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        .login-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 4000;
+        }
+        .login-box {
+            background: #111;
+            border: 1px solid #ff2ea6;
+            border-radius: 2rem;
+            padding: 1.5rem;
+            width: 280px;
+            text-align: center;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 40px;
+            border: 1px solid #ff2ea6;
+            background: #222;
+            color: white;
+        }
+        .btn-login, .btn-cancel {
+            padding: 6px 12px;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            flex: 1;
+        }
+        .btn-login { background: #ff2ea6; color: black; }
+        .btn-cancel { background: #333; color: white; }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff2ea6;
+            color: black;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            z-index: 5000;
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+        }
+        .skeleton-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .skeleton-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 28px;
+            aspect-ratio: 4/5;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 0.8; } 100% { opacity: 0.4; } }
+    </style>
 </head>
-
 <body>
-
+<div id="adminBar"></div>
 <div class="topbar">
-<div class="topbar-inner">
-<div class="logo"><span>MIBA</span> MYITTA</div>
-
-<div class="nav-icons">
-<a href="https://t.me/mibamyitta1"><i class="fab fa-telegram"></i></a>
-<button onclick="toggleDark()">🌙</button>
+    <div class="topbar-inner">
+        <div class="logo"><span>MIBA</span> MYITTA</div>
+        <div class="nav-icons">
+            <a href="https://t.me/mibamittaa" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+            <button onclick="openViber()"><i class="fab fa-viber"></i></button>
+            <button onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
+        </div>
+    </div>
 </div>
-
-</div>
-</div>
-
 <div class="container">
-
-<div class="hero">
-
-<img src="https://i.ibb.co/35gzXLbQ/IMG.png">
-
-<div class="shop-name">မိဘမေတ္တာ</div>
-<div class="sub-name">အထည်ဆိုင်</div>
-
-<div class="search-box">
-<input id="search" placeholder="Search product...">
-<select class="filter" id="filter">
-<option value="all">All</option>
-<option value="shirt">Shirt</option>
-<option value="hoodie">Hoodie</option>
-</select>
+    <div class="hero">
+        <img src="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png" id="adminLogo">
+        <div class="shop-name">မိဘမေတ္တာ<div class="sub-name">အထည်ဆိုင်</div></div>
+        <div class="contact-info">
+            <span><i class="fas fa-phone"></i> 09697455880 / 09676827963</span>
+            <span><i class="fas fa-map-marker-alt"></i> အိုးထိန်းကျေးရွာ</span>
+        </div>
+        <div class="telegram-badge">
+            <i class="fab fa-telegram"></i> <a href="https://t.me/mibamyitta1">@mibamyitta1</a>
+        </div>
+    </div>
+    <div class="action-row">
+        <button class="refresh-btn" onclick="loadPosts()"><i class="fas fa-sync-alt"></i> ပြန်လည်စတင်ရန်</button>
+    </div>
+    <div id="postGrid" class="product-grid"><div class="skeleton-grid"><div class="skeleton-card"></div><div class="skeleton-card"></div></div></div>
 </div>
 
+<div id="imageViewer" class="viewer">
+    <div class="viewer-content">
+        <button class="viewer-close" onclick="closeViewer()">✕</button>
+        <img id="viewerImage" src="">
+        <div id="viewerCaption" class="viewer-caption"></div>
+    </div>
 </div>
 
-<div class="product-grid" id="grid"></div>
-
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-box">
+        <h3>🔐 Admin Login</h3>
+        <input type="password" id="pinInput" placeholder="စကားဝှက်">
+        <div style="display: flex; gap: 8px; margin-top: 8px;">
+            <button class="btn-login" onclick="adminLogin()">ဝင်ရောက်မည်</button>
+            <button class="btn-cancel" onclick="closeLogin()">ပိတ်မည်</button>
+        </div>
+        <p id="loginError" style="color: red; font-size: 11px; margin-top: 8px;"></p>
+    </div>
 </div>
-
-<!-- MODAL -->
-<div class="modal" id="modal">
-<img id="mimg">
-<div class="box" id="mbox"></div>
-<button onclick="closeM()">Close</button>
-</div>
-
-<div class="float" onclick="window.open('https://t.me/mibamyitta1')">
-<i class="fab fa-telegram"></i>
-</div>
-
-<div class="toast" id="toast"></div>
+<div id="toast" class="toast"></div>
 
 <script>
+    const API = "/api";
+    let adminToken = localStorage.getItem('adminToken') || null;
+    let isAdmin = !!adminToken;
 
-const API="/api/posts";
-let posts=[];
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
 
-async function load(){
-const res=await fetch(API);
-const data=await res.json();
-posts=data.posts||[];
-render(posts);
-}
+    function toast(msg) { const t=document.getElementById('toast'); t.innerText=msg; t.style.opacity='1'; setTimeout(()=>t.style.opacity='0',2200); }
+    function openViber() { const phone='09697455880'; if(window.matchMedia('(display-mode: standalone)').matches) { navigator.clipboard.writeText(phone); toast('📞 နံပါတ်ကူးပြီး'); } else { window.location.href='viber://chat?number=%2B959697455880'; } }
+    function toggleDarkMode() { document.body.classList.toggle('light'); localStorage.setItem('lightMode', document.body.classList.contains('light')); }
+    if(localStorage.getItem('lightMode')==='true') document.body.classList.add('light');
 
-function render(list){
-let html="";
-list.forEach(p=>{
+    function showAdminBar() { document.getElementById('adminBar').innerHTML='<div class="admin-bar">🔐 Admin Mode <button onclick="adminLogout()">ထွက်မည်</button></div>'; }
+    function adminLogout() { adminToken=null; isAdmin=false; localStorage.removeItem('adminToken'); document.getElementById('adminBar').innerHTML=''; loadPosts(); toast('🔓 ထွက်ပြီး'); }
+    if(isAdmin) showAdminBar();
 
-let price=p.price||"";
-let discount=p.discount||"";
+    const logo = document.getElementById('adminLogo');
+    let loginTimer;
+    logo?.addEventListener('touchstart', () => { if(!isAdmin) loginTimer = setTimeout(() => document.getElementById('loginOverlay').style.display='flex', 1000); });
+    logo?.addEventListener('touchend', () => clearTimeout(loginTimer));
+    function closeLogin() { document.getElementById('loginOverlay').style.display='none'; }
+    async function adminLogin() {
+        const pw = document.getElementById('pinInput').value;
+        const err = document.getElementById('loginError');
+        if(!pw) { err.innerText='စကားဝှက်ထည့်ပါ'; return; }
+        try {
+            const res = await fetch(API+'/admin/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({password:pw}) });
+            const data = await res.json();
+            if(data.success) { adminToken=data.token; localStorage.setItem('adminToken',adminToken); isAdmin=true; closeLogin(); showAdminBar(); loadPosts(); toast('✅ အက်ဒမင်ဝင်ပြီ'); }
+            else { err.innerText='❌ စကားဝှက်မှား'; }
+        } catch(e) { err.innerText='❌ ဆာဗာအမှား'; }
+    }
 
-html+=`
-<div class="card" onclick="openM('${p.image_url}','${p.caption||''}','${price}')">
+    window.deletePost = async function(postId) {
+        if(!confirm("ဖျက်မှာလား?")) return;
+        if(!adminToken) { toast('Admin login ဝင်ပါ'); return; }
+        try {
+            const res = await fetch(`/api/delete?id=${postId}`, { method:'DELETE', headers:{'Authorization':'Bearer '+adminToken} });
+            const data = await res.json();
+            if(data.success) { loadPosts(); toast('✅ ဖျက်ပြီး'); }
+            else { toast('❌ '+ (data.error||'error')); }
+        } catch(e) { toast('❌ ချိတ်ဆက်မှုမရ'); }
+    };
+    function sharePost(text) { if(navigator.share) navigator.share({title:'မိဘမေတ္တာ', text:text}); else if(navigator.clipboard) { navigator.clipboard.writeText(text); toast('📋 ကူးပြီး'); } }
+    function formatDate(ts) { if(!ts) return ''; const d=new Date(ts*1000); return `${d.getDate()} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]} ${d.getFullYear()}`; }
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m=> m==='&'?'&amp;': m==='<'?'&lt;':'&gt;'); }
 
-${discount?`<div class="discount">${discount}%</div>`:""}
+    async function loadPosts() {
+        const grid = document.getElementById('postGrid');
+        grid.innerHTML = '<div class="skeleton-grid"><div class="skeleton-card"></div><div class="skeleton-card"></div></div>';
+        try {
+            const res = await fetch(API+'/posts');
+            const data = await res.json();
+            if(!data.success) throw new Error();
+            const posts = data.posts || [];
+            if(!posts.length) { grid.innerHTML = '<div style="text-align:center;padding:2rem;">📭 ပုံမရှိသေး</div>'; return; }
+            let html='';
+            posts.forEach(p=>{
+                const delBtn = isAdmin ? `<button class="delete-btn" onclick="event.stopPropagation(); window.deletePost(${p.id})"><i class="fas fa-trash"></i> ဖျက်</button>` : '';
+                if(p.type==='photo') {
+                    html += `<div class="card" onclick="openViewer('${p.image_url}', '${escapeHtml(p.caption||'')}')">
+                                ${delBtn}
+                                <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div>
+                                <div class="card-info">
+                                    <div class="caption-text">${escapeHtml(p.caption || '')}</div>
+                                    <div class="card-meta"><span>${formatDate(p.date)}</span><button class="share-icon" onclick="event.stopPropagation(); sharePost('${escapeHtml(p.caption||'')}')"><i class="fas fa-share-alt"></i></button></div>
+                                </div>
+                            </div>`;
+                } else {
+                    html += `<div class="text-card">${delBtn}<p>📄 ${escapeHtml(p.text||'')}</p><div class="card-meta"><span>${formatDate(p.date)}</span><button class="share-icon" onclick="event.stopPropagation(); sharePost('${escapeHtml(p.text||'')}')"><i class="fas fa-share-alt"></i></button></div></div>`;
+                }
+            });
+            grid.innerHTML = html;
+        } catch(e) { grid.innerHTML = '<div style="text-align:center;padding:2rem;">❌ ချို့ယွင်းနေ<br><button onclick="loadPosts()">ပြန်ကြိုးစားမည်</button></div>'; }
+    }
 
-<div class="heart" onclick="fav(event,'${p.id}')">❤️</div>
-
-<img src="${p.image_url}">
-
-<div class="card-body">
-<div>${p.caption||""}</div>
-<div class="price">${price}</div>
-</div>
-
-</div>
-`;
-});
-
-document.getElementById("grid").innerHTML=html;
-}
-
-function openM(img,text,price){
-document.getElementById("modal").style.display="flex";
-document.getElementById("mimg").src=img;
-document.getElementById("mbox").innerHTML=`${text}<br><b>${price}</b>`;
-}
-
-function closeM(){
-document.getElementById("modal").style.display="none";
-}
-
-function toggleDark(){
-document.body.classList.toggle("dark");
-toast("Mode changed");
-}
-
-function toast(t){
-let el=document.getElementById("toast");
-el.innerText=t;
-el.style.opacity=1;
-setTimeout(()=>el.style.opacity=0,2000);
-}
-
-function fav(e,id){
-e.stopPropagation();
-let f=JSON.parse(localStorage.getItem("fav")||"[]");
-if(!f.includes(id)) f.push(id);
-localStorage.setItem("fav",JSON.stringify(f));
-toast("Saved ❤️");
-}
-
-document.getElementById("search").addEventListener("input",e=>{
-let v=e.target.value.toLowerCase();
-render(posts.filter(p=> (p.caption||"").toLowerCase().includes(v)));
-});
-
-load();
-
+    let currentScale=1, startDist=0, startScale=1;
+    function openViewer(src, cap) {
+        const modal=document.getElementById('imageViewer');
+        const img=document.getElementById('viewerImage');
+        img.src=src;
+        img.style.transform='scale(1)';
+        currentScale=1;
+        document.getElementById('viewerCaption').innerText=cap;
+        modal.style.display='flex';
+        history.pushState({viewer:true},'');
+    }
+    window.closeViewer = function() { document.getElementById('imageViewer').style.display='none'; };
+    const viewerImg = document.getElementById('viewerImage');
+    viewerImg.addEventListener('touchstart', (e)=>{
+        if(e.touches.length===2){
+            e.preventDefault();
+            const dx=e.touches[0].clientX-e.touches[1].clientX;
+            const dy=e.touches[0].clientY-e.touches[1].clientY;
+            startDist=Math.hypot(dx,dy);
+            startScale=currentScale;
+        }
+    });
+    viewerImg.addEventListener('touchmove', (e)=>{
+        if(e.touches.length===2 && startDist>0){
+            e.preventDefault();
+            const dx=e.touches[0].clientX-e.touches[1].clientX;
+            const dy=e.touches[0].clientY-e.touches[1].clientY;
+            const newDist=Math.hypot(dx,dy);
+            let scale=startScale*(newDist/startDist);
+            scale=Math.min(Math.max(scale,1),4);
+            viewerImg.style.transform=`scale(${scale})`;
+            currentScale=scale;
+        }
+    });
+    viewerImg.addEventListener('touchend', ()=>{ startDist=0; });
+    window.addEventListener('popstate', ()=>{ if(document.getElementById('imageViewer').style.display==='flex') closeViewer(); });
+    loadPosts();
 </script>
-
 </body>
 </html>
