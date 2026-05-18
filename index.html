@@ -494,50 +494,50 @@
     viewerImg.addEventListener('touchend',()=>{ startDist=0; });
     window.addEventListener('popstate',()=>{ if(document.getElementById('imageViewer').style.display==='flex') closeViewer(); });
     loadPosts();
+</script>
 
-    // ==================== FCM NOTIFICATION SETUP ====================
-    if ('Notification' in window && 'serviceWorker' in navigator) {
-        (async function setupFCM() {
-            try {
-                const { initializeApp } = await import("https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js");
-                const { getMessaging, getToken, onMessage } = await import("https://www.gstatic.com/firebasejs/12.13.0/firebase-messaging.js");
-                
-                const firebaseConfig = {
-                    apiKey: "AIz*****YM",
-                    authDomain: "mibamyitta-8e457.firebaseapp.com",
-                    projectId: "mibamyitta-8e457",
-                    storageBucket: "mibamyitta-8e457.firebasestorage.app",
-                    messagingSenderId: "543668158288",
-                    appId: "1:543668158288:web:3ae1d66d9b2889fd2bb655",
-                    measurementId: "G-V82T3KWCVK"
-                };
-                const vapidKey = "BPw9JNky4chwhTj6SEXNnfmQRGr6YlHzDcdJyb3ZZGVtIWVVbsMaLgnHDTXkKB9sd3e87tUDBebJYQK1ojv6";
+<!-- ==================== FCM NOTIFICATION SETUP ==================== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-messaging.js";
 
-                const app = initializeApp(firebaseConfig);
-                const messaging = getMessaging(app);
+  const firebaseConfig = {
+    apiKey: "AIz*****YM",
+    authDomain: "mibamyitta-8e457.firebaseapp.com",
+    projectId: "mibamyitta-8e457",
+    storageBucket: "mibamyitta-8e457.firebasestorage.app",
+    messagingSenderId: "543668158288",
+    appId: "1:543668158288:web:3ae1d66d9b2889fd2bb655",
+    measurementId: "G-V82T3KWCVK"
+  };
 
-                // Foreground notification
-                onMessage(messaging, (payload) => {
-                    console.log('Foreground notification:', payload);
-                    toast(`📢 ${payload.notification?.title || 'New'}: ${payload.notification?.body || ''}`);
-                });
+  const vapidKey = "BPw9JNky4chwhTj6SEXNnfmQRGr6YlHzDcdJyb3ZZGVtIWVVbsMaLgnHDTXkKB9sd3e87tUDBebJYQK1ojv6";
 
-                // Request permission & get token
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted') {
-                    const token = await getToken(messaging, { vapidKey });
-                    console.log('FCM Token:', token);
-                    localStorage.setItem('fcmToken', token);
-                    // Optional: send token to your server
-                    // await fetch('/api/save-fcm-token', { method: 'POST', body: JSON.stringify({ token }) });
-                } else {
-                    console.log('Notification permission denied');
-                }
-            } catch (err) {
-                console.error('FCM setup error:', err);
-            }
-        })();
+  const app = initializeApp(firebaseConfig);
+  const messaging = getMessaging(app);
+
+  // Foreground notification
+  onMessage(messaging, (payload) => {
+    console.log("📩 Foreground message:", payload);
+    toast(`📢 ${payload.notification?.title || 'New'}: ${payload.notification?.body || ''}`);
+  });
+
+  async function setupFCM() {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        const token = await getToken(messaging, { vapidKey });
+        console.log("✅ FCM Token:", token);
+        localStorage.setItem("fcmToken", token);
+      } else {
+        console.log("❌ Notification permission denied");
+      }
+    } catch (err) {
+      console.error("FCM setup error:", err);
     }
+  }
+
+  setupFCM();
 </script>
 </body>
 </html>
