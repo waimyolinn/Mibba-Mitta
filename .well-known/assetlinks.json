@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.mibamyitta.shop",
+    "sha256_cert_fingerprints": ["FB:C6:36:AB:79:23:0A:27:2A:AA:0A:41:FA:A2:1E:02:C1:0B:6B:81:B8:DD:CE:3D:C4:38:FB:9A:3A:8A:DF:68"]
+  }
+}]
