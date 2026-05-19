@@ -1,16 +1,34 @@
 {
-  "name": "မိဘမေတ္တာ အထည်ဆိုင်",
-  "short_name": "မိဘမေတ္တာ",
+  "name": "MIBA MYITTA",
+  "short_name": "Miba",
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#0d1117",
-  "background_color": "#fafafa",
+  "theme_color": "#84102d",
+  "background_color": "#0a0a0f",
   "icons": [
     {
       "src": "https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "ပုံများစတင်ရန်",
+      "short_name": "Refresh",
+      "url": "/",
+      "description": "ပုံများကို ပြန်လည်စတင်ရန်"
+    },
+    {
+      "name": "Admin Login",
+      "short_name": "Admin",
+      "url": "/",
+      "description": "အက်ဒမင် ဝင်ရောက်ရန် (Logo ကို 10 စက္ကန့်ဖိထားပါ)"
     }
   ]
 }
