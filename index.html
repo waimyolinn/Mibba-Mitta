@@ -6,7 +6,7 @@
     <title>MIBA MYITTA – မိဘမေတ္တာ</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -191,13 +191,11 @@
         .card-info {
             padding: 0.8rem;
         }
-        /* ✅ Caption style - red border box */
         .caption-box {
             background: rgba(132,16,45,0.12);
             border: 1px solid #84102d;
             border-radius: 16px;
             padding: 0.5rem 0.7rem;
-            margin-top: 0.5rem;
             font-size: 0.75rem;
             line-height: 1.4;
             color: #f0d5c8;
@@ -205,21 +203,6 @@
         body.light .caption-box {
             background: #fff0ea;
             color: #84102d;
-        }
-        .card-footer {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-top: 0.4rem;
-        }
-        .share-icon {
-            background: rgba(132,16,45,0.3);
-            border: none;
-            border-radius: 30px;
-            padding: 0.2rem 0.7rem;
-            color: #b5ac8a;
-            font-size: 0.7rem;
-            cursor: pointer;
         }
         .delete-btn {
             position: absolute;
@@ -242,7 +225,7 @@
             padding: 1rem;
             position: relative;
         }
-        /* Viewer - fullscreen swipe gallery */
+        /* Fullscreen Swipe Gallery */
         .viewer {
             display: none;
             position: fixed;
@@ -294,7 +277,7 @@
         }
         .viewer-slide img {
             max-width: 100%;
-            max-height: 80vh;
+            max-height: 90vh;
             object-fit: contain;
             user-select: none;
         }
@@ -307,15 +290,6 @@
             color: white;
             text-align: center;
             max-width: 90%;
-        }
-        .viewer-footer {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 0.7rem;
-            color: #aaa;
         }
         .toast {
             position: fixed;
@@ -415,7 +389,6 @@
     <div class="viewer-container" id="viewerContainer">
         <div class="viewer-slider" id="viewerSlider"></div>
     </div>
-    <div class="viewer-footer" id="viewerFooter">0 / 0</div>
 </div>
 
 <div id="loginOverlay" class="login-overlay">
@@ -479,26 +452,14 @@
         }catch(e){ toast('❌ ချိတ်ဆက်မှုမရ'); }
     };
 
-    window.shareViaDots = async function(text) {
-        try {
-            if (navigator.share) await navigator.share({ title: 'မိဘမေတ္တာ', text: text });
-            else if (navigator.clipboard) { await navigator.clipboard.writeText(text); toast('📋 ကူးပြီး'); }
-            else toast('မျှဝေမရပါ');
-        } catch(e) { if(e.name !== 'AbortError') toast('မျှဝေမရပါ'); }
-    };
-
     function formatDate(ts){ if(!ts) return ''; const d=new Date(ts*1000); return `${d.getDate()} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]} ${d.getFullYear()}`; }
     function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, m=> m==='&'?'&amp;': m==='<'?'&lt;':'&gt;'); }
 
-    // Gallery viewer with swipe
     function openViewer(index) {
         if(!allPosts.length) return;
         currentViewerIndex = index;
         const viewer = document.getElementById('imageViewer');
         const slider = document.getElementById('viewerSlider');
-        const footer = document.getElementById('viewerFooter');
-        
-        // Build slides
         slider.innerHTML = '';
         allPosts.forEach((post, i) => {
             if(post.type !== 'photo') return;
@@ -506,7 +467,6 @@
             slide.className = 'viewer-slide';
             const img = document.createElement('img');
             img.src = post.image_url;
-            img.alt = post.caption || '';
             const cap = document.createElement('div');
             cap.className = 'viewer-caption';
             cap.innerText = post.caption || '';
@@ -514,14 +474,11 @@
             slide.appendChild(cap);
             slider.appendChild(slide);
         });
-        
         const total = slider.children.length;
-        footer.innerText = `${currentViewerIndex + 1} / ${total}`;
         slider.style.transform = `translateX(-${currentViewerIndex * 100}%)`;
         viewer.style.display = 'flex';
         history.pushState({viewer:true},'');
         
-        // Touch swipe
         let startX = 0;
         slider.ontouchstart = (e) => { startX = e.touches[0].clientX; };
         slider.ontouchend = (e) => {
@@ -532,13 +489,10 @@
                 else if(diff < 0 && currentViewerIndex > 0) currentViewerIndex--;
                 else return;
                 slider.style.transform = `translateX(-${currentViewerIndex * 100}%)`;
-                footer.innerText = `${currentViewerIndex + 1} / ${total}`;
             }
         };
     }
-    window.closeViewer = function() {
-        document.getElementById('imageViewer').style.display = 'none';
-    };
+    window.closeViewer = function() { document.getElementById('imageViewer').style.display = 'none'; };
 
     async function loadPosts(){
         const grid=document.getElementById('postGrid');
@@ -558,14 +512,10 @@
                                 <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div>
                                 <div class="card-info">
                                     <div class="caption-box">${escapeHtml(p.caption || '')}</div>
-                                    <div class="card-footer">
-                                        <span>${formatDate(p.date)}</span>
-                                        <button class="share-icon" onclick="event.stopPropagation(); shareViaDots('${escapeHtml(p.caption || '')}')"><i class="fas fa-share-alt"></i></button>
-                                    </div>
                                 </div>
                             </div>`;
                 } else {
-                    html+=`<div class="text-card">${delBtn}<div class="caption-box">📄 ${escapeHtml(p.text||'')}</div><div class="card-footer"><span>${formatDate(p.date)}</span><button class="share-icon" onclick="event.stopPropagation(); shareViaDots('${escapeHtml(p.text||'')}')"><i class="fas fa-share-alt"></i></button></div></div>`;
+                    html+=`<div class="text-card">${delBtn}<div class="caption-box">📄 ${escapeHtml(p.text||'')}</div></div>`;
                 }
             });
             grid.innerHTML=html;
