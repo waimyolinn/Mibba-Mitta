@@ -220,7 +220,7 @@
             padding: 1rem;
             position: relative;
         }
-        /* Fullscreen Gallery - Vertical Swipe (Facebook style) */
+        /* Fullscreen Gallery - Vertical Swipe */
         .viewer {
             display: none;
             position: fixed;
@@ -460,7 +460,7 @@
 
     function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, m=> m==='&'?'&amp;': m==='<'?'&lt;':'&gt;'); }
 
-    // Vertical Swipe Gallery (Facebook style)
+    // Vertical Swipe Gallery
     function openViewer(index) {
         if(!allPosts.length) return;
         currentViewerIndex = index;
@@ -530,6 +530,49 @@
 
     window.addEventListener('popstate', () => { if(document.getElementById('imageViewer').style.display === 'flex') closeViewer(); });
     loadPosts();
+
+    // ==================== FCM NOTIFICATION SETUP ====================
+    (function setupFCM() {
+        if (!('Notification' in window && 'serviceWorker' in navigator)) return;
+        
+        // Load Firebase SDK dynamically
+        Promise.all([
+            import("https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js"),
+            import("https://www.gstatic.com/firebasejs/12.13.0/firebase-messaging.js")
+        ]).then(([{ initializeApp }, { getMessaging, getToken, onMessage }]) => {
+            const firebaseConfig = {
+                apiKey: "AIzaSyBvvNeDJX-tqc7bM8bm4Ft9b8z5okhAzYM",
+                authDomain: "mibamyitta-8e457.firebaseapp.com",
+                projectId: "mibamyitta-8e457",
+                storageBucket: "mibamyitta-8e457.firebasestorage.app",
+                messagingSenderId: "543668158288",
+                appId: "1:543668158288:web:3ae1d66d9b2889fd2bb655",
+                measurementId: "G-V82T3KWCVK"
+            };
+            const vapidKey = "BPw9JNky4chwhTj6SEXNnfmQRGr6YlHzDcdJyb3ZZGVtIWVVbsMaLgnHDTXkKB9sd3e87tUDBebJYQK1ojv6";
+
+            const app = initializeApp(firebaseConfig);
+            const messaging = getMessaging(app);
+
+            // Foreground notification
+            onMessage(messaging, (payload) => {
+                console.log("📩 Foreground:", payload);
+                toast(`📢 ${payload.notification?.title || 'New'}: ${payload.notification?.body || ''}`);
+            });
+
+            // Request permission and get token
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    getToken(messaging, { vapidKey }).then(token => {
+                        console.log("✅ FCM Token:", token);
+                        localStorage.setItem("fcmToken", token);
+                    }).catch(err => console.error("FCM getToken error:", err));
+                } else {
+                    console.log("❌ Notification permission denied");
+                }
+            });
+        }).catch(err => console.error("Firebase import error:", err));
+    })();
 </script>
 </body>
 </html>
