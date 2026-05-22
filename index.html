@@ -409,7 +409,6 @@
     let allPosts = [];
     let currentViewerIndex = 0;
 
-    // Service Worker Registration (PWA only - Expo app doesn't need this)
     if ('serviceWorker' in navigator && !window.navigator?.standalone) {
         navigator.serviceWorker.register('/sw.js').catch(() => {});
     }
@@ -424,12 +423,12 @@
     function openViber() { const phone='09697455880'; if(window.matchMedia('(display-mode: standalone)').matches) { navigator.clipboard.writeText(phone); toast('📞 ဖုန်းနံပါတ်ကူးပြီး'); } else window.location.href='viber://chat?number=%2B959697455880'; }
 
     function showAdminBar() { document.getElementById('adminBar').innerHTML='<div class="admin-bar">🔐 Admin Mode <button onclick="adminLogout()">ထွက်မည်</button></div>'; }
-    function adminLogout() { adminToken=null; isAdmin=false; localStorage.removeItem('adminToken'); document.getElementById('adminBar').innerHTML=''; loadPosts(); toast('🔓 ထွက်ပြီး'); }
+    function adminLogout() { adminToken=null; isAdmin=false; localStorage.removeItem('adminToken'); document.getElementById('adminBar').innerHTML=''; renderPosts(); toast('🔓 ထွက်ပြီး'); }
     if(isAdmin) showAdminBar();
 
     const logo = document.getElementById('adminLogo');
     let loginTimer;
-    logo?.addEventListener('touchstart', () => { if(!isAdmin) loginTimer = setTimeout(() => document.getElementById('loginOverlay').style.display='flex', 10000); });
+    logo?.addEventListener('touchstart', () => { if(!isAdmin) loginTimer = setTimeout(() => document.getElementById('loginOverlay').style.display='flex', 2000); });
     logo?.addEventListener('touchend', () => clearTimeout(loginTimer));
     logo?.addEventListener('touchmove', () => clearTimeout(loginTimer));
 
@@ -440,7 +439,7 @@
         try{
             const res=await fetch(API+'/admin/login',{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({password:pw}) });
             const data=await res.json();
-            if(data.success){ adminToken=data.token; localStorage.setItem('adminToken',adminToken); isAdmin=true; closeLogin(); showAdminBar(); loadPosts(); toast('✅ အက်ဒမင်ဝင်ပြီ'); }
+            if(data.success){ adminToken=data.token; localStorage.setItem('adminToken',adminToken); isAdmin=true; closeLogin(); showAdminBar(); renderPosts(); toast('✅ အက်ဒမင်ဝင်ပြီ'); }
             else{ err.innerText='❌ စကားဝှက်မှား'; }
         }catch(e){ err.innerText='❌ ချိတ်ဆက်မှုအမှား'; }
     }
@@ -451,7 +450,12 @@
         try{
             const res=await fetch(`/api/delete?id=${postId}`,{ method:'DELETE', headers:{'Authorization':'Bearer '+adminToken} });
             const data=await res.json();
-            if(data.success){ loadPosts(); toast('✅ ဖျက်ပြီး'); } else toast('❌ '+ (data.error||'error'));
+            if(data.success){ 
+                // Remove from local state and re-render without full reload
+                allPosts = allPosts.filter(p => p.id != postId);
+                renderPosts();
+                toast('✅ ဖျက်ပြီး'); 
+            } else toast('❌ '+ (data.error||'error'));
         }catch(e){ toast('❌ ချိတ်ဆက်မှုမရ'); }
     };
 
@@ -496,6 +500,27 @@
     }
     window.closeViewer = function() { document.getElementById('imageViewer').style.display='none'; };
 
+    function renderPosts() {
+        const grid=document.getElementById('postGrid');
+        if(allPosts.length===0){ grid.innerHTML='<div style="text-align:center;padding:2rem;">📭 ပုံမရှိသေး</div>'; return; }
+        let html='';
+        allPosts.forEach((p, idx) => {
+            const delBtn=isAdmin?`<button class="delete-btn" onclick="event.stopPropagation(); window.deletePost(${p.id})"><i class="fas fa-trash"></i> ဖျက်</button>`:'';
+            if(p.type==='photo'){
+                html+=`<div class="card" onclick="openViewer(${idx})">
+                            ${delBtn}
+                            <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div>
+                            <div class="card-info">
+                                <div class="card-caption">${escapeHtml(p.caption || '')}</div>
+                            </div>
+                        </div>`;
+            } else {
+                html+=`<div class="text-card">${delBtn}<div class="card-caption">📄 ${escapeHtml(p.text||'')}</div></div>`;
+            }
+        });
+        grid.innerHTML=html;
+    }
+
     async function loadPosts(){
         const grid=document.getElementById('postGrid');
         grid.innerHTML='<div class="skeleton-grid"><div class="skeleton-card"></div><div class="skeleton-card"></div></div>';
@@ -504,23 +529,7 @@
             const data=await res.json();
             if(!data.success) throw new Error('API error');
             allPosts = data.posts || [];
-            if(allPosts.length===0){ grid.innerHTML='<div style="text-align:center;padding:2rem;">📭 ပုံမရှိသေး</div>'; return; }
-            let html='';
-            allPosts.forEach((p, idx) => {
-                const delBtn=isAdmin?`<button class="delete-btn" onclick="event.stopPropagation(); window.deletePost(${p.id})"><i class="fas fa-trash"></i> ဖျက်</button>`:'';
-                if(p.type==='photo'){
-                    html+=`<div class="card" onclick="openViewer(${idx})">
-                                ${delBtn}
-                                <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div>
-                                <div class="card-info">
-                                    <div class="card-caption">${escapeHtml(p.caption || '')}</div>
-                                </div>
-                            </div>`;
-                } else {
-                    html+=`<div class="text-card">${delBtn}<div class="card-caption">📄 ${escapeHtml(p.text||'')}</div></div>`;
-                }
-            });
-            grid.innerHTML=html;
+            renderPosts();
         } catch(e){ 
             console.error('Load error:', e);
             grid.innerHTML='<div style="text-align:center;padding:2rem;">❌ ချို့ယွင်းနေ<br><button onclick="loadPosts()">ပြန်ကြိုးစားမည်</button></div>'; 
