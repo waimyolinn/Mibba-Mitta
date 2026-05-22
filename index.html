@@ -451,9 +451,22 @@
             const res=await fetch(`/api/delete?id=${postId}`,{ method:'DELETE', headers:{'Authorization':'Bearer '+adminToken} });
             const data=await res.json();
             if(data.success){ 
-                // Remove from local state and re-render without full reload
+                // Remove from local state
                 allPosts = allPosts.filter(p => p.id != postId);
-                renderPosts();
+                
+                // Remove the element from DOM directly to preserve scroll position
+                const element = document.getElementById(`post-${postId}`);
+                if (element) {
+                    element.style.opacity = '0';
+                    element.style.transform = 'scale(0.8)';
+                    element.style.transition = '0.3s';
+                    setTimeout(() => {
+                        element.remove();
+                        if(allPosts.length === 0) {
+                            document.getElementById('postGrid').innerHTML = '<div style="text-align:center;padding:2rem;">📭 ပုံမရှိသေး</div>';
+                        }
+                    }, 300);
+                }
                 toast('✅ ဖျက်ပြီး'); 
             } else toast('❌ '+ (data.error||'error'));
         }catch(e){ toast('❌ ချိတ်ဆက်မှုမရ'); }
@@ -507,7 +520,7 @@
         allPosts.forEach((p, idx) => {
             const delBtn=isAdmin?`<button class="delete-btn" onclick="event.stopPropagation(); window.deletePost(${p.id})"><i class="fas fa-trash"></i> ဖျက်</button>`:'';
             if(p.type==='photo'){
-                html+=`<div class="card" onclick="openViewer(${idx})">
+                html+=`<div class="card" id="post-${p.id}" onclick="openViewer(${idx})">
                             ${delBtn}
                             <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div>
                             <div class="card-info">
@@ -515,7 +528,7 @@
                             </div>
                         </div>`;
             } else {
-                html+=`<div class="text-card">${delBtn}<div class="card-caption">📄 ${escapeHtml(p.text||'')}</div></div>`;
+                html+=`<div class="text-card" id="post-${p.id}">${delBtn}<div class="card-caption">📄 ${escapeHtml(p.text||'')}</div></div>`;
             }
         });
         grid.innerHTML=html;
