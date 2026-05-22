@@ -220,7 +220,6 @@
             padding: 1rem;
             position: relative;
         }
-        /* Fullscreen Gallery - Vertical Swipe */
         .viewer {
             display: none;
             position: fixed;
@@ -410,11 +409,9 @@
     let allPosts = [];
     let currentViewerIndex = 0;
 
-    // Service Worker Registration
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('✅ Service Worker registered', reg))
-            .catch(err => console.log('❌ Service Worker registration failed', err));
+    // Service Worker Registration (PWA only - Expo app doesn't need this)
+    if ('serviceWorker' in navigator && !window.navigator?.standalone) {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
     }
 
     function toggleTheme() {
@@ -460,7 +457,6 @@
 
     function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, m=> m==='&'?'&amp;': m==='<'?'&lt;':'&gt;'); }
 
-    // Vertical Swipe Gallery
     function openViewer(index) {
         if(!allPosts.length) return;
         currentViewerIndex = index;
@@ -498,7 +494,7 @@
             }
         };
     }
-    window.closeViewer = function() { document.getElementById('imageViewer').style.display = 'none'; };
+    window.closeViewer = function() { document.getElementById('imageViewer').style.display='none'; };
 
     async function loadPosts(){
         const grid=document.getElementById('postGrid');
@@ -506,7 +502,7 @@
         try{
             const res=await fetch(API+'/posts');
             const data=await res.json();
-            if(!data.success) throw new Error();
+            if(!data.success) throw new Error('API error');
             allPosts = data.posts || [];
             if(allPosts.length===0){ grid.innerHTML='<div style="text-align:center;padding:2rem;">📭 ပုံမရှိသေး</div>'; return; }
             let html='';
@@ -525,54 +521,14 @@
                 }
             });
             grid.innerHTML=html;
-        } catch(e){ grid.innerHTML='<div style="text-align:center;padding:2rem;">❌ ချို့ယွင်းနေ<br><button onclick="loadPosts()">ပြန်ကြိုးစားမည်</button></div>'; }
+        } catch(e){ 
+            console.error('Load error:', e);
+            grid.innerHTML='<div style="text-align:center;padding:2rem;">❌ ချို့ယွင်းနေ<br><button onclick="loadPosts()">ပြန်ကြိုးစားမည်</button></div>'; 
+        }
     }
 
     window.addEventListener('popstate', () => { if(document.getElementById('imageViewer').style.display === 'flex') closeViewer(); });
     loadPosts();
-
-    // ==================== FCM NOTIFICATION SETUP ====================
-    (function setupFCM() {
-        if (!('Notification' in window && 'serviceWorker' in navigator)) return;
-        
-        // Load Firebase SDK dynamically
-        Promise.all([
-            import("https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js"),
-            import("https://www.gstatic.com/firebasejs/12.13.0/firebase-messaging.js")
-        ]).then(([{ initializeApp }, { getMessaging, getToken, onMessage }]) => {
-            const firebaseConfig = {
-                apiKey: "AIzaSyBvvNeDJX-tqc7bM8bm4Ft9b8z5okhAzYM",
-                authDomain: "mibamyitta-8e457.firebaseapp.com",
-                projectId: "mibamyitta-8e457",
-                storageBucket: "mibamyitta-8e457.firebasestorage.app",
-                messagingSenderId: "543668158288",
-                appId: "1:543668158288:web:3ae1d66d9b2889fd2bb655",
-                measurementId: "G-V82T3KWCVK"
-            };
-            const vapidKey = "BPw9JNky4chwhTj6SEXNnfmQRGr6YlHzDcdJyb3ZZGVtIWVVbsMaLgnHDTXkKB9sd3e87tUDBebJYQK1ojv6";
-
-            const app = initializeApp(firebaseConfig);
-            const messaging = getMessaging(app);
-
-            // Foreground notification
-            onMessage(messaging, (payload) => {
-                console.log("📩 Foreground:", payload);
-                toast(`📢 ${payload.notification?.title || 'New'}: ${payload.notification?.body || ''}`);
-            });
-
-            // Request permission and get token
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") {
-                    getToken(messaging, { vapidKey }).then(token => {
-                        console.log("✅ FCM Token:", token);
-                        localStorage.setItem("fcmToken", token);
-                    }).catch(err => console.error("FCM getToken error:", err));
-                } else {
-                    console.log("❌ Notification permission denied");
-                }
-            });
-        }).catch(err => console.error("Firebase import error:", err));
-    })();
 </script>
 </body>
 </html>
