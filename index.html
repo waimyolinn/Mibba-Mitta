@@ -127,7 +127,6 @@
     </div>
     
     <div class="action-row">
-        <div class="section-title">Explore Art Work</div>
         <button class="refresh-btn" onclick="loadPosts()"><i class="fas fa-sync-alt"></i> Refresh</button>
     </div>
     
@@ -195,7 +194,8 @@
         if (interval >= 1) return interval + "h ago";
         interval = Math.floor(seconds / 60);
         if (interval >= 1) return interval + "m ago";
-        return "just now";
+        if (seconds >= 1) return seconds + "s ago";
+        return "";
     }
 
     window.saveToApp = function() {
