@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: 'Inter', 'Myanmar Text', sans-serif;
-            background: #0a0a0f;
+            background: radial-gradient(circle at top left, #0e0e1a, #05050a);
             color: #eef0f5;
             padding-bottom: 2rem;
         }
@@ -24,21 +25,29 @@
         body.light .hero,
         body.light .topbar,
         body.light .login-box {
-            background: #ffffff;
+            background: rgba(245, 245, 245, 0.7);
             border-color: #e0cfc6;
+        }
+        /* Glassmorphism + Neon */
+        .glass-card {
+            background: rgba(20, 20, 40, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 255, 255, 0.1);
         }
         .topbar {
             padding: 0.8rem 1rem;
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(10, 10, 15, 0.85);
+            background: rgba(5, 5, 15, 0.7);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid #84102d;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
         }
         body.light .topbar {
-            background: rgba(255, 255, 245, 0.92);
-            border-bottom-color: #e0cfc6;
+            background: rgba(245, 240, 250, 0.8);
+            border-bottom-color: #d6c8bd;
         }
         .topbar-inner {
             max-width: 640px;
@@ -50,7 +59,7 @@
         .logo {
             font-size: 1.4rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #f5e6d3, #b5ac8a, #84102d);
+            background: linear-gradient(135deg, #ffffff, #0ff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -60,13 +69,14 @@
             gap: 0.8rem;
         }
         .nav-icons a, .nav-icons button {
-            background: rgba(132,16,45,0.2);
-            border: 1px solid #84102d;
+            background: rgba(0,255,255,0.1);
+            border: 1px solid rgba(0,255,255,0.4);
             border-radius: 40px;
-            padding: 0.4rem 0.8rem;
+            padding: 0.4rem 0.7rem;
             font-size: 1rem;
-            color: #b5ac8a;
             cursor: pointer;
+            color: #0ff;
+            transition: 0.2s;
         }
         body.light .nav-icons a, body.light .nav-icons button {
             background: #f3ede8;
@@ -100,10 +110,23 @@
             margin: 1.2rem 0;
             padding: 1.2rem;
             border-radius: 2rem;
-            background: rgba(30, 26, 28, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(132,16,45,0.5);
+            background: rgba(10, 10, 20, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 255, 255, 0.3);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: -40%;
+            background: radial-gradient(circle, rgba(255,46,166,0.15), transparent 40%);
+            animation: spin 10s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
         body.light .hero {
             background: #fffef8;
@@ -114,22 +137,22 @@
             height: 80px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #84102d;
-            box-shadow: 0 0 18px rgba(132,16,45,0.3);
+            border: 2px solid #0ff;
+            box-shadow: 0 0 18px rgba(0,255,255,0.3);
+            position: relative;
+            z-index: 2;
         }
         .hero h1 {
             font-size: 1.5rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #f5e6d3, #b5ac8a);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
             margin-top: 0.4rem;
+            position: relative;
+            z-index: 2;
         }
         .hero .shop-sub {
             font-size: 0.8rem;
             letter-spacing: 2px;
-            color: #b5ac8a;
+            color: #0ff;
         }
         .contact-info {
             display: flex;
@@ -145,7 +168,7 @@
             border-radius: 30px;
         }
         .telegram-link a {
-            color: #b5ac8a;
+            color: #0ff;
             text-decoration: none;
         }
         .action-row {
@@ -154,11 +177,11 @@
             margin-bottom: 0.8rem;
         }
         .refresh-btn {
-            background: rgba(132,16,45,0.2);
-            border: 1px solid #84102d;
+            background: rgba(0,255,255,0.1);
+            border: 1px solid cyan;
             border-radius: 40px;
             padding: 0.3rem 1rem;
-            color: #b5ac8a;
+            color: cyan;
             font-size: 0.7rem;
             cursor: pointer;
         }
@@ -168,19 +191,24 @@
             gap: 1rem;
         }
         .card {
-            background: rgba(30, 26, 28, 0.75);
-            backdrop-filter: blur(6px);
+            background: rgba(25, 25, 45, 0.65);
+            backdrop-filter: blur(8px);
             border-radius: 1.5rem;
             overflow: hidden;
-            border: 1px solid rgba(132,16,45,0.5);
+            border: 1px solid rgba(0, 255, 255, 0.25);
             transition: 0.2s;
             cursor: pointer;
             position: relative;
         }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: cyan;
+            box-shadow: 0 0 20px rgba(0,255,255,0.2);
+        }
         .card-img {
             aspect-ratio: 4/5;
             width: 100%;
-            background: #1a1a20;
+            background: #111;
         }
         .card-img img {
             width: 100%;
@@ -194,14 +222,11 @@
         .card-caption {
             font-size: 0.7rem;
             line-height: 1.4;
-            color: #c0c0d0;
+            color: #ddd;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-        }
-        body.light .card-caption {
-            color: #4a3b33;
         }
         .card-footer {
             display: flex;
@@ -209,14 +234,14 @@
             align-items: center;
             margin-top: 0.3rem;
             font-size: 0.6rem;
-            color: #8b8b9b;
+            color: #aaa;
         }
         .delete-btn {
             position: absolute;
             top: 8px;
             right: 8px;
             background: rgba(0,0,0,0.7);
-            border: 1px solid #84102d;
+            border: 1px solid cyan;
             border-radius: 30px;
             color: white;
             font-size: 0.6rem;
@@ -226,8 +251,8 @@
         }
         .text-card {
             grid-column: 1/-1;
-            background: rgba(30, 26, 28, 0.75);
-            backdrop-filter: blur(6px);
+            background: rgba(25, 25, 45, 0.65);
+            backdrop-filter: blur(8px);
             border-radius: 1.5rem;
             padding: 1rem;
             position: relative;
@@ -326,7 +351,7 @@
         }
         .login-box {
             background: #1e1a1c;
-            border: 1px solid #84102d;
+            border: 1px solid cyan;
             border-radius: 2rem;
             padding: 1.5rem;
             width: 280px;
@@ -336,7 +361,7 @@
             width: 100%;
             padding: 8px;
             border-radius: 40px;
-            border: 1px solid #84102d;
+            border: 1px solid cyan;
             background: #2a2528;
             color: white;
         }
@@ -348,7 +373,7 @@
             font-weight: 600;
             cursor: pointer;
         }
-        .btn-login { background: #84102d; color: white; }
+        .btn-login { background: cyan; color: black; }
         .btn-cancel { background: #333; color: white; }
         .skeleton-grid {
             display: grid;
