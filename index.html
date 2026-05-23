@@ -229,9 +229,9 @@
                         if(allPosts.length === 0) renderPosts();
                     }, 300);
                 }
-                toast('✅ Deleted'); 
-            } else toast('❌ ' + (data.error || 'error'));
-        } catch(e) { toast('❌ Error'); }
+            } else {
+            }
+        } catch(e) { }
     };
 
     function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, m=> m==='&'?'&amp;': m==='<'?'&lt;':'&gt;'); }
