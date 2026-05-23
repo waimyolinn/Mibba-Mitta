@@ -66,9 +66,8 @@
         .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
         .card { background: var(--card-bg); border-radius: 1.2rem; overflow: hidden; position: relative; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
         .card-img { width: 100%; aspect-ratio: 1/1; overflow: hidden; position: relative; }
-        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .card-info { padding: 0.8rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); position: absolute; bottom: 0; left: 0; right: 0; }
-        /* ✅ LIGHT BLUE CAPTION - NO STAR SYMBOLS */
         .card-caption {
             font-size: 0.85rem;
             font-weight: 500;
@@ -83,7 +82,6 @@
         
         .delete-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,0,0,0.6); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; }
 
-        /* Viewer Styles */
         .viewer { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; flex-direction: column; backdrop-filter: blur(15px); }
         .viewer-top { position: absolute; top: 0; left: 0; right: 0; padding: 1rem; display: flex; justify-content: space-between; align-items: center; z-index: 2100; }
         .viewer-close, .viewer-save { background: var(--glass); border: 1px solid rgba(255,255,255,0.2); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; }
@@ -267,7 +265,7 @@
                 html+=`<div class="card" id="post-${p.id}" onclick="openViewer(${idx})">
                             ${delBtn}
                             <div class="time-badge">${timeStr}</div>
-                            <div class="card-img"><img src="/api/image/${p.id}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div>
+                            <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div>
                             <div class="card-info">
                                 <div class="card-caption">${escapeHtml(p.caption || '')}</div>
                             </div>
@@ -291,7 +289,7 @@
             const slide = document.createElement('div');
             slide.className = 'viewer-slide';
             const img = document.createElement('img');
-            img.src = `/api/image/${post.id}`;
+            img.src = post.image_url;
             img.id = `viewer-img-${i}`;
             const cap = document.createElement('div');
             cap.className = 'viewer-caption';
