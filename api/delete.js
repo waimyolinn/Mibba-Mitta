@@ -63,12 +63,29 @@ export default async function handler(req, res) {
     // Delete from Redis
     await redis.del(`post_${id}`);
     
-    // Update posts list
-    let postsList = await redis.get('posts_list') || [];
-    if (typeof postsList === 'string') {
-      postsList = JSON.parse(postsList);
+    // Update posts list - FIXED: handle both string and array
+    let postsList = await redis.get('posts_list');
+    
+    // If null or empty, start with empty array
+    if (!postsList) {
+      postsList = [];
+    } else if (typeof postsList === 'string') {
+      try {
+        postsList = JSON.parse(postsList);
+      } catch (e) {
+        postsList = [];
+      }
     }
+    
+    // Make sure it's an array
+    if (!Array.isArray(postsList)) {
+      postsList = [];
+    }
+    
+    // Filter out the deleted post
     postsList = postsList.filter(pid => pid != id);
+    
+    // Save back to Redis
     await redis.set('posts_list', JSON.stringify(postsList));
     
     return res.status(200).json({ success: true, message: 'Deleted successfully' });
