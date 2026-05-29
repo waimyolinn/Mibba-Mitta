@@ -80,14 +80,14 @@
 
         .text-card { background: var(--card-bg); border-radius: 1.2rem; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.1); grid-column: 1 / -1; backdrop-filter: blur(10px); position: relative; }
         
-        .delete-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,0,0,0.6); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; }
+        .delete-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,0,0,0.6); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; cursor: pointer; }
 
         .viewer { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; flex-direction: column; backdrop-filter: blur(15px); }
         .viewer-top { position: absolute; top: 0; left: 0; right: 0; padding: 1rem; display: flex; justify-content: space-between; align-items: center; z-index: 2100; }
         .viewer-close, .viewer-save { background: var(--glass); border: 1px solid rgba(255,255,255,0.2); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; }
         .viewer-save { display: none; }
         .viewer-container { flex: 1; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .viewer-slider { display: flex; flex-direction: column; height: 100%; width: 100%; transition: transform 0.15s ease-out; }  /* ✅ FAST SCROLL */
+        .viewer-slider { display: flex; flex-direction: column; height: 100%; width: 100%; transition: transform 0.15s ease-out; }
         .viewer-slide { min-height: 100%; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
         .viewer-slide img { max-width: 95%; max-height: 85%; object-fit: contain; transition: transform 0.1s ease-out; border-radius: 0.8rem; }
         .viewer-caption { position: absolute; bottom: 30px; left: 15px; right: 15px; background: var(--glass); color: white; padding: 1.2rem; border-radius: 1.2rem; font-size: 0.9rem; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); text-align: center; }
@@ -223,15 +223,21 @@
     logo?.addEventListener('touchend', () => clearTimeout(loginTimer));
     logo?.addEventListener('touchmove', () => clearTimeout(loginTimer));
 
+    // ✅ FIXED: Delete function with proper JSON handling
     window.deletePost = async (postId) => {
         if(!confirm('ဖျက်မှာ သေချာလား?')) return;
         if(!adminToken) { toast('Admin login required'); return; }
         try {
             const res = await fetch(`${API}/delete?id=${postId}`, {
                 method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${adminToken}` }
+                headers: { 
+                    'Authorization': `Bearer ${adminToken}`,
+                    'Content-Type': 'application/json'
+                }
             });
+            
             const data = await res.json();
+            
             if(data.success) {
                 allPosts = allPosts.filter(p => p.id != postId);
                 renderPosts();
@@ -239,7 +245,10 @@
             } else {
                 toast('Delete failed: ' + (data.error || 'Unknown error'));
             }
-        } catch(e) { toast('Network error'); }
+        } catch(e) { 
+            console.error('Delete error:', e);
+            toast('Network error: ' + e.message); 
+        }
     };
 
     function formatDate(ts) {
