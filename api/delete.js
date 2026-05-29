@@ -8,7 +8,6 @@ cloudinary.config({
 });
 
 export default async function handler(req, res) {
-  // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
@@ -35,13 +34,11 @@ export default async function handler(req, res) {
   try {
     const redis = Redis.fromEnv();
     
-    // Verify admin token
     const isValid = await redis.get(`admin_token_${token}`);
     if (!isValid) {
       return res.status(401).json({ success: false, error: 'Invalid or expired token' });
     }
 
-    // Get post data
     const postData = await redis.get(`post_${id}`);
     if (!postData) {
       return res.status(404).json({ success: false, error: 'Post not found' });
@@ -51,10 +48,12 @@ export default async function handler(req, res) {
     try {
       post = JSON.parse(postData);
     } catch (e) {
-      return res.status(500).json({ success: false, error: 'Invalid post data format' });
+      // Old format: just a string (Telegram URL)
+      // We can still delete it from Redis
+      post = { type: 'unknown' };
     }
     
-    // If it's a photo with public_id, delete from Cloudinary
+    // Only try Cloudinary delete if it's a photo WITH public_id
     if (post.type === 'photo' && post.public_id) {
       try {
         await cloudinary.uploader.destroy(post.public_id);
@@ -64,10 +63,10 @@ export default async function handler(req, res) {
       }
     }
 
-    // Delete post from Redis
+    // ALWAYS delete from Redis (works for both old and new)
     await redis.del(`post_${id}`);
     
-    // Get and update posts list
+    // Update posts list
     let postsListRaw = await redis.get('posts_list');
     let postsList = [];
     
@@ -79,7 +78,6 @@ export default async function handler(req, res) {
           postsList = postsListRaw;
         }
       } catch (e) {
-        console.error('Error parsing posts_list:', e);
         postsList = [];
       }
     }
