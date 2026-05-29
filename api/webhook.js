@@ -40,10 +40,14 @@ export default async function handler(req, res) {
         const base64Image = Buffer.from(imageBuffer).toString('base64');
         const mimeType = imageResponse.headers.get('content-type') || 'image/jpeg';
         
+        // ✅ Fix: remove any slashes from public_id
+        const safeId = `${msg.message_id}_${Date.now()}`.replace(/\//g, '_');
+        
         const uploadResult = await cloudinary.uploader.upload(`data:${mimeType};base64,${base64Image}`, {
           upload_preset: 'telegram_preset',
           folder: 'telegram_images',
-          public_id: `${msg.message_id}_${Date.now()}`
+          public_id: safeId,
+          display_name: safeId
         });
         
         post.type = 'photo';
@@ -62,6 +66,7 @@ export default async function handler(req, res) {
       return res.status(200).send('OK');
     }
 
+    // Save to Redis
     await redis.set(`post_${msg.message_id}`, JSON.stringify(post));
     
     let postsList = await redis.get('posts_list') || [];
@@ -69,7 +74,7 @@ export default async function handler(req, res) {
     if (postsList.length > 500) postsList = postsList.slice(0, 500);
     await redis.set('posts_list', JSON.stringify(postsList));
 
-    // Push Notifications
+    // Send Push Notifications
     try {
       const tokens = await redis.smembers('expo_push_tokens');
       if (tokens && tokens.length > 0) {
