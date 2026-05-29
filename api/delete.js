@@ -47,45 +47,48 @@ export default async function handler(req, res) {
       return res.status(404).json({ success: false, error: 'Post not found' });
     }
     
-    const post = JSON.parse(postData);
+    let post;
+    try {
+      post = JSON.parse(postData);
+    } catch (e) {
+      return res.status(500).json({ success: false, error: 'Invalid post data format' });
+    }
     
     // If it's a photo with public_id, delete from Cloudinary
     if (post.type === 'photo' && post.public_id) {
       try {
-        const cloudResult = await cloudinary.uploader.destroy(post.public_id);
-        console.log('Cloudinary delete result:', cloudResult);
+        await cloudinary.uploader.destroy(post.public_id);
+        console.log(`Deleted from Cloudinary: ${post.public_id}`);
       } catch (cloudErr) {
         console.error('Cloudinary delete error:', cloudErr);
-        // Continue to delete from Redis even if Cloudinary fails
       }
     }
 
-    // Delete from Redis
+    // Delete post from Redis
     await redis.del(`post_${id}`);
     
-    // Update posts list - FIXED: handle both string and array
-    let postsList = await redis.get('posts_list');
+    // Get and update posts list
+    let postsListRaw = await redis.get('posts_list');
+    let postsList = [];
     
-    // If null or empty, start with empty array
-    if (!postsList) {
-      postsList = [];
-    } else if (typeof postsList === 'string') {
+    if (postsListRaw) {
       try {
-        postsList = JSON.parse(postsList);
+        if (typeof postsListRaw === 'string') {
+          postsList = JSON.parse(postsListRaw);
+        } else if (Array.isArray(postsListRaw)) {
+          postsList = postsListRaw;
+        }
       } catch (e) {
+        console.error('Error parsing posts_list:', e);
         postsList = [];
       }
     }
     
-    // Make sure it's an array
     if (!Array.isArray(postsList)) {
       postsList = [];
     }
     
-    // Filter out the deleted post
     postsList = postsList.filter(pid => pid != id);
-    
-    // Save back to Redis
     await redis.set('posts_list', JSON.stringify(postsList));
     
     return res.status(200).json({ success: true, message: 'Deleted successfully' });
