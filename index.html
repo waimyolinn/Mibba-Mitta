@@ -65,6 +65,7 @@
         
         .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
         .card { background: var(--card-bg); border-radius: 1.2rem; overflow: hidden; position: relative; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+        .card.selected { border: 3px solid var(--primary); transform: scale(0.95); box-shadow: 0 0 20px var(--primary); }
         .card-img { width: 100%; aspect-ratio: 1/1; overflow: hidden; position: relative; }
         .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .card-info { padding: 0.8rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); position: absolute; bottom: 0; left: 0; right: 0; }
@@ -78,7 +79,8 @@
         
         .time-badge { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); color: #fff; padding: 3px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 600; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); z-index: 5; }
 
-        .text-card { background: var(--card-bg); border-radius: 1.2rem; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.1); grid-column: 1 / -1; backdrop-filter: blur(10px); position: relative; }
+        .text-card { background: var(--card-bg); border-radius: 1.2rem; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.1); grid-column: 1 / -1; backdrop-filter: blur(10px); position: relative; transition: all 0.3s; }
+        .text-card.selected { border: 3px solid var(--primary); box-shadow: 0 0 20px var(--primary); }
         
         .delete-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,0,0,0.6); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; cursor: pointer; }
 
@@ -98,6 +100,24 @@
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
         .toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 10px 20px; border-radius: 2rem; font-size: 0.9rem; font-weight: 600; z-index: 4000; display: none; box-shadow: var(--neon-shadow); }
+
+        /* Bulk Action Bar */
+        #bulkActionBar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .bulk-btn { background: white; color: var(--primary); border: none; padding: 5px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        .bulk-cancel { background: rgba(255,255,255,0.2); color: white; border: none; padding: 5px 15px; border-radius: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -137,6 +157,12 @@
     <div id="postGrid" class="product-grid"></div>
 </div>
 
+<div id="bulkActionBar">
+    <span id="selectedCount" style="font-weight:bold; color:white;">0 selected</span>
+    <button class="bulk-btn" onclick="confirmBulkDelete()">Delete All</button>
+    <button class="bulk-cancel" onclick="cancelSelectMode()">Cancel</button>
+</div>
+
 <div id="imageViewer" class="viewer">
     <div class="viewer-top">
         <button class="viewer-close" onclick="closeViewer()">✕</button>
@@ -156,6 +182,7 @@
     let allPosts = [];
     let currentViewerIndex = 0;
     let isZoomed = false;
+    let selectedIds = [];
 
     const isApp = navigator.userAgent.includes('MibaMyittaApp');
     if (isApp) {
@@ -187,6 +214,7 @@
         isAdmin = false;
         localStorage.removeItem('adminToken');
         document.getElementById('adminBar').innerHTML = '';
+        cancelSelectMode();
         loadPosts();
         toast('Admin mode disabled');
     }
@@ -223,7 +251,71 @@
     logo?.addEventListener('touchend', () => clearTimeout(loginTimer));
     logo?.addEventListener('touchmove', () => clearTimeout(loginTimer));
 
-    // ✅ FIXED: Delete function with proper JSON handling
+    // Card Click Handling (Select or View)
+    function handleCardClick(postId, idx) {
+        if (isAdmin) {
+            toggleSelect(postId);
+        } else {
+            openViewer(idx);
+        }
+    }
+
+    function toggleSelect(postId) {
+        const card = document.getElementById(`post-${postId}`);
+        if (selectedIds.includes(postId)) {
+            selectedIds = selectedIds.filter(id => id !== postId);
+            card.classList.remove('selected');
+        } else {
+            selectedIds.push(postId);
+            card.classList.add('selected');
+        }
+        updateBulkBar();
+    }
+
+    function updateBulkBar() {
+        const bar = document.getElementById('bulkActionBar');
+        const countText = document.getElementById('selectedCount');
+        if (selectedIds.length > 0) {
+            bar.style.display = 'flex';
+            countText.innerText = `${selectedIds.length} selected`;
+        } else {
+            bar.style.display = 'none';
+        }
+    }
+
+    function cancelSelectMode() {
+        selectedIds = [];
+        document.querySelectorAll('.card, .text-card').forEach(c => c.classList.remove('selected'));
+        updateBulkBar();
+    }
+
+    async function confirmBulkDelete() {
+        if (!confirm(`ရွေးထားတဲ့ ${selectedIds.length} ခုလုံးကို ဖျက်မှာ သေချာလား?`)) return;
+        if (!adminToken) { toast('Admin login required'); return; }
+        
+        try {
+            const res = await fetch(API + '/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${adminToken}`
+                },
+                body: JSON.stringify({ ids: selectedIds })
+            });
+            
+            const data = await res.json();
+            if (data.success) {
+                toast('Deleted successfully');
+                cancelSelectMode();
+                loadPosts();
+            } else {
+                toast('Delete failed: ' + data.error);
+            }
+        } catch (e) {
+            toast('Error deleting posts');
+        }
+    }
+
     window.deletePost = async (postId) => {
         if(!confirm('ဖျက်မှာ သေချာလား?')) return;
         if(!adminToken) { toast('Admin login required'); return; }
@@ -235,9 +327,7 @@
                     'Content-Type': 'application/json'
                 }
             });
-            
             const data = await res.json();
-            
             if(data.success) {
                 allPosts = allPosts.filter(p => p.id != postId);
                 renderPosts();
@@ -246,8 +336,7 @@
                 toast('Delete failed: ' + (data.error || 'Unknown error'));
             }
         } catch(e) { 
-            console.error('Delete error:', e);
-            toast('Network error: ' + e.message); 
+            toast('Network error'); 
         }
     };
 
@@ -267,8 +356,10 @@
         allPosts.forEach((p, idx) => {
             const delBtn = isAdmin ? `<button class="delete-btn" onclick="event.stopPropagation(); window.deletePost(${p.id})"><i class="fas fa-trash"></i></button>` : '';
             const timeStr = formatDate(p.date);
+            const isSelected = selectedIds.includes(p.id) ? 'selected' : '';
+            
             if(p.type==='photo'){
-                html+=`<div class="card" id="post-${p.id}" onclick="openViewer(${idx})">
+                html+=`<div class="card ${isSelected}" id="post-${p.id}" onclick="handleCardClick(${p.id}, ${idx})">
                             ${delBtn}
                             <div class="time-badge">${timeStr}</div>
                             <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div>
@@ -277,7 +368,11 @@
                             </div>
                         </div>`;
             } else {
-                html+=`<div class="text-card" id="post-${p.id}">${delBtn}<div class="time-badge">${timeStr}</div><div class="card-caption">${escapeHtml(p.text||'')}</div></div>`;
+                html+=`<div class="text-card ${isSelected}" id="post-${p.id}" onclick="handleCardClick(${p.id}, ${idx})">
+                            ${delBtn}
+                            <div class="time-badge">${timeStr}</div>
+                            <div class="card-caption">${escapeHtml(p.text||'')}</div>
+                        </div>`;
             }
         });
         grid.innerHTML=html;
@@ -289,7 +384,6 @@
         const viewer = document.getElementById('imageViewer');
         const slider = document.getElementById('viewerSlider');
         slider.innerHTML = '';
-        
         allPosts.forEach((post, i) => {
             if(post.type !== 'photo') return;
             const slide = document.createElement('div');
@@ -305,28 +399,9 @@
             slider.appendChild(slide);
             setupZoom(img);
         });
-
         slider.style.transform = `translateY(-${currentViewerIndex * 100}%)`;
         viewer.style.display = 'flex';
         history.pushState({viewer:true},'');
-        
-        let startY = 0;
-        slider.ontouchstart = (e) => { 
-            if(isZoomed) return;
-            if(e.touches.length === 1) startY = e.touches[0].clientY; 
-        };
-        slider.ontouchend = (e) => {
-            if(isZoomed) return;
-            if(e.changedTouches.length === 1) {
-                const endY = e.changedTouches[0].clientY;
-                const diff = startY - endY;
-                if(Math.abs(diff) > 50) {
-                    if(diff > 0 && currentViewerIndex < slider.children.length-1) currentViewerIndex++;
-                    else if(diff < 0 && currentViewerIndex > 0) currentViewerIndex--;
-                    slider.style.transform = `translateY(-${currentViewerIndex * 100}%)`;
-                }
-            }
-        };
     }
 
     function setupZoom(img) {
@@ -384,16 +459,19 @@
             renderPosts();
             setTimeout(() => {
                 const ls = document.getElementById('loadingScreen');
-                ls.style.opacity = '0';
-                setTimeout(() => ls.style.display = 'none', 500);
+                if(ls) {
+                    ls.style.opacity = '0';
+                    setTimeout(() => ls.style.display = 'none', 500);
+                }
             }, 1000);
         } catch(e){ 
             document.getElementById('postGrid').innerHTML='<div style="text-align:center;padding:2rem;">❌ Error</div>'; 
-            document.getElementById('loadingScreen').style.display = 'none';
+            if(document.getElementById('loadingScreen')) document.getElementById('loadingScreen').style.display = 'none';
         }
     }
 
     window.addEventListener('popstate', () => { if(document.getElementById('imageViewer').style.display === 'flex') closeViewer(); });
+    
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error', err));
