@@ -1,15 +1,21 @@
-// sw.js - MIBA MYITTA Service Worker (Fixed for Offline Mode)
-const CACHE_NAME = 'miba-mitta-v4';
+// sw.js - MIBA MYITTA Service Worker (Enhanced for Facebook-like Offline Mode)
+const CACHE_NAME = 'miba-mitta-v5';
+const DATA_CACHE_NAME = 'miba-mitta-data-v1';
+
 const urlsToCache = [
   '/',
   '/index.html',
-  '/manifest.json'
+  '/manifest.json',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
 ];
 
 // Install: Cache core assets
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache => {
+      console.log('Opened cache');
+      return cache.addAll(urlsToCache);
+    })
   );
   self.skipWaiting();
 });
@@ -20,7 +26,8 @@ self.addEventListener('activate', event => {
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
+          if (cacheName !== CACHE_NAME && cacheName !== DATA_CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -30,27 +37,50 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch: Network First, then Cache (for everything including images)
+// Fetch Strategy: Stale-While-Revalidate for images and assets
+// Network-First for API data
 self.addEventListener('fetch', event => {
-  // Skip non-GET requests
   if (event.request.method !== 'GET') return;
 
+  const url = new URL(event.request.url);
+
+  // For API requests (posts data), use Network-First
+  if (url.pathname.includes('/api/posts')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          if (response && response.status === 200) {
+            const responseToCache = response.clone();
+            caches.open(DATA_CACHE_NAME).then(cache => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+
+  // For Images and Static Assets, use Stale-While-Revalidate
   event.respondWith(
-    fetch(event.request)
-      .then(response => {
-        // If network request is successful, clone it and save to cache
-        if (response && response.status === 200) {
-          const responseToCache = response.clone();
+    caches.match(event.request).then(cachedResponse => {
+      const fetchPromise = fetch(event.request).then(networkResponse => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then(cache => {
             cache.put(event.request, responseToCache);
           });
         }
-        return response;
-      })
-      .catch(() => {
-        // If network fails (offline), try to serve from cache
-        return caches.match(event.request);
-      })
+        return networkResponse;
+      }).catch(() => {
+        // Silent fail for network if offline
+      });
+
+      return cachedResponse || fetchPromise;
+    })
   );
 });
 
@@ -64,6 +94,7 @@ self.addEventListener('push', (event) => {
       data = { title: 'MIBA MYITTA', body: event.data.text() };
     }
   }
+
   const title = data.title || 'MIBA MYITTA';
   const options = {
     body: data.body || 'ပုံအသစ်တင်ထားပါပြီ။',
@@ -71,6 +102,7 @@ self.addEventListener('push', (event) => {
     badge: 'https://i.ibb.co/35gzXLbQ/IMG-6de218e2feaca195291ffde8799f98ab-V.png',
     data: { url: data.url || '/' }
   };
+
   event.waitUntil(
     self.registration.showNotification(title, options)
   );

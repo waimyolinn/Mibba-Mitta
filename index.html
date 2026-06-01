@@ -362,7 +362,7 @@
                 html+=`<div class="card ${isSelected}" id="post-${p.id}" onclick="handleCardClick(${p.id}, ${idx})">
                             ${delBtn}
                             <div class="time-badge">${timeStr}</div>
-                            <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Error'"></div>
+                            <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Offline'"></div>
                             <div class="card-info">
                                 <div class="card-caption">${escapeHtml(p.caption || '')}</div>
                             </div>
@@ -391,6 +391,7 @@
             const img = document.createElement('img');
             img.src = post.image_url;
             img.id = `viewer-img-${i}`;
+            img.onerror = function() { this.src = 'https://placehold.co/800x1000?text=Offline+Image'; };
             const cap = document.createElement('div');
             cap.className = 'viewer-caption';
             cap.innerText = post.caption || '';
@@ -452,22 +453,40 @@
 
     async function loadPosts(){
         try{
-            const res=await fetch(API+'/posts');
-            const data=await res.json();
+            // Try fetching from network, Service Worker will handle caching
+            const res = await fetch(API+'/posts');
+            const data = await res.json();
             if(!data.success) throw new Error('API error');
             allPosts = data.posts || [];
+            
+            // Save to localStorage as a fallback for pure offline start
+            localStorage.setItem('cached_posts', JSON.stringify(allPosts));
+            
             renderPosts();
-            setTimeout(() => {
-                const ls = document.getElementById('loadingScreen');
-                if(ls) {
-                    ls.style.opacity = '0';
-                    setTimeout(() => ls.style.display = 'none', 500);
-                }
-            }, 1000);
+            hideLoading();
         } catch(e){ 
-            document.getElementById('postGrid').innerHTML='<div style="text-align:center;padding:2rem;">❌ Error</div>'; 
-            if(document.getElementById('loadingScreen')) document.getElementById('loadingScreen').style.display = 'none';
+            console.log('Network failed, trying local storage...');
+            const cached = localStorage.getItem('cached_posts');
+            if(cached) {
+                allPosts = JSON.parse(cached);
+                renderPosts();
+                toast('Offline Mode: Showing cached posts');
+                hideLoading();
+            } else {
+                document.getElementById('postGrid').innerHTML='<div style="text-align:center;padding:2rem;">❌ Offline & No Cache</div>'; 
+                hideLoading();
+            }
         }
+    }
+
+    function hideLoading() {
+        setTimeout(() => {
+            const ls = document.getElementById('loadingScreen');
+            if(ls) {
+                ls.style.opacity = '0';
+                setTimeout(() => ls.style.display = 'none', 500);
+            }
+        }, 1000);
     }
 
     window.addEventListener('popstate', () => { if(document.getElementById('imageViewer').style.display === 'flex') closeViewer(); });
