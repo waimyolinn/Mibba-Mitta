@@ -88,11 +88,11 @@
         .viewer-top { position: absolute; top: 0; left: 0; right: 0; padding: 1rem; display: flex; justify-content: space-between; align-items: center; z-index: 2100; }
         .viewer-close, .viewer-save { background: var(--glass); border: 1px solid rgba(255,255,255,0.2); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; }
         .viewer-save { display: none; }
-        .viewer-container { flex: 1; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .viewer-slider { display: flex; flex-direction: column; height: 100%; width: 100%; transition: transform 0.15s ease-out; }
-        .viewer-slide { min-height: 100%; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .viewer-container { flex: 1; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; touch-action: none; }
+        .viewer-slider { display: flex; flex-direction: column; height: 100%; width: 100%; transition: transform 0.3s cubic-bezier(0.15, 0.3, 0.25, 1); }
+        .viewer-slide { min-height: 100%; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; flex-shrink: 0; }
         .viewer-slide img { max-width: 95%; max-height: 85%; object-fit: contain; transition: transform 0.1s ease-out; border-radius: 0.8rem; }
-        .viewer-caption { position: absolute; bottom: 30px; left: 15px; right: 15px; background: var(--glass); color: white; padding: 1.2rem; border-radius: 1.2rem; font-size: 0.9rem; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .viewer-caption { position: absolute; bottom: 30px; left: 15px; right: 15px; background: var(--glass); color: white; padding: 1.2rem; border-radius: 1.2rem; font-size: 0.9rem; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); text-align: center; pointer-events: none; }
 
         #loadingScreen { position: fixed; inset: 0; background: var(--bg); z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
         .loading-logo { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--primary); margin-bottom: 1.5rem; box-shadow: 0 0 40px rgba(255, 0, 122, 0.4); animation: pulse 2s infinite; }
@@ -180,6 +180,7 @@
     let adminToken = localStorage.getItem('adminToken') || null;
     let isAdmin = !!adminToken;
     let allPosts = [];
+    let photoPosts = [];
     let currentViewerIndex = 0;
     let isZoomed = false;
     let selectedIds = [];
@@ -251,12 +252,12 @@
     logo?.addEventListener('touchend', () => clearTimeout(loginTimer));
     logo?.addEventListener('touchmove', () => clearTimeout(loginTimer));
 
-    // Card Click Handling (Select or View)
     function handleCardClick(postId, idx) {
         if (isAdmin) {
             toggleSelect(postId);
         } else {
-            openViewer(idx);
+            const photoIdx = photoPosts.findIndex(p => p.id === postId);
+            if (photoIdx !== -1) openViewer(photoIdx);
         }
     }
 
@@ -267,7 +268,7 @@
             card.classList.remove('selected');
         } else {
             selectedIds.push(postId);
-            card.classList.add('selected');
+            card.add('selected');
         }
         updateBulkBar();
     }
@@ -292,17 +293,12 @@
     async function confirmBulkDelete() {
         if (!confirm(`ရွေးထားတဲ့ ${selectedIds.length} ခုလုံးကို ဖျက်မှာ သေချာလား?`)) return;
         if (!adminToken) { toast('Admin login required'); return; }
-        
         try {
             const res = await fetch(API + '/delete', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${adminToken}`
-                },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
                 body: JSON.stringify({ ids: selectedIds })
             });
-            
             const data = await res.json();
             if (data.success) {
                 toast('Deleted successfully');
@@ -311,9 +307,7 @@
             } else {
                 toast('Delete failed: ' + data.error);
             }
-        } catch (e) {
-            toast('Error deleting posts');
-        }
+        } catch (e) { toast('Error deleting posts'); }
     }
 
     window.deletePost = async (postId) => {
@@ -322,22 +316,15 @@
         try {
             const res = await fetch(`${API}/delete?id=${postId}`, {
                 method: 'DELETE',
-                headers: { 
-                    'Authorization': `Bearer ${adminToken}`,
-                    'Content-Type': 'application/json'
-                }
+                headers: { 'Authorization': `Bearer ${adminToken}`, 'Content-Type': 'application/json' }
             });
             const data = await res.json();
             if(data.success) {
                 allPosts = allPosts.filter(p => p.id != postId);
                 renderPosts();
                 toast('Deleted successfully');
-            } else {
-                toast('Delete failed: ' + (data.error || 'Unknown error'));
-            }
-        } catch(e) { 
-            toast('Network error'); 
-        }
+            } else { toast('Delete failed'); }
+        } catch(e) { toast('Network error'); }
     };
 
     function formatDate(ts) {
@@ -353,19 +340,17 @@
         const grid=document.getElementById('postGrid');
         if(allPosts.length===0){ grid.innerHTML='<div style="text-align:center;padding:2rem;color:var(--text-muted);">📭 No items</div>'; return; }
         let html='';
+        photoPosts = allPosts.filter(p => p.type === 'photo');
         allPosts.forEach((p, idx) => {
             const delBtn = isAdmin ? `<button class="delete-btn" onclick="event.stopPropagation(); window.deletePost(${p.id})"><i class="fas fa-trash"></i></button>` : '';
             const timeStr = formatDate(p.date);
             const isSelected = selectedIds.includes(p.id) ? 'selected' : '';
-            
             if(p.type==='photo'){
                 html+=`<div class="card ${isSelected}" id="post-${p.id}" onclick="handleCardClick(${p.id}, ${idx})">
                             ${delBtn}
                             <div class="time-badge">${timeStr}</div>
                             <div class="card-img"><img src="${p.image_url}" loading="lazy" onerror="this.src='https://placehold.co/400x500?text=Offline'"></div>
-                            <div class="card-info">
-                                <div class="card-caption">${escapeHtml(p.caption || '')}</div>
-                            </div>
+                            <div class="card-info"><div class="card-caption">${escapeHtml(p.caption || '')}</div></div>
                         </div>`;
             } else {
                 html+=`<div class="text-card ${isSelected}" id="post-${p.id}" onclick="handleCardClick(${p.id}, ${idx})">
@@ -378,20 +363,21 @@
         grid.innerHTML=html;
     }
 
+    // Viewer Logic with Swipe
+    let startY = 0;
+    let currentY = 0;
+    const slider = document.getElementById('viewerSlider');
+    const container = document.getElementById('viewerContainer');
+
     function openViewer(index) {
-        if(!allPosts.length) return;
         currentViewerIndex = index;
-        const viewer = document.getElementById('imageViewer');
-        const slider = document.getElementById('viewerSlider');
         slider.innerHTML = '';
-        allPosts.forEach((post, i) => {
-            if(post.type !== 'photo') return;
+        photoPosts.forEach((post, i) => {
             const slide = document.createElement('div');
             slide.className = 'viewer-slide';
             const img = document.createElement('img');
             img.src = post.image_url;
             img.id = `viewer-img-${i}`;
-            img.onerror = function() { this.src = 'https://placehold.co/800x1000?text=Offline+Image'; };
             const cap = document.createElement('div');
             cap.className = 'viewer-caption';
             cap.innerText = post.caption || '';
@@ -400,19 +386,46 @@
             slider.appendChild(slide);
             setupZoom(img);
         });
-        slider.style.transform = `translateY(-${currentViewerIndex * 100}%)`;
-        viewer.style.display = 'flex';
+        updateSliderPosition(false);
+        document.getElementById('imageViewer').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
         history.pushState({viewer:true},'');
     }
 
+    function updateSliderPosition(animate = true) {
+        slider.style.transition = animate ? 'transform 0.3s cubic-bezier(0.15, 0.3, 0.25, 1)' : 'none';
+        slider.style.transform = `translateY(-${currentViewerIndex * 100}%)`;
+    }
+
+    container.addEventListener('touchstart', (e) => {
+        if (isZoomed || e.touches.length > 1) return;
+        startY = e.touches[0].pageY;
+        slider.style.transition = 'none';
+    }, {passive: true});
+
+    container.addEventListener('touchmove', (e) => {
+        if (isZoomed || e.touches.length > 1) return;
+        currentY = e.touches[0].pageY;
+        const diff = currentY - startY;
+        const offset = -(currentViewerIndex * container.offsetHeight) + diff;
+        slider.style.transform = `translateY(${offset}px)`;
+    }, {passive: true});
+
+    container.addEventListener('touchend', (e) => {
+        if (isZoomed) return;
+        const diff = currentY - startY;
+        if (Math.abs(diff) > 50) {
+            if (diff > 0 && currentViewerIndex > 0) currentViewerIndex--;
+            else if (diff < 0 && currentViewerIndex < photoPosts.length - 1) currentViewerIndex++;
+        }
+        updateSliderPosition();
+        startY = 0; currentY = 0;
+    });
+
     function setupZoom(img) {
-        let scale = 1;
-        let lastScale = 1;
-        let startDist = 0;
+        let scale = 1; let lastScale = 1; let startDist = 0;
         img.addEventListener('touchstart', (e) => {
-            if (e.touches.length === 2) {
-                startDist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
-            }
+            if (e.touches.length === 2) startDist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
         });
         img.addEventListener('touchmove', (e) => {
             if (e.touches.length === 2) {
@@ -423,78 +436,50 @@
                 isZoomed = scale > 1.05;
             }
         });
-        img.addEventListener('touchend', (e) => {
-            if (e.touches.length < 2) {
-                lastScale = scale;
-                if(scale <= 1.1) {
-                    scale = 1; lastScale = 1;
-                    img.style.transform = `scale(1)`;
-                    isZoomed = false;
-                }
-            }
+        img.addEventListener('touchend', () => {
+            lastScale = scale;
+            if(scale <= 1.1) { scale = 1; lastScale = 1; img.style.transform = `scale(1)`; isZoomed = false; }
         });
     }
 
     window.saveToApp = function() {
         const currentImg = document.querySelector(`#viewer-img-${currentViewerIndex}`);
         if (currentImg && window.ReactNativeWebView) {
-            window.ReactNativeWebView.postMessage(JSON.stringify({
-                type: 'SAVE_IMAGE',
-                url: currentImg.src
-            }));
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'SAVE_IMAGE', url: currentImg.src }));
         }
     };
 
     window.closeViewer = function() { 
         document.getElementById('imageViewer').style.display='none'; 
+        document.body.style.overflow = '';
         isZoomed = false;
-        document.querySelectorAll('.viewer-slide img').forEach(img => img.style.transform = 'scale(1)');
     };
 
     async function loadPosts(){
         try{
-            // Try fetching from network, Service Worker will handle caching
             const res = await fetch(API+'/posts');
             const data = await res.json();
-            if(!data.success) throw new Error('API error');
             allPosts = data.posts || [];
-            
-            // Save to localStorage as a fallback for pure offline start
             localStorage.setItem('cached_posts', JSON.stringify(allPosts));
-            
             renderPosts();
             hideLoading();
         } catch(e){ 
-            console.log('Network failed, trying local storage...');
             const cached = localStorage.getItem('cached_posts');
-            if(cached) {
-                allPosts = JSON.parse(cached);
-                renderPosts();
-                toast('Offline Mode: Showing cached posts');
-                hideLoading();
-            } else {
-                document.getElementById('postGrid').innerHTML='<div style="text-align:center;padding:2rem;">❌ Offline & No Cache</div>'; 
-                hideLoading();
-            }
+            if(cached) { allPosts = JSON.parse(cached); renderPosts(); toast('Offline Mode'); }
+            hideLoading();
         }
     }
 
     function hideLoading() {
         setTimeout(() => {
             const ls = document.getElementById('loadingScreen');
-            if(ls) {
-                ls.style.opacity = '0';
-                setTimeout(() => ls.style.display = 'none', 500);
-            }
+            if(ls) { ls.style.opacity = '0'; setTimeout(() => ls.style.display = 'none', 500); }
         }, 1000);
     }
 
     window.addEventListener('popstate', () => { if(document.getElementById('imageViewer').style.display === 'flex') closeViewer(); });
-    
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error', err));
-        });
+        window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(() => {}); });
     }
     loadPosts();
 </script>
